@@ -1,5 +1,22 @@
 var InvoiceConfig = require('./model/invoice-config');
 var invoicePdf = require('./invoice-pdf');
+var _ = require('underscore');
+
+function invoiceItems(req) {
+    return Array.isArray(req.body.days) ?
+        _.map(req.body.days, function (i) {
+            return {
+                description: req.body.description[i - 1],
+                dailyRate: req.body.rate[i - 1],
+                numberOfDays: req.body.days[i - 1]
+            };
+        }) :
+        [{
+            description: req.body.description,
+            dailyRate: req.body.rate,
+            numberOfDays: req.body.days
+        }];
+}
 
 module.exports = function (app, passport) {
 
@@ -49,33 +66,23 @@ module.exports = function (app, passport) {
     });
 
     app.get('/invoice', isLoggedIn, function (req, res) {
-        InvoiceConfig.load(req.user.email, function (error, result) {
-            error ?
-                res.redirect('config') :
-                res.render('page.ejs', {
-                    content: 'invoice',
-                    title: 'create invoice',
-                    companyName: result.companyName
-                });
+        if (!req.session.invoice.config) return res.redirect('config');
+        res.render('page.ejs', {
+            content: 'invoice',
+            title: 'create invoice',
+            companyName: req.session.invoice.config.companyName
         });
     });
 
     app.post('/invoice', isLoggedIn, function (req, res) {
-        var invoiceItems = [
-            {
-                description: req.body.description,
-                dailyRate: req.body.dailyRate,
-                numberOfDays: req.body.numberOfDays
-            }
-        ];
+        if (!req.session.invoice.config) return res.redirect('config');
 
-        InvoiceConfig.load('andrea.caldera@gmail.com', function (error, invoiceConfig) {
-            invoicePdf.create({companyName: req.body.companyName}, invoiceItems, function (error, data) {
-                if (error) return res.send(500);
-                res.contentType("application/pdf");
-                res.send(data);
-            });
+        invoicePdf.create({companyName: req.body.companyName}, invoiceItems(req), function (error, data) {
+            if (error) return res.send(500);
+            res.contentType("application/pdf");
+            res.send(data);
         });
+
     });
 
     app.get('/logout', function (req, res) {
