@@ -3,23 +3,21 @@ var invoicePdf = require('./invoice-pdf');
 
 module.exports = function (app, passport) {
 
-    //app.use(function (req, res, next) {
-    //    req.session.test = 'test';
-    //    if (!req.isAuthenticated()) return next();
-    //    if (!req.session.invoice) {
-    //        console.log('session invoice', req.session.invoice);
-    //        InvoiceConfig.load(req.user.email, function (error, result) {
-    //            if (error) return res.redirect('error');
-    //            req.session.invoice = {
-    //                config: result
-    //            };
-    //            console.log('session invoice 3', req.session.invoice);
-    //            next();
-    //        });
-    //    }
-    //    console.log('session invoice 2', req.session.invoice);
-    //    next();
-    //});
+    app.use(function (req, res, next) {
+        if (!req.isAuthenticated()) return next();
+
+        if (!req.session.invoice) {
+            InvoiceConfig.load(req.user.email, function (error, result) {
+                var config = !error ? result : {};
+                req.session.invoice = {
+                    config: config
+                };
+                next();
+            });
+        } else {
+            next();
+        }
+    });
 
     app.use(function (req, res, next) {
         res.locals = {
@@ -35,12 +33,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/profile', isLoggedIn, function (req, res) {
-        res.render('profile.ejs', {
-            user: req.user
-        });
-    });
-
     app.get('/login', function (req, res) {
         res.render('page.ejs', {
             title: 'login',
@@ -49,12 +41,10 @@ module.exports = function (app, passport) {
     });
 
     app.get('/config', isLoggedIn, function (req, res) {
-        InvoiceConfig.load(req.user.email, function (error, result) {
-            res.render('page.ejs', {
-                content: 'config',
-                title: 'invoice config',
-                companyName: result ? result.companyName : undefined
-            });
+        res.render('page.ejs', {
+            content: 'config',
+            title: 'invoice config',
+            companyName: req.session.invoice.config ? req.session.invoice.config.companyName : undefined
         });
     });
 
@@ -89,6 +79,7 @@ module.exports = function (app, passport) {
     });
 
     app.get('/logout', function (req, res) {
+        req.session.invoice = undefined;
         req.logout();
         res.redirect('/');
     });
