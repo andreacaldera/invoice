@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+
+<% include includes/head %>
+
+<body>
+    <% include includes/topbar %>
+
+    <div class="content">
+
+        <h1><%= title %></h1>
+
+        <!-- currently it seems that it's not possible to pass a variable to an include directive - see https://github.com/visionmedia/ejs/issues/93 -->
+        <% if (content === 'invoice') { %> <% include invoice %>
+        <% } else if (content === 'login') { %> <% include login %>
+        <% } else if (content === 'home') { %> <% include home %>
+        <% } else if (content === 'config') { %> <% include config %>
+        <% } else { %> <div class="minimal-font alert alert-danger">Content not defined for this page :(</div> <% } %>
+
+    </div>
+
+</div>
+
+</body>
+<% include includes/js %>
+</html>

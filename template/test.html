@@ -1,0 +1,77 @@
+<html>
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <title>Invoice</title>
+    <style>
+        h1 {
+            width: 100%;
+            text-align: center;
+            font-family: times, Times New Roman, times-roman, georgia, serif;
+            color: #444;
+            margin: 0;
+            padding: 0px 0px 6px 0px;
+            font-size: 51px;
+            line-height: 44px;
+            letter-spacing: -2px;
+            font-weight: bold;
+        }
+        .content {
+
+        }
+        .main-table {
+            width: 60%;
+            margin-left: 20%;
+            border-collapse: collapse;
+            border-width: 1px;
+            border-color: black;
+            border-style: solid;
+        }
+        .main-table thead {
+            font-family: Gill Sans, Verdana;
+            font-size: 11px;
+            line-height: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+        .main-table td {
+            border-width: 1px;
+            border-color: black;
+            border-style: solid;
+            text-align: center;
+            padding: 5px;
+        }
+        .main-table td[colspan="2"] {
+            width: 60%;
+        }
+        .main-table td[colspan="1"], td:not([colspan]) {
+            width: 20%;
+        }
+        td.description {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>Invoice - ${companyName}</h1>
+<div class="content">
+    <table class="main-table">
+        <thead>
+        <tr>
+            <td colspan="2" class="description">Description</td>
+            <td>Daily rate</td>
+            <td>Number of days</td>
+            <td>Total</td>
+        </tr>
+        </thead>
+        <tr class="invoice-row">
+            <td colspan="2" class="description">${description}</td>
+            <td>${dailyRate}</td>
+            <td>${numberOfDays}</td>
+            <td>${total}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
