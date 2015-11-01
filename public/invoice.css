@@ -2,3 +2,20 @@
     padding-left: 10%;
     padding-right: 10%;
 }
+
+.glyphicon {
+    font-size: 20px;
+}
+
+.glyphicon.blue {
+    color: lightskyblue;
+}
+
+.glyphicon.red {
+    color: red;
+}
+
+.add-invoice-item, .remove-invoice-item {
+    cursor: pointer;
+    cursor: hand;
+}
