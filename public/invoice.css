@@ -19,3 +19,9 @@
     cursor: pointer;
     cursor: hand;
 }
+
+.menu-separator {
+    height: 50px;
+    border-right: 1px solid #ffffff;
+    border-left: 1px solid #f2f2f2;
+}

@@ -18,19 +18,30 @@ function invoiceItems(req) {
         }];
 }
 
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+function loadSessionData(req, next) {
+    InvoiceConfig.load(req.user.email, function (error, result) {
+        var config = !error ? result : {};
+        req.session.invoice = {
+            config: config
+        };
+        next();
+    });
+}
+
 module.exports = function (app, passport) {
 
     app.use(function (req, res, next) {
         if (!req.isAuthenticated()) return next();
 
         if (!req.session.invoice) {
-            InvoiceConfig.load(req.user.email, function (error, result) {
-                var config = !error ? result : {};
-                req.session.invoice = {
-                    config: config
-                };
-                next();
-            });
+            loadSessionData(req, next);
         } else {
             next();
         }
@@ -65,6 +76,15 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.post('/config', isLoggedIn, function (req, res) {
+        if (!req.body.companyName) return res.send(400);
+        InvoiceConfig.add(req.user.email, req.body.companyName, function () {
+            loadSessionData(req, function () {
+                res.redirect('config');
+            });
+        });
+    });
+
     app.get('/invoice', isLoggedIn, function (req, res) {
         if (!req.session.invoice.config) return res.redirect('config');
         res.render('page.ejs', {
@@ -82,7 +102,6 @@ module.exports = function (app, passport) {
             res.contentType("application/pdf");
             res.send(data);
         });
-
     });
 
     app.get('/logout', function (req, res) {
@@ -100,10 +119,3 @@ module.exports = function (app, passport) {
         }));
 
 };
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}

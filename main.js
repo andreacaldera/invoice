@@ -26,8 +26,9 @@ app.use(passport.session());
 require('./app/passport.js')(passport);
 require('./app/routes.js')(app, passport);
 
+// todo remove this
 var InvoiceConfig = require('./app/model/invoice-config');
-InvoiceConfig.add('andrea.caldera@gmail.com', 'Acal Software Limited');
+InvoiceConfig.add('andrea.caldera@gmail.com', 'Acal Software Limited', function() {} );
 
 app.listen(port);
 console.log('Listening on port ' + port);

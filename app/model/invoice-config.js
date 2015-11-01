@@ -5,10 +5,11 @@ var InvoiceConfig = mongoose.model('invoice-config', {
     companyName: String
 });
 
-function add(email, companyName) {
+function add(email, companyName, callback) {
     var invoiceConfig = new InvoiceConfig({email: email, companyName: companyName});
     invoiceConfig.save(function (err) {
         if (err) throw err;
+        callback();
     });
 }
 
