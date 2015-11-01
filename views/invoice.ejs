@@ -1,4 +1,5 @@
 <form role="form" class="form-horizontal" method="post">
+
     <div class="form-group">
         <label for="companyName" class="col-sm-2 control-label">company name</label>
 
@@ -6,15 +7,34 @@
             <input type='input' name='companyName' value='<%= companyName %>'>
         </div>
     </div>
-    <div class="form-group invoice-item-row">
-        <div class="col-sm-3 col-sm-offset-2">
-            <input placeholder="description" type='input' name='description'>
+
+    <div class="invoice-item-row">
+        <div class="control-group col-sm-offset-2" style="display:inline-block">
+            <label class="control-label" for="description">description</label>
+
+            <div class="controls" style="display:inline-block">
+                <input placeholder="description" type='input' name='description'>
+            </div>
         </div>
-        <div class="col-sm-3">
-            <input placeholder="rate" type='input' name='rate'>
+        <div class="control-group" style="display:inline-block">
+            <label class="control-label" for="days">days</label>
+
+            <div class="controls" style="display:inline-block">
+                <input placeholder="days" type='input' name='days'>
+            </div>
         </div>
-        <div class="col-sm-3">
-            <input placeholder="days" type='input' name='days'>
+        <div class="control-group" style="display:inline-block">
+            <label class="control-label" for="rate">rate</label>
+
+            <div class="controls" style="display:inline-block">
+                <input placeholder="rate" type='input' name='rate' value="<%= (typeof rate != undefined) ? rate : '' %>">
+            </div>
+        </div>
+
+        <div class="control-group remove-invoice-item-block" style="display:none">
+            <div class="controls" style="display:inline-block">
+                <span class="remove-invoice-item glyphicon glyphicon-minus red" aria-hidden="true"></span>
+            </div>
         </div>
     </div>
 
@@ -29,4 +49,5 @@
             <button type="submit" class="btn btn-default">download invoice pdf</button>
         </div>
     </div>
+
 </form>

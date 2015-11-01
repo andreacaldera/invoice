@@ -17,7 +17,6 @@
 
 .add-invoice-item, .remove-invoice-item {
     cursor: pointer;
-    cursor: hand;
 }
 
 .menu-separator {

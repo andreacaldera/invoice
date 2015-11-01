@@ -28,7 +28,7 @@ require('./app/routes.js')(app, passport);
 
 // todo remove this
 var InvoiceConfig = require('./app/model/invoice-config');
-InvoiceConfig.put({email: 'andrea.caldera@gmail.com', companyName: 'Acal Software Limited', rate: 10}, function () {
+InvoiceConfig.put({email: 'andrea.caldera@gmail.com', companyName: 'Acal Software Limited'}, function () {
 });
 
 app.listen(port);
