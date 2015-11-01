@@ -2,25 +2,32 @@ var mongoose = require('mongoose');
 
 var InvoiceConfig = mongoose.model('invoice-config', {
     email: String,
-    companyName: String
+    companyName: String,
+    rate: {type: Number, min: 0}
 });
 
-function add(email, companyName, callback) {
-    var invoiceConfig = new InvoiceConfig({email: email, companyName: companyName});
-    invoiceConfig.save(function (err) {
-        if (err) throw err;
-        callback();
+function update(config, data, callback) {
+    config.update(data, callback);
+}
+
+function add(data, callback) {
+    new InvoiceConfig(data).save(function (error) {
+        callback(error, data);
     });
 }
 
-function load(email, callback) {
-    InvoiceConfig.findOne({'email': email}, 'email companyName', function (error, invoiceConfig) {
-        if (error) throw err;
-        callback(error, invoiceConfig);
-    })
+function put(data, callback) {
+    InvoiceConfig.findOne({'email': data.email}, function (error, result) {
+        if (error) callback(error);
+        result ? update(result, data, callback) : add(data, callback);
+    });
+}
+
+function get(email, callback) {
+    InvoiceConfig.findOne({'email': email}, callback);
 }
 
 module.exports = {
-    add: add,
-    load: load
+    put: put,
+    get: get
 }

@@ -14,12 +14,12 @@ mongoose.connect('mongodb://localhost/invoice');
 app.use(express.static(__dirname + '/public'));
 
 var bodyParser = require('body-parser');
-app.use( bodyParser.json() );
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use(session({ secret: 'session secret' }));
+app.use(session({secret: 'session secret'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -28,7 +28,8 @@ require('./app/routes.js')(app, passport);
 
 // todo remove this
 var InvoiceConfig = require('./app/model/invoice-config');
-InvoiceConfig.add('andrea.caldera@gmail.com', 'Acal Software Limited', function() {} );
+InvoiceConfig.put({email: 'andrea.caldera@gmail.com', companyName: 'Acal Software Limited', rate: 10}, function () {
+});
 
 app.listen(port);
 console.log('Listening on port ' + port);

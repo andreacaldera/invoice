@@ -26,7 +26,7 @@ function isLoggedIn(req, res, next) {
 }
 
 function loadSessionData(req, next) {
-    InvoiceConfig.load(req.user.email, function (error, result) {
+    InvoiceConfig.get(req.user.email, function (error, result) {
         var config = !error ? result : {};
         req.session.invoice = {
             config: config
@@ -72,13 +72,14 @@ module.exports = function (app, passport) {
         res.render('page.ejs', {
             content: 'config',
             title: 'invoice config',
-            companyName: req.session.invoice.config ? req.session.invoice.config.companyName : undefined
+            companyName: req.session.invoice.config.companyName,
+            rate: req.session.invoice.config.rate
         });
     });
 
     app.post('/config', isLoggedIn, function (req, res) {
         if (!req.body.companyName) return res.send(400);
-        InvoiceConfig.add(req.user.email, req.body.companyName, function () {
+        InvoiceConfig.put({email: req.user.email, companyName: req.body.companyName, rate: req.body.rate}, function () {
             loadSessionData(req, function () {
                 res.redirect('config');
             });
@@ -90,7 +91,8 @@ module.exports = function (app, passport) {
         res.render('page.ejs', {
             content: 'invoice',
             title: 'create invoice',
-            companyName: req.session.invoice.config.companyName
+            companyName: req.session.invoice.config.companyName,
+            rate: req.session.invoice.config.rate
         });
     });
 
