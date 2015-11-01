@@ -27,7 +27,7 @@ function isLoggedIn(req, res, next) {
 
 function loadSessionData(req, next) {
     InvoiceConfig.get(req.user.email, function (error, result) {
-        var config = !error ? result : {};
+        var config = result ? result : {};
         req.session.invoice = {
             config: config
         };
