@@ -27,7 +27,7 @@ function isLoggedIn(req, res, next) {
 
 function loadSessionData(req, next) {
     InvoiceConfig.get(req.user.email, function (error, result) {
-        var config = result ? result : {};
+        var config = result ? result : {fields: []};
         req.session.invoice = {
             config: config
         };
@@ -51,7 +51,7 @@ function rate(fields) {
 }
 
 function fields(req) {
-    return _.map(req.body.placeholder, function(p, index) {
+    return _.map(req.body.placeholder, function (p, index) {
         return {
             placeholder: req.body.placeholder[index],
             label: req.body.label[index],
