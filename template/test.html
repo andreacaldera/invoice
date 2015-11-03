@@ -15,18 +15,19 @@
             line-height: 44px;
             letter-spacing: -2px;
             font-weight: bold;
+            margin-bottom: 20px;
         }
+
         .content {
 
         }
+
         .main-table {
-            width: 60%;
-            margin-left: 20%;
+            width: 80%;
+            margin: 10%;
             border-collapse: collapse;
-            border-width: 1px;
-            border-color: black;
-            border-style: solid;
         }
+
         .main-table thead {
             font-family: Gill Sans, Verdana;
             font-size: 11px;
@@ -35,43 +36,113 @@
             letter-spacing: 2px;
             font-weight: bold;
         }
+
         .main-table td {
-            border-width: 1px;
-            border-color: black;
-            border-style: solid;
             text-align: center;
             padding: 5px;
         }
+
+        .main-table td.border-left {
+            border-left-width: 1px;
+            border-left-color: black;
+            border-left-style: solid;
+        }
+
+        .main-table td.border-top {
+            border-top-width: 1px;
+            border-top-color: black;
+            border-top-style: solid;
+        }
+
+        .main-table td.border-bottom {
+            border-bottom-width: 1px;
+            border-bottom-color: black;
+            border-bottom-style: solid;
+        }
+
+        .main-table td.border-right {
+            border-right-width: 1px;
+            border-right-color: black;
+            border-right-style: solid;
+        }
+
+        .main-table td:not(.custom-border) {
+            border-width: 1px;
+            border-color: black;
+            border-style: solid;
+        }
+
         .main-table td[colspan="2"] {
             width: 60%;
         }
+
         .main-table td[colspan="1"], td:not([colspan]) {
             width: 20%;
         }
+
+        td.indented {
+            padding-left: 30px
+        }
+
+        td.text-left {
+            text-align: left;
+        }
+
         td.description {
             text-align: left;
         }
     </style>
 </head>
 <body>
-<h1>Invoice - ${companyName}</h1>
+<h1>Invoice - __companyName__</h1>
+
 <div class="content">
     <table class="main-table">
         <thead>
-        <tr>
-            <td colspan="2" class="description">Description</td>
-            <td>Daily rate</td>
-            <td>Number of days</td>
-            <td>Total</td>
-        </tr>
         </thead>
+
+        <tr>
+            <td colspan="5" class="custom-border border-top border-left border-right text-left">
+                <div><strong>__companyName__</strong></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="custom-border border-bottom border-left border-right text-left indented"
+                style="padding-bottom: 20px;">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="custom-border border-left border-right text-left">
+                <div>Invoice to:</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="custom-border border-bottom border-left border-right indented text-left"
+                style="padding-bottom: 20px;">
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Days</strong></td>
+            <td><strong>Rate (£/day)</strong></td>
+            <td colspan="2" class="description"><strong>Description</strong></td>
+            <td><strong>Amount</strong></td>
+        </tr>
         <tr class="invoice-row">
-            <td colspan="2" class="description">${description}</td>
-            <td>${dailyRate}</td>
-            <td>${numberOfDays}</td>
-            <td>${total}</td>
+            <td>__numberOfDays__</td>
+            <td>__dailyRate__</td>
+            <td colspan="2" class="description">__description__</td>
+            <td>__total__</td>
         </tr>
     </table>
 </div>
 </body>
 </html>
+
+<!--
+<table class="main-table">
+        <thead>
+
+        </thead>
+
+    </table>
+-->

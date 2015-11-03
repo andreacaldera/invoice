@@ -35,6 +35,32 @@ function loadSessionData(req, next) {
     });
 }
 
+function field(fields, name) {
+    return _.find(fields, function (field) {
+        return field.placeholder == name;
+    });
+}
+
+function rate(fields) {
+    var rateField = field(fields, 'rate');
+    return {
+        label: rateField != undefined ? rateField.label : 'rate',
+        value: rateField != undefined ? rateField.value : '',
+        placeholder: rateField != undefined ? rateField.placeholder : 'rate'
+    };
+}
+
+function fields(req) {
+    return _.map(req.body.placeholder, function(p, index) {
+        return {
+            placeholder: req.body.placeholder[index],
+            label: req.body.label[index],
+            value: req.body.value[index]
+        }
+    });
+
+}
+
 module.exports = function (app, passport) {
 
     app.use(function (req, res, next) {
@@ -72,14 +98,13 @@ module.exports = function (app, passport) {
         res.render('page.ejs', {
             content: 'config',
             title: 'invoice config',
-            companyName: req.session.invoice.config.companyName,
-            rate: req.session.invoice.config.rate
+            fields: req.session.invoice.config.fields,
+            rate: rate(req.session.invoice.config.fields)
         });
     });
 
     app.post('/config', isLoggedIn, function (req, res) {
-        if (!req.body.companyName) return res.send(400);
-        InvoiceConfig.put({email: req.user.email, companyName: req.body.companyName, rate: req.body.rate}, function () {
+        InvoiceConfig.put({email: req.user.email, fields: fields(req)}, function () {
             loadSessionData(req, function () {
                 res.redirect('config');
             });
@@ -88,11 +113,12 @@ module.exports = function (app, passport) {
 
     app.get('/invoice', isLoggedIn, function (req, res) {
         if (!req.session.invoice.config) return res.redirect('config');
+
         res.render('page.ejs', {
             content: 'invoice',
             title: 'create invoice',
-            companyName: req.session.invoice.config.companyName,
-            rate: req.session.invoice.config.rate
+            fields: req.session.invoice.config.fields,
+            rate: rate(req.session.invoice.config.fields)
         });
     });
 
@@ -100,7 +126,7 @@ module.exports = function (app, passport) {
         if (!req.session.invoice.config) return res.redirect('config');
 
         invoicePdf.create({companyName: req.body.companyName}, invoiceItems(req), function (error, data) {
-            if (error) return res.send(500);
+            if (error) return res.sendStatus(500);
             res.contentType("application/pdf");
             res.send(data);
         });

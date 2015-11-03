@@ -2,8 +2,14 @@ var mongoose = require('mongoose');
 
 var InvoiceConfig = mongoose.model('invoice-config', {
     email: String,
-    companyName: String,
-    rate: {type: Number, min: 0}
+    fields: [
+        {
+            placeholder: String,
+            label: String,
+            value: String
+            // todo add type?
+        }
+    ]
 });
 
 function update(config, data, callback) {

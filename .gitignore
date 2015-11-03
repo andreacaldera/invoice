@@ -3,3 +3,4 @@ data/
 node_modules/
 output/
 app/config/secret/*
+template/*.private.html

@@ -2,7 +2,7 @@ var fs = require('fs');
 var pdf = require('html-pdf');
 var _ = require('underscore');
 
-var html = fs.readFileSync('./template/test.html', 'utf8');
+var html = fs.readFileSync('./template/invoice-template.private.html', 'utf8');
 
 $ = require('cheerio').load(html);
 var invoiceRow = ($('tr[class=invoice-row]').html());
@@ -14,17 +14,17 @@ function invoiceRows(items) {
     _(items.length).times(function (i) {
         var invoiceItem = '<tr class="invoice-row">' + invoiceRow + '</tr>';
         invoiceRowsHtml += (invoiceItem
-            .replace('${description}', items[i].description)
-            .replace('${dailyRate}', items[i].dailyRate)
-            .replace('${numberOfDays}', items[i].numberOfDays)
-            .replace('${total}', (items[i].dailyRate * items[i].numberOfDays)));
+            .replace('__description__', items[i].description)
+            .replace('__dailyRate__', items[i].dailyRate)
+            .replace('__numberOfDays__', items[i].numberOfDays)
+            .replace('__total__', (items[i].dailyRate * items[i].numberOfDays)));
     });
     return invoiceRowsHtml;
 }
 
 function fill(html, config, items) {
     return html
-        .replace('${companyName}', config.companyName)
+        .replace(new RegExp('__companyName__', 'g'), config.companyName)
         .replace(invoiceRow, invoiceRows(items));
 }
 

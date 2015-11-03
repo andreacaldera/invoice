@@ -1,10 +1,22 @@
 <form role="form" class="form-horizontal" method="post">
 
+    <% fields.forEach(function(field){ %>
+    <% if (field.placeholder != 'rate') { %>
     <div class="form-group">
-        <label for="companyName" class="col-sm-2 control-label">company name</label>
+        <label for="<%= field.placeholder %>" class="col-sm-2 control-label"><%= field.label %></label>
 
         <div class="col-sm-5">
-            <input type='input' name='companyName' value='<%= companyName %>'>
+            <input type='input' name='<%= field.placeholder %>' value='<%= field.value %>'>
+        </div>
+    </div>
+    <% } %>
+    <% }) %>
+
+    <div class="form-group">
+        <label for="invoiceNumber" class="col-sm-2 control-label">invoice number</label>
+
+        <div class="col-sm-5">
+            <input type='input' name='invoiceNumber'>
         </div>
     </div>
 
@@ -24,10 +36,10 @@
             </div>
         </div>
         <div class="control-group" style="display:inline-block">
-            <label class="control-label" for="rate">rate</label>
+            <label class="control-label" for="rate"><%= rate.label %></label>
 
             <div class="controls" style="display:inline-block">
-                <input placeholder="rate" type='input' name='rate' value="<%= (typeof rate != undefined) ? rate : '' %>">
+                <input placeholder="rate" type='input' name='<%= rate.placeholder %>' value="<%= rate.value %>">
             </div>
         </div>
 
