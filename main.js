@@ -26,17 +26,5 @@ app.use(passport.session());
 require('./app/passport.js')(passport);
 require('./app/routes.js')(app, passport);
 
-// todo remove this
-var InvoiceConfig = require('./app/model/invoice-config');
-InvoiceConfig.put({
-    email: 'andrea.caldera@gmail.com',
-    fields: [
-        {placeholder: 'vatNumber', label: 'vat number', value: 'some vat number'},
-        {placeholder: 'companyName', label: 'company name', value: 'Acal Software Limited'},
-        {placeholder: 'rate', label: 'rate', value: '20'}
-    ]
-}, function () {
-});
-
 app.listen(port);
 console.log('Listening on port ' + port);

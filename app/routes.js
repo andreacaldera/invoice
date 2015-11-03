@@ -125,7 +125,7 @@ module.exports = function (app, passport) {
     app.post('/invoice', isLoggedIn, function (req, res) {
         if (!req.session.invoice.config) return res.redirect('config');
 
-        invoicePdf.create({companyName: req.body.companyName}, invoiceItems(req), function (error, data) {
+        invoicePdf.create(req.session.invoice.config.fields, invoiceItems(req), function (error, data) {
             if (error) return res.sendStatus(500);
             res.contentType("application/pdf");
             res.send(data);

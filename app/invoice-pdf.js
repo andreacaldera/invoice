@@ -2,7 +2,7 @@ var fs = require('fs');
 var pdf = require('html-pdf');
 var _ = require('underscore');
 
-var html = fs.readFileSync('./template/invoice-template.private.html', 'utf8');
+var html = fs.readFileSync('./template/invoice-template.html', 'utf8');
 
 $ = require('cheerio').load(html);
 var invoiceRow = ($('tr[class=invoice-row]').html());
@@ -23,9 +23,11 @@ function invoiceRows(items) {
 }
 
 function fill(html, config, items) {
-    return html
-        .replace(new RegExp('__companyName__', 'g'), config.companyName)
-        .replace(invoiceRow, invoiceRows(items));
+    var result = html;
+    _.forEach(config, function (c) {
+        result = result.replace(new RegExp('__' + c.placeholder + '__', 'g'), c.value);
+    });
+    return result.replace(invoiceRow, invoiceRows(items));
 }
 
 module.exports = {
