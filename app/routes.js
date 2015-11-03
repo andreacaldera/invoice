@@ -51,6 +51,7 @@ function rate(fields) {
 }
 
 function fields(req) {
+    if (!Array.isArray(req.body.placeholder)) return [req.body];
     return _.map(req.body.placeholder, function (p, index) {
         return {
             placeholder: req.body.placeholder[index],
