@@ -1,4 +1,6 @@
 var InvoiceConfig = require('./model/invoice-config');
+var User = require('./model/user');
+
 var invoicePdf = require('./invoice-pdf');
 var _ = require('underscore');
 
@@ -95,6 +97,24 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/register', function (req, res) {
+        res.render('page.ejs', {
+            title: 'register',
+            content: 'register'
+        });
+    });
+
+    app.post('/register', function (req, res) {
+        User.add({email: req.body.email, password: req.body.password}, function (error, newUser) {
+            if (error) throw error;
+            res.render('page.ejs', {
+                title: 'login',
+                content: 'login'
+            });
+        });
+
+    });
+
     app.get('/config', isLoggedIn, function (req, res) {
         res.render('page.ejs', {
             content: 'config',
@@ -142,9 +162,11 @@ module.exports = function (app, passport) {
     app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
 
     app.get('/auth/google/callback',
-        passport.authenticate('google', {
-            successRedirect: '/',
-            failureRedirect: '/login'
-        }));
+        passport.authenticate('google', {successRedirect: '/', failureRedirect: '/login'})
+    );
+
+    app.post('/login',
+        passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login', failureFlash: false}) // todo enable flash
+    );
 
 };

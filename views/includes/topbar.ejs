@@ -3,6 +3,9 @@
         <a href="http://acal-software.com/" class="navbar-brand">invoice | acal software limited</a>
     </div>
     <div id="navbarCollapse" class="collapse navbar-collapse">
+
+        <% if ( typeof loggedIn != undefined && loggedIn ) { %>
+
         <ul class="nav navbar-nav">
             <li role="separator" class="menu-separator"></li>
             <li><a href="/">home</a></li>
@@ -11,10 +14,20 @@
             <li role="separator" class="menu-separator"></li>
             <li><a href="/config">config</a></li>
         </ul>
-        <% if ( typeof loggedIn != undefined && loggedIn ) { %>
+
         <ul class="nav navbar-nav navbar-right">
             <li><a href="logout">Logout</a></li>
         </ul>
+
+        <% } else { %>
+
+        <ul class="nav navbar-nav">
+            <li role="separator" class="menu-separator"></li>
+            <li><a href="/login">login</a></li>
+            <li><a href="/register">register</a></li>
+        </ul>
+
         <% } %>
+
     </div>
 </nav>
