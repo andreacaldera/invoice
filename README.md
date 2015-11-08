@@ -1,16 +1,21 @@
-
 # Development environment
+
+## Pre-requisites
+
+* Gulp: `npm install -g gulp`
+* NPM dependencies: `npm install`
+* [MongoD](https://docs.mongodb.org/manual/reference/program/mongod/)
 
 ## Start MongoDB
 
-`rm -fr data && mkdir -p data && mongod --dbpath data`
+`gulp start-mongo`
 
 ## Start the application
 
-`nodemon server.js`
-
+`gulp start-app-dev`
 
 # Production
 
-* Make sure the application is configured to talk to a MongoDB instance
-* `npm start`
+_Make sure the application is configured to talk to a MongoDB instance_
+
+`npm start`
