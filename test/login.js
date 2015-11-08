@@ -14,7 +14,7 @@ describe('login page', function () {
                     done();
                 }
             })
-        }, 500);
+        }, 100);
     });
 
     const browser = new Browser();
