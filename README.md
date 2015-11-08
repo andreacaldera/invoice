@@ -1,6 +1,6 @@
 # Invoice
 
-Create invoices in PDF format based an HTML template.
+Create invoices in PDF format based on an HTML template.
 
 ## Development environment
 
