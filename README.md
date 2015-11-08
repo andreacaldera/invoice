@@ -1,28 +1,32 @@
-# Development environment
+# Invoice
 
-## Pre-requisites
+Create invoices in PDF format based an an HTML template.
+
+## Development environment
+
+### Pre-requisites
 
 * Gulp: `npm install -g gulp`
 * NPM dependencies: `npm install`
 * [MongoD](https://docs.mongodb.org/manual/reference/program/mongod/)
 
-## Test
+### Test
 
 `gulp test`
 
-## Start MongoDB
+### Start MongoDB
 
 `gulp start-mongo`
 
-## Start the application
+### Start the application
 
 `gulp start-app`
 
-## Start the application with nodemon
+### Start the application with nodemon
 
 `gulp start-app-dev`
 
-# Production
+## Production
 
 _Make sure the application is configured to talk to a MongoDB instance_
 
