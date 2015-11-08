@@ -29,18 +29,10 @@ gulp.task('mochaTest', function () {
         });
 });
 
-gulp.task('start-app-non-blocking', function () {
-    runCommand('npm start');
-});
-
 gulp.task('start-app', runCommand('npm start'));
-
-gulp.task('start-mongo-non-blocking', function () {
-    runCommand('rm -fr /tmp/invoice-data && mkdir /tmp/invoice-data && mongod --dbpath /tmp/invoice-data');
-});
 
 gulp.task('start-mongo', runCommand('rm -fr /tmp/invoice-data && mkdir /tmp/invoice-data && mongod --dbpath /tmp/invoice-data'));
 
 gulp.task('stop-mongo', runCommand('mongo --eval "db.getSiblingDB(\'admin\').shutdownServer()"'));
 
-gulp.task('test', ['start-mongo-non-blocking', 'start-app', 'mochaTest']);
+gulp.task('test', ['start-mongo', 'start-app', 'mochaTest', 'stop-mongo']);
