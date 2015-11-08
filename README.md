@@ -12,7 +12,7 @@
 
 ## Start the application
 
-`gulp start-app-dev`
+`gulp start-app`
 
 # Production
 

@@ -13,7 +13,7 @@ function runCommand(command) {
     }
 }
 
-gulp.task('start-app-dev', function () {
+gulp.task('start-app', function () {
     nodemon(
         {script: 'server.js'})
         .on('restart', function () {
@@ -23,9 +23,5 @@ gulp.task('start-app-dev', function () {
 
 gulp.task('start-mongo', runCommand('rm -fr /tmp/invoice-data && mkdir /tmp/invoice-data && mongod --dbpath /tmp/invoice-data'));
 gulp.task('stop-mongo', runCommand('mongo --eval "use admin; db.shutdownServer();"'));
-gulp.task('start-app', runCommand('npm start'));
-
-gulp.task('start', ['start-mongo', 'start-app']);
-gulp.task('start-dev', ['start-mongo', 'start-app-dev']);
 
 gulp.task('default', []);
