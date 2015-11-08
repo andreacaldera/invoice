@@ -9,7 +9,16 @@ var mongoose = require('mongoose');
 
 app.set('view engine', 'ejs');
 
-mongoose.connect('mongodb://localhost/invoice');
+
+var connectWithRetry = function() {
+    return mongoose.connect('mongodb://localhost/invoice', function(error) {
+        if (error) {
+            console.error('Failed to connect to mongo on startup - retrying in 5 sec', error);
+            setTimeout(connectWithRetry, 5000);
+        }
+    });
+};
+connectWithRetry();
 
 app.use(express.static(__dirname + '/public'));
 

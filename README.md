@@ -6,6 +6,10 @@
 * NPM dependencies: `npm install`
 * [MongoD](https://docs.mongodb.org/manual/reference/program/mongod/)
 
+## Test
+
+`gulp test`
+
 ## Start MongoDB
 
 `gulp start-mongo`
@@ -13,6 +17,10 @@
 ## Start the application
 
 `gulp start-app`
+
+## Start the application with nodemon
+
+`gulp start-app-dev`
 
 # Production
 

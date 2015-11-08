@@ -5,3 +5,4 @@ app/config/secret/*
 template/*.private.html
 *.private.js
 *.log
+npm-debug.log*
