@@ -1,27 +1,18 @@
 const Browser = require('zombie');
 var assert = require('assert');
-var request = require('request');
+var testSetup = require('./test-setup');
 
 Browser.localhost('localhost', 8080);
+const browser = new Browser();
 
-describe('login page', function () {
+describe('A non-authenticated user', function () {
 
-    before('setup', function(done) {
-        var wait = setInterval(function() {
-            request('http://localhost:8080/login', function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    clearInterval(wait);
-                    done();
-                }
-            })
-        }, 100);
-    });
+    before('setup', testSetup.applicationStartUp);
 
-    const browser = new Browser();
-
-    it('should load', function (done) {
-        browser.visit("/login", function () {
+    it('should be redirected to the login page', function (done) {
+        browser.visit("/", function () {
             assert.ok(browser.success);
+            browser.assert.url({pathname: '/login'});
             done();
         });
     });

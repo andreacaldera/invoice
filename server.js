@@ -1,19 +1,21 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
-
+var log = require('./app/log');
 var session = require('express-session');
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
+var pid = require('./app/pid');
+
+pid.start();
 
 app.set('view engine', 'ejs');
 
-
-var connectWithRetry = function() {
-    return mongoose.connect('mongodb://localhost/invoice', function(error) {
+var connectWithRetry = function () {
+    return mongoose.connect('mongodb://localhost/invoice', function (error) {
         if (error) {
-            console.error('Failed to connect to mongo on startup - retrying in 5 sec', error);
+            log.warn('Failed to connect to mongoDB - retrying in 5 seconds', error);
             setTimeout(connectWithRetry, 5000);
         }
     });
@@ -36,4 +38,12 @@ require('./app/passport.js')(passport);
 require('./app/routes.js')(app, passport);
 
 app.listen(port);
-console.log('Listening on port ' + port);
+log.info('Listening on port ' + port);
+
+function shutdown() {
+    log.info('Shutting down server');
+    pid.stop();
+    process.exit();
+}
+process.on ('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);

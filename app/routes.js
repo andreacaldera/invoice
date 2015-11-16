@@ -107,10 +107,7 @@ module.exports = function (app, passport) {
     app.post('/register', function (req, res) {
         User.add({email: req.body.email, password: req.body.password}, function (error, newUser) {
             if (error) throw error;
-            res.render('page.ejs', {
-                title: 'login',
-                content: 'login'
-            });
+            res.redirect('login');
         });
 
     });

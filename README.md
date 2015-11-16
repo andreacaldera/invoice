@@ -18,11 +18,11 @@ Create invoices in PDF format based on an HTML template.
 
 This command starts MongoDB and bootstraps the Node application using Nodemon. 
 
-`gulp start-dev`
+`gulp dev`
 
 ### Start MongoDB
 
-__MongoDB will be running already by the start-dev gulp task.__
+MongoDB will be running already by the dev gulp task.
 
 `gulp start-mongo`
 
@@ -32,6 +32,6 @@ __MongoDB will be running already by the start-dev gulp task.__
 
 ## Production
 
-_Make sure the application is configured to talk to a MongoDB instance_
+Make sure the application is configured to talk to a MongoDB instance.
 
 `npm start`
