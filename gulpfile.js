@@ -2,8 +2,8 @@ var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
 var exec = require('child_process').exec;
 var mocha = require('gulp-mocha');
+var gutil = require('gulp-util');
 var del = require('del');
-var mkdirs = require('mkdirs');
 
 var logging = false;
 var mongoData = '/tmp/invoice-data';
@@ -12,8 +12,8 @@ function runCommand(command) {
     return function (cb) {
         exec(command, function (error, stdout, stderr) {
             if (logging) {
-                console.error(stderr);
-                console.log(stdout);
+                gutil.log(stderr);
+                gutil.log(stdout);
             }
             cb(error);
         });
@@ -27,17 +27,13 @@ gulp.task('start-app-dev', function () {
     });
 });
 
-gulp.task('mocha-test', function (done) {
+gulp.task('mocha-test', function () {
     return gulp.src(['test/*.js'], {read: false})
-        .pipe(mocha({
-            reporter: 'spec'
-        }))
-        .once('error', function (error) {
-            console.error(error);
-            done();
+        .pipe(mocha({reporter: 'spec'}))
+        .on('error', function (error) {
+            gutil.log(error);
         });
 });
-
 
 gulp.task('start-app', runCommand('npm start'));
 gulp.task("stop-app", ['mocha-test'], runCommand('kill $(cat invoice.pid)'));
@@ -47,12 +43,14 @@ gulp.task('start-mongo-dev', runCommand('rm -fr ' + mongoData + ' && mkdir ' + m
 gulp.task('start-mongo', runCommand('rm -fr ' + mongoData + ' && mkdir ' + mongoData + ' && mongod --fork --dbpath ' + mongoData + ' --logpath ' + mongoData + '/mongo.log'));
 gulp.task('stop-mongo', ['stop-app'], runCommand('mongo admin --eval "db.shutdownServer();"'));
 
+// Workaround - one of the tasks run as part of default seems to hand, even though logs suggest every task finished
+gulp.task('exit', ['mocha-test', 'stop-app', 'stop-mongo'], function() {
+    process.exit();
+});
+
 // Main tasks //
-gulp.task('default', ['start-mongo', 'start-app', 'mocha-test', 'stop-app', 'stop-mongo']);
+gulp.task('default', ['start-mongo', 'start-app', 'mocha-test', 'stop-app', 'stop-mongo', 'exit']);
 gulp.task('dev', ['start-mongo-dev', 'start-app-dev']);
-
-
-
 
 
 ////////////////////////////////////////////////
@@ -63,10 +61,3 @@ gulp.task('delete-npm-logs', ['mocha-test'], function () {
         './npm-debug.log*'
     ]);
 });
-//gulp.task("start-mongo", function () {
-//    var dbLogs = '/tmp/invoice-data-log';
-//    var command = "mongod --fork --dbpath " + mongoData + "/ --logpath " + dbLogs + "/mongo.log";
-//    mkdirs(mongoData);
-//    mkdirs(dbLogs);
-//    runCommand(command);
-//});

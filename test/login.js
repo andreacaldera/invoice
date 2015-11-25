@@ -1,6 +1,6 @@
 const Browser = require('zombie');
 var assert = require('assert');
-var testSetup = require('./test-setup');
+var testSetup = require('./setup');
 
 Browser.localhost('localhost', 8080);
 const browser = new Browser();

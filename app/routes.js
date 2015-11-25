@@ -1,6 +1,8 @@
 var InvoiceConfig = require('./model/invoice-config');
 var User = require('./model/user');
 
+var userService = require('./service/user-service');
+
 var invoicePdf = require('./invoice-pdf');
 var _ = require('underscore');
 
@@ -105,11 +107,10 @@ module.exports = function (app, passport) {
     });
 
     app.post('/register', function (req, res) {
-        User.add({email: req.body.email, password: req.body.password}, function (error, newUser) {
-            if (error) throw error;
+        userService.add(req.body.email, req.body.password, function (error) {
+            if (error) return res.send(500);
             res.redirect('login');
         });
-
     });
 
     app.get('/config', isLoggedIn, function (req, res) {
