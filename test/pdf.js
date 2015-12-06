@@ -1,37 +1,66 @@
-const Browser = require('zombie');
-var assert = require('assert');
-var async = require('async');
-var setup = require('./setup');
-var step = require('./step');
+const Browser = require('zombie')
+var assert = require('chai').assert
+var async = require('async')
+var setup = require('./setup')
+var step = require('./step')
 
-require('mongoose').connect('mongodb://localhost/invoice');
-var userService = require('../app/service/user-service');
+var request = require('request')
 
-Browser.localhost('localhost', 8080);
-const browser = new Browser();
+var pdfText = require('pdf-text')
+var streamToBuffer = require('stream-to-buffer')
+
+require('mongoose').connect('mongodb://localhost/invoice')
+var userService = require('../app/service/user-service')
+
+Browser.localhost('localhost', 8080)
+const browser = new Browser()
 
 describe('A user', function () {
 
-    var email = 'some@email.com';
-    var password = 'password';
+    this.timeout(10000);
 
-    before('application start-up', setup.applicationStartUp);
+    var email = 'some@email.com'
+    var password = 'password'
 
-    before('add user', function(done) {
-        userService.add(email, password, done);
-    });
+    before('application start-up', setup.applicationStartUp)
+
+    before('add user', function (done) {
+        userService.add(email, password, done)
+    })
 
     it('should able to generate an invoice PDF', function (done) {
         async.series([
-                function(callback) {
-                    step.login(browser, email, password, callback);
-                }
-            ],
-            function (error) {
-                if (error) throw error;
-                done()
-            }
-        );
-    });
+            function (callback) {
+                step.login(browser, email, password, callback)
+            },
+            function (callback) {
+                step.invoicePage(browser, callback)
+            },
+            function (callback) {
+                browser.pressButton('#pdf-button', function () {
+                    browser.assert.success
 
-});
+                    var j = request.jar()
+                    var sessionCookie = request.cookie('connect.sid=' + browser.getCookie('connect.sid'))
+                    j.setCookie(sessionCookie, 'http://localhost:8080')
+                    var responseStream = request.defaults({jar: j})
+                        .post('http://localhost:8080/invoice')
+                        .on('response', function (response) {
+                            assert.equal(response.statusCode, 200)
+                            streamToBuffer(responseStream, function (error, buffer) {
+                                assert.notOk(error)
+                                pdfText(buffer, function (error, chunks) {
+                                    assert.notOk(error)
+                                    var pdfContent = chunks.join('')
+                                    assert.include(pdfContent, 'Invoice')
+                                    callback()
+                                })
+                            })
+
+                        })
+                })
+            }
+        ], done)
+    })
+
+})

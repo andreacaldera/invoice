@@ -6,3 +6,4 @@ template/*.private.html
 *.private.js
 *.log
 npm-debug.log*
+invoice.pid

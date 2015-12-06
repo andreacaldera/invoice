@@ -15,6 +15,14 @@ function registerPage(browser, callback) {
     });
 }
 
+function invoicePage(browser, callback) {
+    browser.click('#invoice-link', function () {
+        assert.ok(browser.success);
+        browser.assert.url({pathname: '/invoice'});
+        callback();
+    });
+}
+
 function register(browser, email, password, callback) {
     browser.fill('email', email);
     browser.fill('password', password);
@@ -41,5 +49,6 @@ module.exports = {
     login: login,
     homePage: homePage,
     registerPage: registerPage,
+    invoicePage: invoicePage,
     register: register
 }

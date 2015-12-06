@@ -9,6 +9,7 @@ Create invoices in PDF format based on an HTML template.
 * Gulp: `npm install -g gulp`
 * NPM dependencies: `npm install`
 * [MongoD](https://docs.mongodb.org/manual/reference/program/mongod/)
+* wkhtmltopdf
 
 ### Run build
 

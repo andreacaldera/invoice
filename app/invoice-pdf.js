@@ -1,13 +1,12 @@
 var fs = require('fs');
-var pdf = require('html-pdf');
 var _ = require('underscore');
+var wkhtmltopdf = require('wkhtmltopdf');
 
 var html = fs.readFileSync('./template/invoice-template.html', 'utf8');
 
 $ = require('cheerio').load(html);
 var invoiceRow = ($('tr[class=invoice-row]').html());
 
-var pdfOptions = {format: 'A4'};
 
 function invoiceRows(items) {
     var invoiceRowsHtml = '';
@@ -33,7 +32,7 @@ function fill(html, config, items) {
 module.exports = {
 
     create: function (config, items, callback) {
-        pdf.create(fill(html, config, items), pdfOptions).toBuffer(callback);
+        return wkhtmltopdf(fill(html, config, items), {pageSize: 'A4'});
     }
 
 };

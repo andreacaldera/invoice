@@ -142,14 +142,12 @@ module.exports = function (app, passport) {
     });
 
     app.post('/invoice', isLoggedIn, function (req, res) {
-        if (!req.session.invoice.config) return res.redirect('config');
+        if (!req.session.invoice.config) return res.redirect('config')
 
-        invoicePdf.create(req.session.invoice.config.fields, invoiceItems(req), function (error, data) {
-            if (error) return res.sendStatus(500);
-            res.contentType("application/pdf");
-            res.send(data);
-        });
-    });
+        res.header('Content-disposition', 'attachment') // inline for viewing pdf in the browser
+        res.header('Content-type', 'application/pdf')
+        invoicePdf.create(req.session.invoice.config.fields, invoiceItems(req)).pipe(res);
+    })
 
     app.get('/logout', function (req, res) {
         req.session.invoice = undefined;
