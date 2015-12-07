@@ -31,7 +31,7 @@ function fill(html, config, items) {
 
 module.exports = {
 
-    create: function (config, items, callback) {
+    create: function (config, items) {
         return wkhtmltopdf(fill(html, config, items), {pageSize: 'A4'});
     }
 

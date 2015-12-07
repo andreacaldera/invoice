@@ -1,10 +1,10 @@
 var InvoiceConfig = require('./model/invoice-config');
-var User = require('./model/user');
 
 var userService = require('./service/user-service');
 
 var invoicePdf = require('./invoice-pdf');
 var _ = require('underscore');
+var merge = require('merge');
 
 function invoiceItems(req) {
     return Array.isArray(req.body.days) ?
@@ -147,6 +147,16 @@ module.exports = function (app, passport) {
         res.header('Content-disposition', 'attachment') // inline for viewing pdf in the browser
         res.header('Content-type', 'application/pdf')
         invoicePdf.create(req.session.invoice.config.fields, invoiceItems(req)).pipe(res);
+    })
+
+    app.post('/preview', isLoggedIn, function (req, res) {
+        if (!req.session.invoice.config) return res.redirect('config')
+
+        var config = {}
+        _.each(req.session.invoice.config.fields, function(field) {
+            config[field.placeholder] = req.body[field.placeholder]
+        })
+        res.render('page.ejs', merge({title: 'preview', content: 'preview'}, config))
     })
 
     app.get('/logout', function (req, res) {
