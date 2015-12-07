@@ -27,24 +27,41 @@ gulp.task('start-app-dev', function () {
     });
 });
 
+function shutdown() {
+    stopMongo()(function () {
+        stopApp()(function() {
+            process.exit(1)
+        })
+    })
+}
+
+function stopMongo() {
+    return runCommand('mongo admin --eval "db.shutdownServer();"')
+}
+
+function stopApp() {
+    return runCommand('kill $(cat invoice.pid)')
+}
+
 gulp.task('mocha-test', function () {
     return gulp.src(['test/*.js'], {read: false})
         .pipe(mocha({reporter: 'spec'}))
         .on('error', function (error) {
-            gutil.log(error);
+            gutil.log('Test failure', error)
+            shutdown()
         });
 });
 
 gulp.task('start-app', runCommand('npm start'));
-gulp.task("stop-app", ['mocha-test'], runCommand('kill $(cat invoice.pid)'));
+gulp.task("stop-app", ['mocha-test'], stopApp());
 
 gulp.task('start-mongo-dev', runCommand('rm -fr ' + mongoData + ' && mkdir ' + mongoData + ' && mongod --dbpath ' + mongoData));
 
 gulp.task('start-mongo', runCommand('rm -fr ' + mongoData + ' && mkdir ' + mongoData + ' && mongod --fork --dbpath ' + mongoData + ' --logpath ' + mongoData + '/mongo.log'));
-gulp.task('stop-mongo', ['stop-app'], runCommand('mongo admin --eval "db.shutdownServer();"'));
+gulp.task('stop-mongo', ['stop-app'], stopMongo());
 
 // Workaround - one of the tasks run as part of default seems to hand, even though logs suggest every task finished
-gulp.task('exit', ['mocha-test', 'stop-app', 'stop-mongo'], function() {
+gulp.task('exit', ['mocha-test', 'stop-app', 'stop-mongo'], function () {
     process.exit();
 });
 
