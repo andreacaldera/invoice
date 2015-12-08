@@ -2,7 +2,7 @@ var InvoiceConfig = require('./model/invoice-config');
 
 var userService = require('./service/user-service');
 
-var invoicePdf = require('./invoice-pdf');
+var pdf = require('./pdf');
 var _ = require('underscore');
 var merge = require('merge');
 
@@ -147,7 +147,7 @@ module.exports = function (app, passport) {
 
         res.header('Content-disposition', 'attachment') // inline for viewing pdf in the browser
         res.header('Content-type', 'application/pdf')
-        invoicePdf.create(req, res)
+        pdf.create(req, res)
     })
 
     app.post('/preview', isLoggedIn, function (req, res) {
