@@ -33,7 +33,8 @@ function loadSessionData(req, next) {
     InvoiceConfig.get(req.user.email, function (error, result) {
         var config = result ? result : {fields: []};
         req.session.invoice = {
-            config: config
+            config: config,
+            preview: {}
         };
         next();
     });
@@ -108,7 +109,7 @@ module.exports = function (app, passport) {
 
     app.post('/register', function (req, res) {
         userService.add(req.body.email, req.body.password, function (error) {
-            if (error) return res.send(500);
+            if (error) return res.sendStatus(500);
             res.redirect('login');
         });
     });
@@ -141,12 +142,12 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.post('/invoice', isLoggedIn, function (req, res) {
-        if (!req.session.invoice.config) return res.redirect('config')
+    app.get('/pdf/:invoiceId', isLoggedIn, function (req, res) {
+        if (!req.session.invoice.preview[req.params.invoiceId]) return res.sendStatus(500)
 
         res.header('Content-disposition', 'attachment') // inline for viewing pdf in the browser
         res.header('Content-type', 'application/pdf')
-        invoicePdf.create(req.session.invoice.config.fields, invoiceItems(req)).pipe(res);
+        invoicePdf.create(req, res)
     })
 
     app.post('/preview', isLoggedIn, function (req, res) {
@@ -156,7 +157,20 @@ module.exports = function (app, passport) {
         _.each(req.session.invoice.config.fields, function(field) {
             config[field.placeholder] = req.body[field.placeholder]
         })
-        res.render('page.ejs', merge({title: 'preview', content: 'preview'}, config))
+        config.items = invoiceItems(req)
+        var invoiceId = Math.floor(Math.random() * 1000000)
+        req.session.invoice.preview[invoiceId] = config
+        res.redirect('/preview/' + invoiceId);
+    })
+
+    app.get('/preview/:invoiceId', isLoggedIn, function (req, res) {
+        var config = req.session.invoice.preview[req.params.invoiceId]
+        if (!config) return res.sendStatus(500)
+
+        _.each(config.items, function(item, index) {
+            item['total'] = item.dailyRate * item.numberOfDays;
+        })
+        res.render('preview.ejs', config)
     })
 
     app.get('/logout', function (req, res) {

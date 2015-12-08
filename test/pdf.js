@@ -44,7 +44,7 @@ describe('A user', function () {
                     var sessionCookie = request.cookie('connect.sid=' + browser.getCookie('connect.sid'))
                     j.setCookie(sessionCookie, 'http://localhost:8080')
                     var responseStream = request.defaults({jar: j})
-                        .post('http://localhost:8080/invoice')
+                        .get(browser.url.replace('/preview/', '/pdf/'))
                         .on('response', function (response) {
                             assert.equal(response.statusCode, 200)
                             streamToBuffer(responseStream, function (error, buffer) {

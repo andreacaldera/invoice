@@ -33,6 +33,7 @@ app.use(bodyParser.urlencoded({
 app.use(session({secret: 'session secret', resave: true, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser());
 
 require('./app/passport.js')(passport);
 require('./app/routes.js')(app, passport);

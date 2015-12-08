@@ -1,6 +1,8 @@
-var fs = require('fs');
-var _ = require('underscore');
-var wkhtmltopdf = require('wkhtmltopdf');
+var fs = require('fs')
+var _ = require('underscore')
+var wkhtmltopdf = require('wkhtmltopdf')
+var request = require('request')
+var streamToBuffer = require('stream-to-buffer')
 
 var html = fs.readFileSync('./template/invoice-template.html', 'utf8');
 
@@ -31,8 +33,15 @@ function fill(html, config, items) {
 
 module.exports = {
 
-    create: function (config, items) {
-        return wkhtmltopdf(fill(html, config, items), {pageSize: 'A4'});
+    create: function (req, res) {
+        console.log('1')
+        var j = request.jar()
+        var sessionCookie = request.cookie('connect.sid=' + req.cookies['connect.sid'])
+        j.setCookie(sessionCookie, 'http://localhost:8080')
+        request.defaults({jar: j})
+            .get('http://localhost:8080/preview/' + req.params.invoiceId, function (error, response, body) {
+                wkhtmltopdf(body).pipe(res)
+            })
     }
 
 };
