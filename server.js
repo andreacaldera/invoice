@@ -46,5 +46,5 @@ function shutdown() {
     pid.stop();
     process.exit();
 }
-process.on ('SIGTERM', shutdown);
+process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);

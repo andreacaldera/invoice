@@ -56,7 +56,7 @@ gulp.task('stop-mongo', ['stop-app'], stopMongo())
 
 gulp.task('mocha-test', function () {
     return gulp.src(['test/*.js'], {read: false})
-        .pipe(mocha({reporter: 'spec'}))
+        .pipe(mocha({reporter: 'spec', timeout: 5000}))
         .on('error', function (error) {
             gutil.log('Test failure', error)
             shutdown()

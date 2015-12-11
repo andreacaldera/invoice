@@ -121,10 +121,10 @@
         </tr>
         <% for(var i = 0; i < items.length; i++) { %>
         <tr class="invoice-row">
-            <td><%= items[i].numberOfDays %></td>
-            <td><%= items[i].dailyRate %></td>
+            <td class="days"><%= items[i].numberOfDays %></td>
+            <td class="rate"><%= items[i].dailyRate %></td>
             <td colspan="2" class="description"><%= items[i].description %></td>
-            <td><%= items[i].total %></td>
+            <td class="total"><%= items[i].total %></td>
         </tr>
         <% } %>
     </table>
