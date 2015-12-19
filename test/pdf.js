@@ -3,16 +3,21 @@ var streamToBuffer = require('stream-to-buffer')
 var assert = require('chai').assert
 var _ = require('underscore')
 var request = require('request')
+var fs = require('fs')
 
-function parsePdf(stream, callback) {
-    streamToBuffer(stream, function (error, buffer) {
+function parsePdf(buffer, callback) {
+    pdfText(buffer, function (error, chunks) {
         assert.notOk(error)
-        pdfText(buffer, function (error, chunks) {
-            assert.notOk(error)
-            var pdfContent = chunks.join('')
-            callback(pdfContent)
-        })
+        var pdfContent = chunks.join('')
+        callback(pdfContent)
     })
+}
+
+function savePdf(buffer, callback) {
+    var fileStream = fs.createWriteStream('output/test.pdf')
+    fileStream.write(buffer)
+    fileStream.end()
+    callback()
 }
 
 function loadPdf(browser, callback) {
@@ -24,7 +29,15 @@ function loadPdf(browser, callback) {
         .get(browser.url.replace('/preview/', '/pdf/'))
         .on('response', function (response) {
             assert.equal(response.statusCode, 200)
-            parsePdf(responseStream, callback)
+
+            streamToBuffer(responseStream, function (error, buffer) {
+                assert.notOk(error)
+                savePdf(buffer, function () {
+                    parsePdf(buffer, callback)
+                })
+            })
+
+
         })
 }
 

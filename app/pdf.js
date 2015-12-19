@@ -9,7 +9,7 @@ module.exports = {
         var sessionCookie = request.cookie('connect.sid=' + req.cookies['connect.sid'])
         j.setCookie(sessionCookie, 'http://localhost:8080')
         request.defaults({jar: j})
-            .get('http://localhost:8080/preview/' + req.params.invoiceId, function (error, response, body) {
+            .get('http://localhost:8080/preview/' + req.params.invoiceId + '?download', function (error, response, body) {
                 wkhtmltopdf(body).pipe(res)
             })
     }

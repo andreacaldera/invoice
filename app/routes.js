@@ -5,38 +5,51 @@ var userService = require('./service/user-service');
 var pdf = require('./pdf');
 var _ = require('underscore');
 var merge = require('merge');
+var moment = require('moment');
+
+var numeral = require('numeral')
+numeral.language('en', {
+    delimiters: {
+        thousands: ',',
+        decimal: '.'
+    },
+    currency: {
+        symbol: '£'
+    }
+})
+numeral.language('en')
 
 function invoiceItems(req) {
     return Array.isArray(req.body.days) ?
         _.map(req.body.days, function (i) {
             return {
                 description: req.body.description[i - 1],
-                dailyRate: req.body.rate[i - 1],
-                numberOfDays: req.body.days[i - 1]
+                rate: req.body.rate[i - 1],
+                days: req.body.days[i - 1]
             };
         }) :
         [{
             description: req.body.description,
-            dailyRate: req.body.rate,
-            numberOfDays: req.body.days
+            rate: req.body.rate,
+            days: req.body.days
         }];
 }
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
-        return next();
+        return next()
     }
-    res.redirect('/login');
+    res.redirect('/login')
 }
 
 function loadSessionData(req, next) {
     InvoiceConfig.get(req.user.email, function (error, result) {
-        var config = result ? result : {fields: []};
+        var config = result ? result : {fields: []}
         req.session.invoice = {
             config: config,
             preview: {}
-        };
-        next();
+        }
+        next()
     });
 }
 
@@ -47,12 +60,21 @@ function field(fields, name) {
 }
 
 function rate(fields) {
-    var rateField = field(fields, 'rate');
+    var rateField = field(fields, 'rate')
     return {
         label: rateField != undefined ? rateField.label : 'rate',
         value: rateField != undefined ? rateField.value : '',
         placeholder: rateField != undefined ? rateField.placeholder : 'rate'
-    };
+    }
+}
+
+function description(fields) {
+    var descriptionField = field(fields, 'description')
+    return {
+        label: descriptionField != undefined ? descriptionField.label : 'description',
+        value: descriptionField != undefined ? descriptionField.value : '',
+        placeholder: descriptionField != undefined ? descriptionField.placeholder : 'description'
+    }
 }
 
 function fields(req) {
@@ -81,7 +103,8 @@ module.exports = function (app, passport) {
 
     app.use(function (req, res, next) {
         res.locals = {
-            loggedIn: req.isAuthenticated()
+            loggedIn: req.isAuthenticated(),
+            siteFurnitures: true
         };
         next();
     });
@@ -138,14 +161,16 @@ module.exports = function (app, passport) {
             content: 'invoice',
             title: 'create invoice',
             fields: req.session.invoice.config.fields,
-            rate: rate(req.session.invoice.config.fields)
+            rate: rate(req.session.invoice.config.fields),
+            description: description(req.session.invoice.config.fields)
+
         });
     });
 
     app.get('/pdf/:invoiceId', isLoggedIn, function (req, res) {
         if (!req.session.invoice.preview[req.params.invoiceId]) return res.sendStatus(500)
 
-        res.header('Content-disposition', 'attachment') // inline for viewing pdf in the browser
+        res.header('Content-disposition', 'attachment')
         res.header('Content-type', 'application/pdf')
         pdf.create(req, res)
     })
@@ -154,23 +179,60 @@ module.exports = function (app, passport) {
         if (!req.session.invoice.config) return res.redirect('config')
 
         var config = {}
-        _.each(req.session.invoice.config.fields, function(field) {
+        _.each(req.session.invoice.config.fields, function (field) {
             config[field.placeholder] = req.body[field.placeholder]
         })
         config.items = invoiceItems(req)
+        config.today = moment().format('DD-MMM-YYYY')
+        config.invoiceNumber = req.body.invoiceNumber
         var invoiceId = Math.floor(Math.random() * 1000000)
         req.session.invoice.preview[invoiceId] = config
         res.redirect('/preview/' + invoiceId);
     })
 
+    function formatAmounts(config) {
+        var formattedAmounts = _.clone(config);
+        formattedAmounts.items = _.map(formattedAmounts.items, function (item) {
+            return {
+                amount: numeral(item.amount).format('$0,0.00'),
+                vat: numeral(item.vat).format('$0,0.00'),
+                rate: numeral(item.rate).format('$0,0.00'),
+                description: item.description,
+                days: item.days
+
+            }
+        })
+        formattedAmounts.total = numeral(formattedAmounts.total).format('$0,0.00')
+        formattedAmounts.vatTotal = numeral(formattedAmounts.vatTotal).format('$0,0.00')
+        formattedAmounts.invoiceTotal = numeral(formattedAmounts.invoiceTotal).format('$0,0.00')
+        return formattedAmounts
+    }
+
     app.get('/preview/:invoiceId', isLoggedIn, function (req, res) {
         var config = req.session.invoice.preview[req.params.invoiceId]
         if (!config) return res.sendStatus(500)
 
-        _.each(config.items, function(item, index) {
-            item['total'] = item.dailyRate * item.numberOfDays;
+        _.each(config.items, function (item) {
+            item['amount'] = item.rate * item.days
+            item['vat'] = item.rate * item.days * 0.2
         })
-        res.render('preview.ejs', config)
+
+        config.vatTotal = _.reduce(config.items, function (vatTotal, c) {
+            return vatTotal + c.vat
+        }, 0)
+        config.total = _.reduce(config.items, function (total, c) {
+            return total + c.amount
+        }, 0)
+
+        config.invoiceTotal = config.total + config.vatTotal
+
+        var pageConfig = formatAmounts(config)
+        pageConfig.invoiceId = req.params.invoiceId
+        pageConfig.content = 'preview'
+        pageConfig.title = 'invoice preview'
+        pageConfig.siteFurnitures = req.query.download === undefined
+
+        res.render('page.ejs', pageConfig)
     })
 
     app.get('/logout', function (req, res) {

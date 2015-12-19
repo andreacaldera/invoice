@@ -18,7 +18,7 @@ describe('A user', function () {
 
     var email = 'some@email.com'
     var password = 'password'
-    var companyName = 'Some Company Ltd' // TODO currently pdf reader in test does not support spaces
+    var companyName = 'Some Company Ltd'
 
     before('application start-up', setup.applicationStartUp)
 
@@ -32,8 +32,56 @@ describe('A user', function () {
                 InvoiceConfig.put({
                     email: email,
                     fields: [
+                        {placeholder: 'vatNumber', label: 'vat number', value: '00112233'},
                         {placeholder: 'companyName', label: 'company name', value: companyName},
-                        {placeholder: 'rate', label: 'rate', value: '20'}
+                        {placeholder: 'consultant', label: 'consultant', value: 'Name Surname'},
+                        {placeholder: 'rate', label: 'rate', value: '200'},
+                        {placeholder: 'description', label: 'description', value: 'Description 1'},
+                        {
+                            placeholder: 'companyAddressLine1',
+                            label: 'company address line 1',
+                            value: 'Some Address'
+                        },
+                        {
+                            placeholder: 'companyAddressLine2',
+                            label: 'company address line 2',
+                            value: '4, Some Road'
+                        },
+                        {
+                            placeholder: 'companyAddressLine3',
+                            label: 'company address line 3',
+                            value: 'E1 211 - London'
+                        },
+                        {
+                            placeholder: 'companyAccountDetails',
+                            label: 'company account details',
+                            value: 'Account number: 001122; Sort code: 11-22-33'
+                        },
+                        {
+                            placeholder: 'companyRegistrationNumber',
+                            label: 'company registration number',
+                            value: '0123456'
+                        },
+                        {
+                            placeholder: 'recipient',
+                            label: 'recipient',
+                            value: 'Your Client'
+                        },
+                        {
+                            placeholder: 'recipientAddress',
+                            label: 'recipient address',
+                            value: '30, Another Street'
+                        },
+                        {
+                            placeholder: 'recipientPostCode',
+                            label: 'recipient post code',
+                            value: 'N11 3AA'
+                        },
+                        {
+                            placeholder: 'recipientTown',
+                            label: 'recipient town',
+                            value: 'London'
+                        }
                     ]
                 }, callback)
             }
@@ -52,24 +100,33 @@ describe('A user', function () {
                 browser.fill('description', 'description 1');
                 browser.fill('days', 2);
                 browser.fill('rate', 10);
+                browser.fill('invoiceNumber', 1);
                 callback();
             },
             function (callback) {
-                browser.pressButton('#pdf-button', callback)
+                browser.pressButton('#preview-button', callback)
             },
             function (callback) {
                 browser.assert.success()
                 browser.assert.text('[class="invoice-row"] [class=description]', 'description 1')
                 browser.assert.text('[class="invoice-row"] [class=days]', 2)
-                browser.assert.text('[class="invoice-row"] [class=rate]', 10)
-                browser.assert.text('[class="invoice-row"] [class=total]', 20)
+                browser.assert.text('[class="invoice-row"] [class=rate]', '£10.00')
+                browser.assert.text('[class="invoice-row"] [class=amount]', '£20.00')
                 callback();
+            },
+            function( callback) {
+                browser.clickLink('#download-pdf', function() {
+                    browser.assert.success()
+                    callback()
+                })
             },
             function (callback) {
                 pdf.loadPdf(browser, function(pdfContent) {
                     var spaces = new RegExp(' ', 'g')
-                    assert.include(pdfContent.replace(spaces, ''), 'Invoice-' + companyName.replace(spaces, ''))
-                    callback();
+                    pdfContent = pdfContent.replace(spaces, '').toLowerCase()
+                    assert.include(pdfContent, companyName.replace(spaces, '').toLowerCase()) // todo fix whitespaces issue when reading pdf
+                    assert.notInclude(pdfContent, 'download')
+                    callback()
                 })
             }
         ], done)

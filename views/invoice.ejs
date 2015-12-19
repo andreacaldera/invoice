@@ -1,7 +1,7 @@
-<form role="form" class="form-horizontal" method="post" action="preview" target="_blank">
+<form role="form" class="form-horizontal" method="post" action="preview">
 
-    <% fields.forEach(function(field){ %>
-    <% if (field.placeholder != 'rate') { %>
+    <% fields.forEach(function(field) { %>
+    <% if (field.placeholder != 'rate' && field.placeholder != 'description') { %>
     <div class="form-group">
         <label for="<%= field.placeholder %>" class="col-sm-2 control-label"><%= field.label %></label>
 
@@ -25,7 +25,7 @@
             <label class="control-label" for="description">description</label>
 
             <div class="controls" style="display:inline-block">
-                <input placeholder="description" type='input' name='description'>
+                <input placeholder="description" type='input' name='<%= description.placeholder %>' value="<%= description.value %>">
             </div>
         </div>
         <div class="control-group" style="display:inline-block">
@@ -58,7 +58,7 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button id="pdf-button" type="submit" class="btn btn-default">download invoice pdf</button>
+            <button id="preview-button" type="submit" class="btn btn-default">preview invoice pdf</button>
         </div>
     </div>
 

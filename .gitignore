@@ -7,3 +7,5 @@ template/*.private.html
 *.log
 npm-debug.log*
 invoice.pid
+
+output/

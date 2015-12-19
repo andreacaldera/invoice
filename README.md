@@ -26,3 +26,7 @@ This command starts MongoDB and bootstraps the Node application using Nodemon.
 Make sure the application is configured to talk to a MongoDB instance.
 
 `npm start`
+
+#Issues
+
+* Invalid characters before currency symbols when generating PDFs 
