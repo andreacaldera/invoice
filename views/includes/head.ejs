@@ -1,9 +1,10 @@
 <head>
+    <meta charset="UTF-8"/>
     <title><%= title %></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
-          integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
-    <link rel="stylesheet" href="/invoice.css"/>
+    <% if (siteFurnitures) { %>
+        <link rel="stylesheet" href="/lib/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/lib/bootstrap-3.3.6-dist/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/lib/font-awesome-4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/invoice.css"/>
+    <% } %>
 </head>

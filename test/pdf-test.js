@@ -1,26 +1,26 @@
-const Browser = require('zombie')
-var assert = require('chai').assert
-var async = require('async')
-var setup = require('./setup')
-var step = require('./step')
-var pdf = require('./pdf')
+const Browser = require('zombie');
+var assert = require('chai').assert;
+var async = require('async');
+var setup = require('./setup');
+var step = require('./step');
+var pdf = require('./pdf');
 
-var request = require('request')
-var _ = require('underscore')
+var request = require('request');
+var _ = require('underscore');
 
-require('mongoose').connect('mongodb://localhost/invoice')
-var userService = require('../app/service/user-service')
+require('mongoose').connect('mongodb://localhost/invoice');
+var userService = require('../app/service/user-service');
 
-Browser.localhost('localhost', 8080)
-const browser = new Browser()
+Browser.localhost('localhost', 8080);
+const browser = new Browser();
 
 describe('A user', function () {
 
-    var email = 'some@email.com'
-    var password = 'password'
-    var companyName = 'Some Company Ltd'
+    var email = 'some@email.com';
+    var password = 'password';
+    var companyName = 'Some Company Ltd';
 
-    before('application start-up', setup.applicationStartUp)
+    before('application start-up', setup.applicationStartUp);
 
     before('add user', function (done) {
         async.series([
@@ -53,9 +53,14 @@ describe('A user', function () {
                             value: 'E1 211 - London'
                         },
                         {
-                            placeholder: 'companyAccountDetails',
-                            label: 'company account details',
-                            value: 'Account number: 001122; Sort code: 11-22-33'
+                            placeholder: 'companyAccountNumber',
+                            label: 'company account number',
+                            value: '00112233'
+                        },
+                        {
+                            placeholder: 'companyAccountSortCode',
+                            label: 'company account sort code',
+                            value: '11-22-33'
                         },
                         {
                             placeholder: 'companyRegistrationNumber',
@@ -85,8 +90,8 @@ describe('A user', function () {
                     ]
                 }, callback)
             }
-        ], done)
-    })
+        ], done);
+    });
 
     it('should able to generate an invoice PDF', function (done) {
         async.series([
@@ -104,32 +109,32 @@ describe('A user', function () {
                 callback();
             },
             function (callback) {
-                browser.pressButton('#preview-button', callback)
+                browser.pressButton('#preview-button', callback);
             },
             function (callback) {
-                browser.assert.success()
-                browser.assert.text('[class="invoice-row"] [class=description]', 'description 1')
-                browser.assert.text('[class="invoice-row"] [class=days]', 2)
-                browser.assert.text('[class="invoice-row"] [class=rate]', '£10.00')
-                browser.assert.text('[class="invoice-row"] [class=amount]', '£20.00')
+                browser.assert.success();
+                browser.assert.text('.invoice-row .description', 'description 1');
+                browser.assert.text('.invoice-row .days', 2);
+                browser.assert.text('.invoice-row .rate', '£10.00');
+                browser.assert.text('.invoice-row .amount', '£20.00');
                 callback();
             },
             function( callback) {
                 browser.clickLink('#download-pdf', function() {
-                    browser.assert.success()
-                    callback()
+                    browser.assert.success();
+                    callback();
                 })
             },
             function (callback) {
                 pdf.loadPdf(browser, function(pdfContent) {
-                    var spaces = new RegExp(' ', 'g')
-                    pdfContent = pdfContent.replace(spaces, '').toLowerCase()
-                    assert.include(pdfContent, companyName.replace(spaces, '').toLowerCase()) // todo fix whitespaces issue when reading pdf
-                    assert.notInclude(pdfContent, 'download')
-                    callback()
+                    var spaces = new RegExp(' ', 'g');
+                    pdfContent = pdfContent.replace(spaces, '').toLowerCase();
+                    assert.include(pdfContent, companyName.replace(spaces, '').toLowerCase()); // todo fix whitespaces issue when reading pdf
+                    assert.notInclude(pdfContent, 'download');
+                    callback();
                 })
             }
-        ], done)
-    })
+        ], done);
+    });
 
-})
+});

@@ -1,47 +1,33 @@
 <style>
-    .heading-block {
-        margin-top: 6px;
+
+    body {
+        font-family: 'Helvetica', 'SansSerif';
+        <% if (!siteFurnitures) { %>
+            font-size: 70%;
+        <% } %>
     }
 
     .pdf-label {
         font-style: italic;
+        color: grey;
     }
 
-    .smaller-font {
-        font-family: Gill Sans, Verdana;
-        font-size: 11px;
-        line-height: 14px;
+    .company-title {
+        vertical-align: top;
+        font-size: 35px;
+        font-family: "Helvetica Neue",Helvetica,Arial,"Open Sans",sans-serif;
+        font-weight: 300;
     }
 
-    .medium-font {
-        font-family: times, Times New Roman, times-roman, georgia, serif;
-        color: #444;
-        margin: 0;
-        padding: 0px 0px 6px 0px;
-        font-size: 20px;
-        line-height: 44px;
-        font-weight: bold;
-    }
-
-    .bigger-font {
-        font-family: times, Times New Roman, times-roman, georgia, serif;
-        color: #444;
-        margin: 0;
-        padding: 0px 0px 6px 0px;
-        font-size: 51px;
-        line-height: 44px;
-        font-weight: bold;
-    }
-
-    .main-header {
-        margin-top: 15px;
+    .invoice-title {
+        font-size: 30px;
+        font-family: "Helvetica Neue",Helvetica,Arial,"Open Sans",sans-serif;
+        font-weight: 300;
     }
 
     .main {
         margin-top: 40px;
-        width: 90%;
-        margin-left: 5%;
-        margin-right: 5%;
+        width: 100%;
     }
 
     .main-table {
@@ -49,48 +35,23 @@
         width: 100%;
     }
 
-    .main-table thead {
-        font-family: Gill Sans, Verdana;
-        font-size: 11px;
-        line-height: 14px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-weight: bold;
-    }
-
-    .main-table td {
-        text-align: center;
-        padding: 5px;
-    }
-
-    .main-table td.border-left {
-        border-left-width: 1px;
-        border-left-color: black;
-        border-left-style: solid;
-    }
-
-    .main-table td.border-top {
-        border-top-width: 1px;
-        border-top-color: black;
-        border-top-style: solid;
-    }
-
-    .main-table td.border-bottom {
+    .main-table > tbody > tr.block.last {
         border-bottom-width: 1px;
-        border-bottom-color: black;
+        border-color: black;
         border-bottom-style: solid;
     }
 
-    .main-table td.border-right {
-        border-right-width: 1px;
-        border-right-color: black;
-        border-right-style: solid;
+    .main-table > tbody > tr.block.first > td {
+        padding-top: 10px;
     }
 
-    .main-table td:not(.custom-border) {
-        border-width: 1px;
-        border-color: black;
-        border-style: solid;
+    .main-table > tbody > tr.block.last > td {
+        padding-bottom: 10px;
+    }
+
+    .main-table > tbody > tr.block > td {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .main-table td[colspan="1"], td:not([colspan]) {
@@ -105,22 +66,24 @@
         width: 50%;
     }
 
-    .indented-1 {
-        padding-left: 30px !important;
+    .main-table td[colspan="4"] {
+        width: 67%;
     }
 
-    .indented-2 {
-        padding-left: 20px !important;
-    }
-
-    td.text-left {
-        text-align: left;
+    .main-table td[colspan="6"] {
+        width: 100%;
     }
 
     .total-label {
         text-align: right !important; /* TODO replace important */
         padding-right: 30px !important; /* TODO replace important */
     }
+
+    @page {
+        size: auto;
+        margin: 1mm 1mm 1mm 1mm;
+    }
+
 </style>
 
 <% if (siteFurnitures) { %>
@@ -129,106 +92,106 @@
 
 <div class="main">
 
-    <table class="main-table smaller-font ">
-        <thead>
-        </thead>
+    <table class="main-table">
+        <tbody>
 
-        <tr>
-            <td colspan="6" class="indented-1 custom-border border-top border-left border-right text-left">
-                <div class="bigger-font main-header"><%= companyName %></div>
+        <tr class="block first">
+            <td rowspan="7" colspan="3" class="company-title">ACAL SOFTWARE</td> <!-- TODO companyName -->
+            <td colspan="3" class="invoice-title" style="text-align: right">INVOICE</td>
+        </tr>
+        <tr class="block company-details">
+            <td colspan="3" style="text-align: right"><%= companyName %></td>
+        </tr>
+        <tr class="block company-details">
+            <td colspan="3" style="text-align: right"><%= companyAddressLine1 %></td>
+        </tr>
+        <tr class="block company-details">
+            <td colspan="3" style="text-align: right"><%= companyAddressLine2 %></td>
+        </tr>
+        <tr class="block company-details">
+            <td colspan="3" style="text-align: right"><%= companyAddressLine3 %></td>
+        </tr>
+        <tr class="block company-details">
+            <td colspan="3" style="text-align: right">
+                <span class="pdf-label">Account sort code: </span><%= companyAccountSortCode %>
+                <span class="pdf-label">Account number: </span><%= companyAccountNumber %>
             </td>
         </tr>
-        <tr>
-            <td colspan="6"
-                class="heading-text custom-border border-bottom border-left border-right text-left indented-1"
-                style="padding-bottom: 20px;">
-                <div class="indented-2">
-                    <div class="heading-block">
-                        <div><%= companyAddressLine1 %></div>
-                        <div><%= companyAddressLine2 %></div>
-                        <div><%= companyAddressLine3 %></div>
-                    </div>
-                    <div class="heading-block"><%= companyAccountDetails %></div>
-                    <div class="heading-block"><span
-                                class="pdf-label">Company registration number: </span><%= companyRegistrationNumber %>
-                    </div>
-                </div>
+        <tr class="block last company-details">
+            <td colspan="3" style="text-align: right">
+                <span class="pdf-label">Company registration number: </span><%= companyRegistrationNumber %>
             </td>
         </tr>
-        <tr>
-            <td class="custom-border" colspan="6"></td>
+
+        <tr class="block first">
+            <td colspan="3" class="pdf-label">Invoice to</td>
+            <td colspan="3" style="text-align: right"><span class="pdf-label">Invoice number: </span><span><%= invoiceNumber %></span></td>
         </tr>
-        <tr>
-            <td colspan="6" class="custom-border border-left border-right border-top indented-1 text-left">
-                <div class="pdf-label">Invoice to</div>
-            </td>
+        <tr class="block">
+            <td colspan="3"><%= recipient %></td>
+            <td colspan="3" style="text-align: right"><span class="pdf-label">Date: </span><span><%= today %></span></td>
         </tr>
-        <tr>
-            <td colspan="6"
-                class="heading-text custom-border border-bottom border-left border-right indented-1 text-left"
-                style="padding-bottom: 20px;">
-                <div class="heading-block medium-font"><%= recipient %></div>
-                <div class="heading-block indented-2">
-                    <div><%= recipientAddress %></div>
-                    <div><%= recipientPostCode %></div>
-                    <div><%= recipientTown %></div>
-                </div>
-            </td>
+        <tr class="block">
+            <td colspan="3"><%= recipientAddress %></td>
+            <td colspan="3" style="text-align: right"><span class="pdf-label">Consultant: </span><span><%= consultant %></span></td>
         </tr>
-        <tr>
-            <td class="custom-border" colspan="6"></td>
+        <tr class="block">
+            <td colspan="3"><%= recipientPostCode %></td>
+            <td colspan="3" style="text-align: right"><span class="pdf-label">Amount due: </span><span><%= invoiceTotal %></span></td>
         </tr>
-        <tr>
-            <td colspan="2"><span class="pdf-label">Consultant:</span> <%= consultant %> </td>
-            <td colspan="2"><span class="pdf-label">Date:</span> <%= today %> </td>
-            <td colspan="2"><span class="pdf-label">Invoice number:</span> <%= invoiceNumber %> </td>
+        <tr class="block last">
+            <td colspan="3"><%= recipientTown %></td>
+            <td colspan="3"></td>
         </tr>
-        <tr>
-            <td class="custom-border" colspan="6"></td>
-        </tr>
-        <tr>
+
+        <tr class="block first last">
+            <td colspan="2" class="pdf-label">Description</td>
             <td class="pdf-label">Days</td>
             <td class="pdf-label" d>Rate (£/day)</td>
-            <td colspan="2" class="pdf-label description">Description</td>
             <td class="pdf-label">Amount</td>
             <td class="pdf-label">VAT (20%)</td>
-
         </tr>
+
         <% for(var i = 0; i < items.length; i++) { %>
-        <tr class="invoice-row">
+        <tr class="block invoice-row <%= i == 0 ? ' first ' : '' %> <%= i == items.length ? ' last ' : '' %>">
+            <td colspan="2" class="description"><%= items[i].description %></td>
             <td class="days"><%= items[i].days %></td>
             <td class="rate"><%= items[i].rate %></td>
-            <td colspan="2" class="description"><%= items[i].description %></td>
             <td class="amount"><%= items[i].amount %></td>
             <td class="vat"><%= items[i].vat %></td>
         </tr>
-        <tr>
-            <td class="custom-border border-right border-left" colspan="6"></td>
+        <% } %>
+
+        <tr class="block last">
+            <td colspan="6"></td>
         </tr>
-        <tr>
-            <td class="custom-border border-left"></td>
-            <td class="custom-border"></td>
-            <td colspan="2" class="total-label custom-border pdf-label">Total</td>
+
+        <tr class="block first">
+            <td></td>
+            <td></td>
+            <td colspan="2" class="total-label pdf-label">Total</td>
             <td class="total"><strong><%= total %></strong></td>
             <td class="custom-border border-right"></td>
         </tr>
-        <tr>
+
+        <tr class="block">
             <td class="custom-border border-left"></td>
             <td class="custom-border"></td>
             <td colspan="2" class="total-label custom-border pdf-label">VAT (<%= vatNumber %>)</td>
-            <td class="vatTotal"><%= vatTotal %></td>
+            <td><%= vatTotal %></td>
             <td class="custom-border border-right"></td>
         </tr>
-        <tr>
-            <td class="custom-border border-right border-left" colspan="6"></td>
-        </tr>
-        <tr>
+
+        <tr class="block">
             <td class="custom-border border-bottom border-left"></td>
             <td class="custom-border border-bottom"></td>
             <td colspan="2" class="total-label custom-border border-bottom pdf-label">Invoice Total</td>
             <td class="invoice-total"><strong><%= invoiceTotal %></strong></td>
             <td class="custom-border border-bottom border-right"></td>
         </tr>
-        <% } %>
+
+
+        </tbody>
     </table>
+
 </div>

@@ -56,6 +56,9 @@ gulp.task('start-mongo', runCommand('rm -fr ' + mongoData + ' && mkdir ' + mongo
 gulp.task('stop-mongo', ['stop-app'], stopMongo())
 
 
+gulp.task('setup-data', runCommand('node setup.private.js'))
+
+
 gulp.task('mocha-test', function () {
     return gulp.src(['test/*.js'], {read: false})
         .pipe(mocha({reporter: 'spec', timeout: 5000}))
@@ -75,4 +78,4 @@ gulp.task('exit', ['clean', 'mocha-test', 'stop-app', 'stop-mongo'], process.exi
 
 // Main tasks //
 gulp.task('default', ['start-mongo', 'start-app', 'mocha-test', 'stop-app', 'stop-mongo', 'exit'])
-gulp.task('dev', ['start-mongo-dev', 'start-app-dev'])
+gulp.task('dev', ['start-mongo-dev', 'setup-data', 'start-app-dev'])
