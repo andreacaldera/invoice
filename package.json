@@ -21,6 +21,8 @@
     "passport-google": "^0.3.0",
     "passport-google-oauth": "^0.2.0",
     "passport-local": "^1.0.0",
+    "phantom": "^0.7.2",
+    "tmp": "0.0.27",
     "underscore": "^1.8.3",
     "wkhtmltopdf": "^0.1.5"
   },

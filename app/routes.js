@@ -7,7 +7,7 @@ var _ = require('underscore');
 var merge = require('merge');
 var moment = require('moment');
 
-var numeral = require('numeral')
+var numeral = require('numeral');
 numeral.language('en', {
     delimiters: {
         thousands: ',',
@@ -90,7 +90,6 @@ function fields(req) {
 }
 
 module.exports = function (app, passport) {
-
     app.use(function (req, res, next) {
         if (!req.isAuthenticated()) return next();
 
@@ -173,7 +172,7 @@ module.exports = function (app, passport) {
         res.header('Content-disposition', 'attachment')
         res.header('Content-type', 'application/pdf')
         pdf.create(req, res)
-    })
+    });
 
     app.post('/preview', isLoggedIn, function (req, res) {
         if (!req.session.invoice.config) return res.redirect('config')
@@ -188,7 +187,7 @@ module.exports = function (app, passport) {
         var invoiceId = Math.floor(Math.random() * 1000000)
         req.session.invoice.preview[invoiceId] = config
         res.redirect('/preview/' + invoiceId);
-    })
+    });
 
     function formatAmounts(config) {
         var formattedAmounts = _.clone(config);
@@ -201,7 +200,7 @@ module.exports = function (app, passport) {
                 days: item.days
 
             }
-        })
+        });
         formattedAmounts.total = numeral(formattedAmounts.total).format('$0,0.00')
         formattedAmounts.vatTotal = numeral(formattedAmounts.vatTotal).format('$0,0.00')
         formattedAmounts.invoiceTotal = numeral(formattedAmounts.invoiceTotal).format('$0,0.00')
@@ -250,5 +249,4 @@ module.exports = function (app, passport) {
     app.post('/login',
         passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login', failureFlash: false}) // todo enable flash
     );
-
 };

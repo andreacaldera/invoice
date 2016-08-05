@@ -11,7 +11,7 @@ var _ = require('underscore');
 require('mongoose').connect('mongodb://localhost/invoice');
 var userService = require('../app/service/user-service');
 
-Browser.localhost('localhost', 8080);
+Browser.localhost('localhost', 3031);
 const browser = new Browser();
 
 describe('A user', function () {

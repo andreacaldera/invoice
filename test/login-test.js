@@ -2,7 +2,7 @@ const Browser = require('zombie');
 var assert = require('assert');
 var testSetup = require('./setup');
 
-Browser.localhost('localhost', 8080);
+Browser.localhost('localhost', 3031);
 const browser = new Browser();
 
 describe('A non-authenticated user', function () {

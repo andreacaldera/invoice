@@ -7,5 +7,6 @@ template/*.private.html
 *.log
 npm-debug.log*
 invoice.pid
-
+mongo-data/
 output/
+logs/

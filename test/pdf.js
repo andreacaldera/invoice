@@ -24,7 +24,7 @@ function loadPdf(browser, callback) {
     browser.assert.success()
     var j = request.jar()
     var sessionCookie = request.cookie('connect.sid=' + browser.getCookie('connect.sid'))
-    j.setCookie(sessionCookie, 'http://localhost:8080')
+    j.setCookie(sessionCookie, 'http://localhost:3031')
     var responseStream = request.defaults({jar: j})
         .get(browser.url.replace('/preview/', '/pdf/'))
         .on('response', function (response) {

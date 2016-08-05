@@ -1,19 +1,20 @@
 var express = require('express');
 var app = express();
-var port = process.env.PORT || 8080;
+const serverConfig = require('./app/config/server')
 var log = require('./app/log');
 var session = require('express-session');
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 var pid = require('./app/pid');
+const mongoConfig = require('./app/config/mongo');
 
 pid.start();
 
 app.set('view engine', 'ejs');
 
 var connectWithRetry = function () {
-    return mongoose.connect('mongodb://localhost/invoice', function (error) {
+    return mongoose.connect(mongoConfig.url, function (error) {
         if (error) {
             log.warn('Failed to connect to mongoDB - retrying in 5 seconds', error);
             setTimeout(connectWithRetry, 5000);
@@ -38,8 +39,8 @@ app.use(cookieParser());
 require('./app/passport.js')(passport);
 require('./app/routes.js')(app, passport);
 
-app.listen(port);
-log.info('Listening on port ' + port);
+app.listen(serverConfig.port);
+log.info(`Listening on port ${serverConfig.port}`);
 
 function shutdown() {
     log.info('Shutting down server');

@@ -1,17 +1,19 @@
-var wkhtmltopdf = require('wkhtmltopdf')
-var request = require('request')
+const wkhtmltopdf = require('wkhtmltopdf')
+const request = require('request')
+const log = require('./log')
+const serverConfig = require('./config/server')
 
 module.exports = {
-
     create: function (req, res) {
-        // TODO replace localhost:8080 with incoming hostname and port?
         var j = request.jar()
         var sessionCookie = request.cookie('connect.sid=' + req.cookies['connect.sid'])
-        j.setCookie(sessionCookie, 'http://localhost:8080')
+        const baseUrl = `${req.protocol}://${req.hostname}:${serverConfig.port}`
+        j.setCookie(sessionCookie, baseUrl)
+        const url = `${baseUrl}/preview/${req.params.invoiceId}?download`
+        log.debug(`Generating PDF from URL ${url}`)
         request.defaults({jar: j})
-            .get('http://localhost:8080/preview/' + req.params.invoiceId + '?download', function (error, response, body) {
+            .get(url, function (error, response, body) {
                 wkhtmltopdf(body).pipe(res)
             })
     }
-
 }
