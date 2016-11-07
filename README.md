@@ -1,3 +1,4 @@
+
 # Invoice
 
 Create invoices in PDF format based on an HTML template.
@@ -17,7 +18,7 @@ Create invoices in PDF format based on an HTML template.
 
 ### Start development
 
-This command starts MongoDB and bootstraps the Node application using Nodemon. 
+This command starts MongoDB and bootstraps the Node application using Nodemon.
 
 `gulp dev`
 
@@ -29,4 +30,4 @@ Make sure the application is configured to talk to a MongoDB instance.
 
 #Issues
 
-* Invalid characters before currency symbols when generating PDFs 
+* Invalid characters before currency symbols when generating PDFs

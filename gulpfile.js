@@ -7,7 +7,8 @@ var del = require('del')
 var fs = require('fs')
 
 var logging = false
-var mongoData = '/tmp/invoice-data'
+var mongoDataDev = '/tmp/invoice-data'
+var mongoData = './mongo-data'
 
 function runCommand(command) {
     return function (cb) {
@@ -47,11 +48,10 @@ gulp.task("stop-app", ['mocha-test'], stopApp())
 function stopMongo() {
     return runCommand('mongo admin --eval "db.shutdownServer();"')
 }
-gulp.task('start-mongo-dev', runCommand('rm -fr ' + mongoData + ' && mkdir ' + mongoData + ' && mongod --dbpath ' + mongoData))
+gulp.task('start-mongo-dev', runCommand('rm -fr ' + mongoDataDev + ' && mkdir ' + mongoDataDev + ' && mongod --dbpath ' + mongoDataDev))
 
-gulp.task('start-mongo', runCommand('rm -fr ' + mongoData + ' && mkdir ' + mongoData + ' && mongod --fork --dbpath ' + mongoData + ' --logpath ' + mongoData + '/mongo.log'))
+gulp.task('start-mongo', runCommand('mongod --fork --dbpath ' + mongoData + ' --logpath ' + mongoData + '/mongo.log'))
 gulp.task('stop-mongo', ['stop-app'], stopMongo())
-
 
 gulp.task('setup-data', runCommand('node setup.private.js'))
 
