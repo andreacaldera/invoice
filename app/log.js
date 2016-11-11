@@ -4,7 +4,7 @@ var formatOut = bformat({ outputMode: 'short' });
 
 var log = bunyan.createLogger(
     {name: "invoice",
-        level: process.env.LOG || 'warn',
+        level: process.env.LOG || 'info',
         stream: formatOut
     });
 

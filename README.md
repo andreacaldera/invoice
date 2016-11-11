@@ -28,6 +28,18 @@ Make sure the application is configured to talk to a MongoDB instance.
 
 `npm start`
 
+## Docker
+
+Build the invoice image:
+`docker build . -t invoice-local`
+
+Run the invoice image:
+`docker run -p 3030:3030 invoice-local`
+This will start the application using supervisor.
+
+Inspect / enter a running container:
+`docker exec -it CONTAINER_ID bash`
+
 #Issues
 
 * Invalid characters before currency symbols when generating PDFs
