@@ -1,9 +1,9 @@
-var User = require('../model/user');
+const User = require('../model/user');
 
 function add(email, password, callback) {
-    User.add({email: email, password: password}, callback);
+  User.add({ email, password }, callback);
 }
 
 exports = module.exports = {
-    add: add
+  add,
 };

@@ -1,41 +1,30 @@
 const Browser = require('zombie');
-var assert = require('assert');
-var async = require('async');
-var setup = require('./setup');
-var step = require('./step');
+const assert = require('assert');
+const async = require('async');
+const setup = require('./setup');
+const step = require('./step');
 
-Browser.localhost('localhost', 8080);
+Browser.localhost('localhost', 3031);
 const browser = new Browser();
 
-describe('A user with no login access', function () {
+describe('A user with no login access', () => {
+  before('setup', setup.applicationStartUp);
 
-    before('setup', setup.applicationStartUp);
-
-    it('should be able to register and login', function (done) {
-        var email = 'new-user@email.com';
-        var password = 'Password123';
-        async.series([
-                function (callback) {
-                    step.homePage(browser, callback);
-                },
-                function (callback) {
-                    step.homePage(browser, callback);
-                },
-                function (callback) {
-                    step.registerPage(browser, callback);
-                },
-                function (callback) {
-                    step.register(browser, email, password, callback)
-                },
-                function (callback) {
-                    step.login(browser, email, password, callback);
-                }
-            ],
-            function (error) {
-                if (error) assert.equal(false, error);
-                done()
-            }
+  it('should be able to register and login', (done) => {
+    const email = 'new-user@email.com';
+    const password = 'Password123';
+    async.series(
+      [
+        (callback) => step.homePage(browser, callback),
+        (callback) => step.homePage(browser, callback),
+        (callback) => step.registerPage(browser, callback),
+        (callback) => step.register(browser, email, password, callback),
+        (callback) => step.login(browser, email, password, callback),
+      ],
+      (error) => {
+        if (error) assert.equal(false, error);
+        done();
+      }
         );
-    });
-
+  });
 });

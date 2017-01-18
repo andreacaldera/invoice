@@ -1,37 +1,39 @@
-var express = require('express');
-var app = express();
-const serverConfig = require('./app/config/server')
-var log = require('./app/log');
-var session = require('express-session');
-var passport = require('passport');
-var cookieParser = require('cookie-parser');
-var mongoose = require('mongoose');
-var pid = require('./app/pid');
+const serverConfig = require('./app/config/server');
+const log = require('./app/log');
+const session = require('express-session');
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
+const pid = require('./app/pid');
 const mongoConfig = require('./app/config/mongo');
+
+const express = require('express');
+
+const app = express();
 
 pid.start();
 
 app.set('view engine', 'ejs');
 
-var connectWithRetry = function () {
-    return mongoose.connect(mongoConfig.url, function (error) {
-        if (error) {
-            log.warn('Failed to connect to mongoDB - retrying in 5 seconds', error);
-            setTimeout(connectWithRetry, 5000);
-        }
-    });
-};
+const connectWithRetry = () =>
+  mongoose.connect(mongoConfig.url, (error) => {
+    if (error) {
+      log.warn('Failed to connect to mongoDB - retrying in 5 seconds', error);
+      setTimeout(connectWithRetry, 5000);
+    }
+  });
 connectWithRetry();
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(`${__dirname}/public`));
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true,
 }));
 
-app.use(session({secret: 'session secret', resave: true, saveUninitialized: false}));
+app.use(session({ secret: 'session secret', resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
@@ -43,9 +45,9 @@ app.listen(serverConfig.port);
 log.info(`Listening on port ${serverConfig.port}`);
 
 function shutdown() {
-    log.info('Shutting down server');
-    pid.stop();
-    process.exit();
+  log.info('Shutting down server');
+  pid.stop();
+  process.exit();
 }
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
