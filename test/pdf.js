@@ -23,7 +23,7 @@ function loadPdf(browser, callback) {
   browser.assert.success();
   const j = request.jar();
   const sessionCookie = request.cookie(`connect.sid=${browser.getCookie('connect.sid')}`);
-  j.setCookie(sessionCookie, 'http://localhost:3031');
+  j.setCookie(sessionCookie, 'http://localhost:3030');
   const responseStream = request.defaults({ jar: j })
         .get(browser.url.replace('/preview/', '/pdf/'))
         .on('response', (response) => {

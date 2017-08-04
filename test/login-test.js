@@ -1,18 +1,19 @@
-const Browser = require('zombie');
-const assert = require('assert');
-const testSetup = require('./setup');
+require('../server');
 
-Browser.localhost('localhost', 3031);
+const Browser = require('zombie');
+
+Browser.localhost('invoice', process.env.PORT);
+
 const browser = new Browser();
 
 describe('A non-authenticated user', () => {
-  before('setup', testSetup.applicationStartUp);
-
-  it('should be redirected to the login page', (done) => {
-    browser.visit('/', () => {
-      assert.ok(browser.success);
+  it('gets redirected to the login page in unauthenticated', (done) =>
+    browser.visit('/123456', () => {
+      console.log(browser.html());
+      browser.assert.success();
+      browser.assert.status(200);
       browser.assert.url({ pathname: '/login' });
       done();
-    });
-  });
+    })
+  );
 });

@@ -7,7 +7,7 @@ const step = require('./step');
 Browser.localhost('localhost', 3031);
 const browser = new Browser();
 
-describe('A user with no login access', () => {
+describe.skip('A user with no login access', () => { // TODO use nightmare.js
   before('setup', setup.applicationStartUp);
 
   it('should be able to register and login', (done) => {

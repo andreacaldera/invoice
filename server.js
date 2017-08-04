@@ -41,7 +41,7 @@ app.use(cookieParser());
 require('./app/passport.js')(passport);
 require('./app/routes.js')(app, passport);
 
-app.listen(serverConfig.port);
+app.listen(process.env.PORT || serverConfig.port);
 log.info(`Listening on port ${serverConfig.port}`);
 
 function shutdown() {

@@ -5,7 +5,6 @@ const setup = require('./setup');
 const step = require('./step');
 const pdf = require('./pdf');
 
-require('mongoose').connect('mongodb://localhost/invoice');
 const userService = require('../app/service/user-service');
 
 const InvoiceConfig = require('../app/model/invoice-config');
@@ -13,7 +12,7 @@ const InvoiceConfig = require('../app/model/invoice-config');
 Browser.localhost('localhost', 3031);
 const browser = new Browser();
 
-describe('A user', () => {
+describe.skip('A user', () => { // TODO use nightmare.js
   const email = 'some@email.com';
   const password = 'password';
   const companyName = 'Some Company Ltd';
