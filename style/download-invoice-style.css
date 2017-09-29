@@ -1,0 +1,74 @@
+
+@page {
+  size: auto;
+  margin: 1mm 1mm 1mm 1mm;
+}
+
+.invoice-container {
+  font-family: 'Helvetica', 'SansSerif';
+  width: 100%;
+  padding-top: 50px;
+  font-size: 80%;
+}
+
+.pt-2 {
+  padding-top: 10px;
+}
+
+.pb-3 {
+  padding-bottom: 15px;
+}
+
+.border-bottom {
+  border-bottom-width: 1px;
+  border-color: black;
+  border-bottom-style: solid;
+}
+
+.pdf-label {
+  font-style: italic;
+  color: grey;
+}
+
+.company-title {
+  vertical-align: top;
+  font-size: 30px;
+  font-family: 'Helvetica Neue', Helvetica,Arial, 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+
+.invoice-title {
+  font-size: 30px;
+  font-family: 'Helvetica Neue', Helvetica,Arial, 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+
+.invoice-container__table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.total-label {
+  text-align: right !important; /* TODO replace important */
+  padding-right: 30px !important; /* TODO replace important */
+}
+
+.invoice-container__table td[colspan="1"], td:not([colspan]) {
+    width: 16%;
+}
+
+.invoice-container__table td[colspan="2"] {
+    width: 33%;
+}
+
+.invoice-container__table td[colspan="3"] {
+    width: 50%;
+}
+
+.invoice-container__table td[colspan="4"] {
+    width: 67%;
+}
+
+.invoice-container__table td[colspan="6"] {
+    width: 100%;
+}

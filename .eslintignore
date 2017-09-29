@@ -1,5 +1,4 @@
-./*.js
-coverage/
 node_modules/
-public/lib/**
+dist/
 .git/
+yarn.lock

@@ -10,5 +10,6 @@ invoice.pid
 mongo-data/
 output/
 logs/
+private-data/
 
 **/.DS_Store
