@@ -1,6 +1,6 @@
 .idea/
 node_modules/
-output/
+dist/
 app/config/secret/*
 template/*.private.html
 *.private.js

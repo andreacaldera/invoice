@@ -1,5 +1,3 @@
-import { v1 } from 'uuid';
-
 const schema = {
   invoiceId: String,
   companyName: String,
@@ -9,22 +7,16 @@ const schema = {
     dailyRate: Number,
   }],
   invoiceNumber: String,
-  client: {
-    name: String,
-    addressLine1: String,
-    addressLine2: String,
-    addressLine3: String,
-  },
 };
 
 export default (mongoose) => {
-  const Model = mongoose.model('invoice', schema);
+  const Model = mongoose.model('client', schema);
 
-  // TODO index on invoiceId
-  function save(invoiceData) {
-    const invoice = new Model();
-    Object.assign(invoice, invoiceData, { invoiceId: v1() });
-    return invoice.save();
+  // TODO index on clientId
+  function save() {
+    const client = new Model();
+
+    return client.save();
   }
 
   function findOne(query) {

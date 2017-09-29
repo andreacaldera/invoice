@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import invoiceModule from '../modules/invoice';
 
-const InvoicePreview = ({ invoice, company, client, invoiceStyle }) => {
+const InvoicePreview = ({ invoice, company, invoiceStyle }) => {
   const today = moment().format('DD/MMM/YYYY');
   const formatAmount = (amount) => accounting.formatMoney(amount, '£');
 
@@ -96,19 +96,19 @@ const InvoicePreview = ({ invoice, company, client, invoiceStyle }) => {
             <td colSpan="3" style={{ textAlign: 'right' }}><span className="pdf-label">Invoice number: </span><span>{invoice.invoiceNumber}</span></td>
           </tr>
           <tr>
-            <td colSpan="3"><strong>{client.name}</strong></td>
+            <td colSpan="3"><strong>{invoice.client.name}</strong></td>
             <td colSpan="3" style={{ textAlign: 'right' }}><span className="pdf-label">Date: </span><span>{today}</span></td>
           </tr>
           <tr>
-            <td colSpan="3">{client.addressLine1}</td>
+            <td colSpan="3">{invoice.client.addressLine1}</td>
             <td colSpan="3" style={{ textAlign: 'right' }}><span className="pdf-label">Consultant: </span><span>Andrea Caldera</span></td>
           </tr>
           <tr>
-            <td colSpan="3">{client.addressLine2}</td>
+            <td colSpan="3">{invoice.client.addressLine2}</td>
             <td rowSpan="2" colSpan="3" style={{ textAlign: 'right' }}><strong><span className="pdf-label">Amount due: </span><span>{formatAmount(billableTotal)}</span></strong></td>
           </tr>
           <tr>
-            <td colSpan="3">{client.addressLine3}</td>
+            <td colSpan="3">{invoice.client.addressLine3}</td>
           </tr>
 
           {rowSeparatorTop}
@@ -162,13 +162,11 @@ const InvoicePreview = ({ invoice, company, client, invoiceStyle }) => {
 InvoicePreview.propTypes = {
   invoice: PropTypes.shape().isRequired, // TODO
   company: PropTypes.shape().isRequired, // TODO
-  client: PropTypes.shape().isRequired, // TODO
   invoiceStyle: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   company: invoiceModule.getCompany(state),
-  client: invoiceModule.getClient(state),
   invoice: invoiceModule.getActiveInvoice(state),
   invoiceStyle: invoiceModule.getInvoiceStyle(state),
 });

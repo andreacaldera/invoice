@@ -30,7 +30,7 @@ export default class AddInvoiceForm extends Component {
 
   updateClient(e, field) {
     e.preventDefault();
-    this.setState({ cient: Object.assign({}, this.state.client, { [field]: e.target.value }) });
+    this.setState({ client: Object.assign({}, this.state.client, { [field]: e.target.value }) });
   }
 
   updateBilling(e, field) {
@@ -109,27 +109,27 @@ export default class AddInvoiceForm extends Component {
 
           <h3>Client</h3>
           <div className="form-group row">
-            <label htmlFor="companyName" className="col-sm-2 col-form-label">Name</label>
+            <label htmlFor="clientName" className="col-sm-2 col-form-label">Name</label>
             <div className="col-sm-10">
-              <input type="text" value={this.state.client.name} onChange={(e) => this.updateClient(e, 'name')} className="form-control" id="companyName" placeholder="Name" />
+              <input type="text" value={this.state.client.name} onChange={(e) => this.updateClient(e, 'name')} className="form-control" id="clientName" placeholder="Name" />
             </div>
           </div>
           <div className="form-group row">
-            <label htmlFor="companyAddressLine1" className="col-sm-2 col-form-label">Address line 1</label>
+            <label htmlFor="clientAddressLine1" className="col-sm-2 col-form-label">Address line 1</label>
             <div className="col-sm-10">
-              <input type="text" value={this.state.client.addressLine1} onChange={(e) => this.updateClient(e, 'addressLine1')} className="form-control" id="companyAddressLine1" placeholder="Line 1" />
+              <input type="text" value={this.state.client.addressLine1} onChange={(e) => this.updateClient(e, 'addressLine1')} className="form-control" id="clientAddressLine1" placeholder="Line 1" />
             </div>
           </div>
           <div className="form-group row">
-            <label htmlFor="companyAddressLine2" className="col-sm-2 col-form-label">Address line 2</label>
+            <label htmlFor="clientAddressLine2" className="col-sm-2 col-form-label">Address line 2</label>
             <div className="col-sm-10">
-              <input type="text" value={this.state.client.addressLine2} onChange={(e) => this.updateClient(e, 'addressLine2')} className="form-control" id="companyAddressLine2" placeholder="Address line 2" />
+              <input type="text" value={this.state.client.addressLine2} onChange={(e) => this.updateClient(e, 'addressLine2')} className="form-control" id="clientAddressLine2" placeholder="Address line 2" />
             </div>
           </div>
           <div className="form-group row">
-            <label htmlFor="companyAddressLine3" className="col-sm-2 col-form-label">Address line 2</label>
+            <label htmlFor="clientAddressLine3" className="col-sm-2 col-form-label">Address line 2</label>
             <div className="col-sm-10">
-              <input type="text" value={this.state.client.addressLine3} onChange={(e) => this.updateClient(e, 'addressLine3')} className="form-control" id="companyAddressLine3" placeholder="Address line 3" />
+              <input type="text" value={this.state.client.addressLine3} onChange={(e) => this.updateClient(e, 'addressLine3')} className="form-control" id="clientAddressLine3" placeholder="Address line 3" />
             </div>
           </div>
 
