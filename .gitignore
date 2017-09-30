@@ -1,8 +1,6 @@
 .idea/
 node_modules/
 dist/
-app/config/secret/*
-template/*.private.html
 *.private.js
 *.log
 npm-debug.log*
@@ -10,6 +8,6 @@ invoice.pid
 mongo-data/
 output/
 logs/
-private-data/
+private/
 
 **/.DS_Store

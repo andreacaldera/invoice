@@ -4,6 +4,7 @@
   "description": "invoice",
   "scripts": {
     "start": "node src/erver/index.js",
+    "setup-private-data": "NODE_ENV=local node private/index.js",
     "dev": "NODE_ENV=local nodemon src/server/index.js",
     "lint": "eslint .",
     "test": "NODE_ENV=test mocha --compilers js:babel-core/register test/**",

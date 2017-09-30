@@ -13,14 +13,14 @@ import configureStore from '../../common/store/configure-store';
 import routes from '../../common/routes';
 import { NAMESPACE } from '../../common/modules/constants';
 
-import companyData from '../../../private-data/company-data.json';
-import invoiceData from '../../../private-data/invoice-data.json';
+import companyData from '../../../private/company-data.json';
+import invoiceData from '../../../private/invoice-data.json';
 
 const invoiceStyle = fs.readFileSync('./style/download-invoice-style.css', 'utf8');
 
 const uiUrlPattern = new UrlPattern('/:page/:activeInvoiceId*');
 
-export default (port, invoiceStore) => {
+export default ({ port, invoiceStore, clientStore }) => {
   const router = express.Router();
 
   function renderFullPage(content, store, downloadInvoice) {
@@ -65,13 +65,16 @@ export default (port, invoiceStore) => {
     const activeInvoiceId = (uiUrlPattern.match(req.url) || {}).activeInvoiceId;
     const downloadInvoice = qs.parse(req.query)['download-invoice'] !== undefined;
 
-    return invoiceStore.find({})
-      .then((invoices) => {
+    return Promise.all([invoiceStore.find({}), clientStore.find({})])
+      .then(([invoices, clients]) => {
         const preloadedState = {
           [NAMESPACE]: {
             meta: {
               featureToggles: activeFeatureToggles,
               downloadInvoice,
+            },
+            client: {
+              all: clients,
             },
             invoice: {
               activeInvoiceId,

@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 
 import AddInvoiceForm from './AddInvoiceForm';
 
-import invoice from '../modules/invoice';
+import invoiceModule from '../modules/invoice';
+import clientModule from '../modules/client';
+
 import { ADD_INVOICE, DISPLAY_INVOICE } from '../modules/invoice/constants';
 
 const AddInvoice = ({ company, client, displayInvoice, addInvoice }) =>
@@ -19,8 +21,8 @@ const AddInvoice = ({ company, client, displayInvoice, addInvoice }) =>
   </div>);
 
 const mapStateToProps = (state) => ({
-  company: invoice.getCompany(state),
-  client: invoice.getClient(state),
+  company: invoiceModule.getCompany(state),
+  client: clientModule.getSelected(state),
 });
 
 AddInvoice.propTypes = {

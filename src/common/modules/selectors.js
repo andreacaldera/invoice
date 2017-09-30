@@ -13,8 +13,14 @@ const getInvoiceSelector = createSelector(
   ({ invoice }) => invoice
 );
 
+const getClientSelector = createSelector(
+  getRootSelector,
+  ({ client }) => client
+);
+
 module.exports = {
   getRootSelector,
   getMetaSelector,
   getInvoiceSelector,
+  getClientSelector,
 };

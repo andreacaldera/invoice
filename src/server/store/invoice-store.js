@@ -2,7 +2,7 @@ import { v1 } from 'uuid';
 import config from '../config';
 
 const schema = {
-  invoiceId: String,
+  invoiceId: { type: String, index: { unique: true } },
   companyName: String,
   billings: [{
     description: String,
@@ -30,8 +30,6 @@ const schema = {
   },
 };
 
-// TODO index on invoiceId
-// TODO remove mongo specific fields, e.g. _id, __v
 export default ({ mongoose }) => {
   const Model = mongoose.model(config.mongodb.invoiceCollection, schema);
 
