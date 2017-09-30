@@ -1,4 +1,5 @@
 import { v1 } from 'uuid';
+import config from '../config';
 
 const schema = {
   invoiceId: String,
@@ -15,29 +16,51 @@ const schema = {
     addressLine2: String,
     addressLine3: String,
   },
+  company: {
+    name: String,
+    vatNumber: String,
+    addressLine1: String,
+    addressLine2: String,
+    addressLine3: String,
+    bankAccount: {
+      number: String,
+      sortCode: String,
+    },
+    registrationNumber: String,
+  },
 };
 
-export default (mongoose) => {
-  const Model = mongoose.model('invoice', schema);
+// TODO index on invoiceId
+// TODO remove mongo specific fields, e.g. _id, __v
+export default ({ mongoose }) => {
+  const Model = mongoose.model(config.mongodb.invoiceCollection, schema);
 
-  // TODO index on invoiceId
   function save(invoiceData) {
     const invoice = new Model();
     Object.assign(invoice, invoiceData, { invoiceId: v1() });
-    return invoice.save();
+    return invoice.save()
+      .then((savedInvoice) => savedInvoice.toJSON());
   }
 
   function findOne(query) {
-    return Model.findOne(query);
+    return Model.findOne(query)
+      .then((invoice) => invoice.toJSON());
   }
 
   function find(query) {
-    return Model.find(query);
+    return Model.find(query)
+      .then((invoices) => invoices.map((invoice) => invoice.toJSON()));
   }
 
   return Object.freeze({
     save,
     findOne,
     find,
+    deleteAll: () => {
+      if (config.invoiceEnv !== 'test') {
+        throw new Error(`Delete all is only allowed for testing and not for env ${config.env}`);
+      }
+      return Model.remove({});
+    },
   });
 };

@@ -8,9 +8,9 @@ import { ADD_INVOICE, INVOICE_ADDED } from './constants';
 const callAddInvoiceApi = (invoice) => superagent.post('/api/invoices/add-invoice').send(invoice).then(({ body }) => body);
 
 function* addInvoice(payload) {
-  const { billing, invoiceNumber, client } = payload.invoiceData;
+  const { billing, invoiceNumber, client, company } = payload.invoiceData;
   try {
-    const newInvoice = yield call(callAddInvoiceApi, { client, billings: [billing], invoiceNumber });
+    const newInvoice = yield call(callAddInvoiceApi, { company, client, billings: [billing], invoiceNumber });
     yield put({ type: INVOICE_ADDED, invoice: newInvoice });
     browserHistory.push('/invoices');
   } catch (err) {

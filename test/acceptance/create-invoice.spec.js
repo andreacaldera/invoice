@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import _ from 'lodash';
 
 import server from '../../src/server/server';
+import config from '../../src/server/config';
 
 let invoiceStore;
 
@@ -12,6 +13,8 @@ before(() =>
       invoiceStore = stores.invoiceStore;
     })
 );
+
+after(() => invoiceStore.deleteAll());
 
 describe('Create invoice', () => {
   it('creates an invoice', () => {
@@ -27,20 +30,36 @@ describe('Create invoice', () => {
       addressLine2: 'E1 2AA',
       addressLine3: 'London',
     };
+    const company = {
+      name: 'Acal Software Ltd',
+      vatNumber: '123 vat number',
+      addressLine1: 'company address 1',
+      addressLine2: 'company address 2',
+      addressLine3: 'company address 3',
+      bankAccount: {
+        number: 'company bank account number',
+        sortCode: 'company bank account sort code',
+      },
+      registrationNumber: 'company registration number',
+    };
     const invoiceNumber = 'SOME-CLIENT-XXX';
 
-    return superagent.post('http://localhost:3001/api/invoices/add-invoice')
-      .send({ companyName, billings: [billing], invoiceNumber, client })
+    return superagent.post(`http://localhost:${config.port}/api/invoices/add-invoice`)
+      .send({
+        companyName,
+        billings: [billing],
+        invoiceNumber,
+        client,
+        company,
+      })
       .then((res) => {
         expect(res.statusCode).to.equal(200);
-        // expect(res.body._id).to.be.not.ok;
-        // expect(res.body.__v).to.be.not.ok;
         expect(res.body.invoiceId).to.be.ok;
         expect(res.body.companyName).to.equal(companyName);
         expect(res.body.invoiceNumber).to.equal(invoiceNumber);
-        // TODO remove billing[_id] being returned by api
         expect(_.pick(res.body.billings[0], ['description', 'numberOfDays', 'dailyRate']));
         expect(res.body.client).to.deep.equal(client);
+        expect(res.body.company).to.deep.equal(company);
 
         return invoiceStore.findOne({ invoiceId: res.body.invoiceId });
       })
@@ -48,7 +67,8 @@ describe('Create invoice', () => {
         expect(savedInvoice.companyName).to.equal(companyName);
         expect(savedInvoice.invoiceNumber).to.equal(invoiceNumber);
         expect(_.pick(savedInvoice.billings[0], ['description', 'numberOfDays', 'dailyRate']));
-        expect(_.pick(savedInvoice.client, ['name', 'addressLine1', 'addressLine2', 'addressLine3'])).to.deep.equal(client);
+        expect(savedInvoice.client).to.deep.equal(client);
+        expect(savedInvoice.company).to.deep.equal(company);
       });
   });
 });

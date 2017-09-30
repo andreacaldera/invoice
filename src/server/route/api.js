@@ -7,13 +7,13 @@ export default (invoiceStore) => {
 
   router.post('/invoices/add-invoice', (req, res, next) =>
     invoiceStore.save(req.body)
-      .then((invoiceData) => res.json(invoiceData.toJSON()))
+      .then((invoice) => res.json(invoice))
       .catch(next)
   );
 
   router.get('/invoices/:invoiceId', (req, res, next) =>
     invoiceStore.get(req.params.invoiceId)
-      .then((invoiceData) => res.json(invoiceData.toJSON()))
+      .then((invoice) => res.json(invoice))
       .catch(next)
   );
 

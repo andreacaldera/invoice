@@ -4,10 +4,10 @@
   "description": "invoice",
   "scripts": {
     "start": "node src/erver/index.js",
-    "dev": "nodemon src/server/index.js",
+    "dev": "NODE_ENV=local nodemon src/server/index.js",
     "lint": "eslint .",
-    "test": "mocha --compilers js:babel-core/register test/**",
-    "test-watch": "mocha --compilers js:babel-core/register test/** -w",
+    "test": "NODE_ENV=test mocha --compilers js:babel-core/register test/**",
+    "test-watch": "NODE_ENV=test mocha --compilers js:babel-core/register test/** -w",
     "build": "NODE_ENV=production webpack -p",
     "watch": "NODE_ENV=production webpack -p --watch",
     "npm-check": "npm-check -u",

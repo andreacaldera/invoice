@@ -9,7 +9,7 @@ const schema = {
   invoiceNumber: String,
 };
 
-export default (mongoose) => {
+export default ({ mongoose }) => {
   const Model = mongoose.model('client', schema);
 
   // TODO index on clientId

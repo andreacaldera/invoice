@@ -6,18 +6,20 @@ import bodyParser from 'body-parser';
 import storesFactory from './store';
 import api from './route/api';
 import ui from './route/ui';
+import config from './config';
 
 const app = Express();
-const port = 3001;
 
 app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use('/dist', Express.static(path.join(__dirname, '../../dist')));
 
+const { port } = config;
+
 export default () =>
   Promise.resolve()
-    .then(() => storesFactory().init())
+    .then(() => storesFactory())
     .then(({ invoiceStore }) => {
       app.use('/api', api(invoiceStore));
       app.use(ui(port, invoiceStore));

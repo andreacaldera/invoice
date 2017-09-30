@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import invoiceModule from '../modules/invoice';
 
-const InvoicePreview = ({ invoice, company, invoiceStyle }) => {
+const InvoicePreview = ({ invoice, invoiceStyle }) => {
   const today = moment().format('DD/MMM/YYYY');
   const formatAmount = (amount) => accounting.formatMoney(amount, '£');
 
@@ -51,39 +51,39 @@ const InvoicePreview = ({ invoice, company, invoiceStyle }) => {
       <table className="invoice-container__table">
         <tbody>
           <tr>
-            <td rowSpan="9" colSpan="3" className="company-title">{company.name}</td>
+            <td rowSpan="9" colSpan="3" className="company-title">{invoice.company.name}</td>
             <td colSpan="3" className="pb-3 invoice-title" style={{ textAlign: 'right' }}>INVOICE</td>
           </tr>
 
 
           <tr>
-            <td colSpan="3" style={{ textAlign: 'right' }}><strong>{company.name}</strong></td>
+            <td colSpan="3" style={{ textAlign: 'right' }}><strong>{invoice.company.name}</strong></td>
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}>
-              <span className="pdf-label">Company registration number: </span>{company.registrationNumber}
+              <span className="pdf-label">Company registration number: </span>{invoice.company.registrationNumber}
             </td>
           </tr>
           <tr>
-            <td colSpan="3" style={{ textAlign: 'right' }}>{company.addressLine1}</td>
+            <td colSpan="3" style={{ textAlign: 'right' }}>{invoice.company.addressLine1}</td>
           </tr>
           <tr>
-            <td colSpan="3" style={{ textAlign: 'right' }}>{company.addressLine2}</td>
+            <td colSpan="3" style={{ textAlign: 'right' }}>{invoice.company.addressLine2}</td>
           </tr>
           <tr>
-            <td colSpan="3" style={{ textAlign: 'right' }}>{company.addressLine3}</td>
+            <td colSpan="3" style={{ textAlign: 'right' }}>{invoice.company.addressLine3}</td>
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}><strong>Bank account</strong></td>
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}>
-              <span className="pdf-label">Sort code: </span>{company.bankAccount.sortCode}
+              <span className="pdf-label">Sort code: </span>{invoice.company.bankAccount.sortCode}
             </td>
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}>
-              <span className="pdf-label">Number: </span>{company.bankAccount.number}
+              <span className="pdf-label">Number: </span>{invoice.company.bankAccount.number}
             </td>
           </tr>
 
@@ -141,7 +141,7 @@ const InvoicePreview = ({ invoice, company, invoiceStyle }) => {
           <tr>
             <td />
             <td />
-            <td colSpan="2" className="total-label  pdf-label">VAT ({company.vatNumber})</td>
+            <td colSpan="2" className="total-label  pdf-label">VAT ({invoice.company.vatNumber})</td>
             <td>{formatAmount(formatAmount(invoiceVat))}</td>
             <td />
           </tr>
@@ -161,12 +161,10 @@ const InvoicePreview = ({ invoice, company, invoiceStyle }) => {
 
 InvoicePreview.propTypes = {
   invoice: PropTypes.shape().isRequired, // TODO
-  company: PropTypes.shape().isRequired, // TODO
   invoiceStyle: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  company: invoiceModule.getCompany(state),
   invoice: invoiceModule.getActiveInvoice(state),
   invoiceStyle: invoiceModule.getInvoiceStyle(state),
 });
