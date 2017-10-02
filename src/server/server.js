@@ -38,6 +38,11 @@ export default () =>
       return {
         stores: {
           invoiceStore,
+          clientStore,
         },
       };
+    })
+    .catch((err) => {
+      console.error(err); // eslint-disable-line no-console
+      process.exit(1);
     });
