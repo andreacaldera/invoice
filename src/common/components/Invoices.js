@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import invoiceModule from '../modules/invoice';
 // import { ADD_INVOICE, DISPLAY_INVOICE } from '../modules/invoice/constants';
 
-const AddInvoice = ({ invoices }) =>
+const Invoices = ({ invoices }) =>
   (<div>
     <h1>Invoices</h1>
     <ul>
@@ -24,7 +24,7 @@ const mapStateToProps = (state) => ({
   invoices: invoiceModule.getAll(state),
 });
 
-AddInvoice.propTypes = {
+Invoices.propTypes = {
   invoices: PropTypes.arrayOf(PropTypes.shape).isRequired, // TODO
 };
 
@@ -37,4 +37,4 @@ AddInvoice.propTypes = {
 //   },
 // });
 
-export default connect(mapStateToProps, null)(AddInvoice);
+export default connect(mapStateToProps, null)(Invoices);
