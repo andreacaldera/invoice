@@ -2,18 +2,21 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import BrowserRouter from 'react-router-dom/BrowserRouter';
+import { renderRoutes } from 'react-router-config';
 
 import configureStore from '../common/store/configure-store';
+
 import routes from '../common/routes';
 
-const store = configureStore(browserHistory, window.__initialState__, true);
-const history = syncHistoryWithStore(browserHistory, store);
+const store = configureStore(window.__initialState__, true);
 
-render(
+const AppRouter = () => (
   <Provider store={store}>
-    <Router history={history} routes={routes} />
-  </Provider>,
-  document.getElementById('app')
+    <BrowserRouter>
+      {renderRoutes(routes)}
+    </BrowserRouter>
+  </Provider>
 );
+
+render(<AppRouter />, document.querySelector('#app'));

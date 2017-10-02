@@ -1,10 +1,11 @@
 import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
 import qs from 'qs';
-import { createMemoryHistory, match, RouterContext } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import StaticRouter from 'react-router-dom/StaticRouter';
+import { renderRoutes } from 'react-router-config';
+import { Provider } from 'react-redux';
+// import { syncHistoryWithStore } from 'react-router-redux';
 import fs from 'fs';
 import _ from 'lodash';
 import UrlPattern from 'url-pattern';
@@ -87,24 +88,21 @@ export default ({ port, invoiceStore, clientStore }) => {
             },
           },
         };
-        const memoryHistory = createMemoryHistory(req.url);
-        const store = configureStore(memoryHistory, preloadedState);
-        const history = syncHistoryWithStore(memoryHistory, store);
+        // const memoryHistory = createMemoryHistory(req.url);
+        const store = configureStore(preloadedState);
+        // // const history = syncHistoryWithStore(memoryHistory, store);
 
-        match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
-          if (error) {
-            res.status(500).send(error.message);
-          } else if (redirectLocation) {
-            res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-          } else if (renderProps) {
-            const content = renderToString(
-              <Provider store={store}>
-                <RouterContext {...renderProps} />
-              </Provider>
-            );
-            res.send(renderFullPage(content, store, downloadInvoice));
-          }
-        });
+        const context = { downloadInvoice }; // TODO what is this?
+
+        const content = renderToString(
+          <Provider store={store}>
+            <StaticRouter location={req.url} context={context}>
+              {renderRoutes(routes)}
+            </StaticRouter>
+          </Provider>
+        );
+        res.send(renderFullPage(content, store, downloadInvoice));
+        // res.render('index', { title: 'Express', data: store.getState(), content });
       });
   });
 
