@@ -76,7 +76,7 @@
     "eslint-plugin-mocha": "^4.11.0",
     "eslint-plugin-react": "^6.9.0",
     "extract-text-webpack-plugin": "^2.1.2",
-    "husky": "^0.14.1",
+    "husky": "^0.14.3",
     "jsx-loader": "^0.13.2",
     "node-libs-browser": "^2.0.0",
     "node-sass": "^4.5.2",
