@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 
 import { renderRoutes } from 'react-router-config';
 
-import TopBar from './TopBar';
+import TopBarComponent from './TopBar';
 import meta from '../modules/meta';
+
+const TopBar = React.createFactory(TopBarComponent);
 
 const App = ({ downloadInvoice, route }) => {
   const mainContent = (
@@ -21,7 +23,7 @@ const App = ({ downloadInvoice, route }) => {
 
   return (
     <div>
-      <TopBar downloadInvoice={downloadInvoice} />
+      {TopBar()}
       {mainContent}
     </div>
   );
