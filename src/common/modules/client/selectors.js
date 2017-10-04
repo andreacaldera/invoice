@@ -7,12 +7,12 @@ const getAll = createSelector(
   ({ all }) => all
 );
 
-const getSelected = createSelector(
+const getSelectedClient = createSelector(
   getAll,
   (all) => all[0], // TODO
 );
 
 module.exports = {
   getAll,
-  getSelected,
+  getSelectedClient,
 };

@@ -1,27 +1,20 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 
-import createLogger from 'redux-logger';
+
 import createSagaMiddleware from 'redux-saga';
 
 import reducer from '../modules';
 import sagas from '../modules/sagas';
 
-const configureStore = (initialState, useLogger) => {
+const configureStore = (initialState, clientMiddleares = []) => {
   const sagaMiddleware = createSagaMiddleware();
 
-  const middleware = useLogger ?
-    applyMiddleware(
-      sagaMiddleware,
-      createLogger
-    ) :
-    applyMiddleware(
-      sagaMiddleware,
-    );
+  const middlewares = clientMiddleares.concat(sagaMiddleware);
 
   const store = createStore(
     reducer,
     initialState,
-    compose(middleware)
+    compose(applyMiddleware(...middlewares))
   );
 
   sagaMiddleware.run(sagas);

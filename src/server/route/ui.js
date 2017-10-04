@@ -60,7 +60,7 @@ export default ({ port, invoiceStore, clientStore }) => {
     return params['feature-toggles'] !== undefined ? _.compact(params['feature-toggles']) : req.cookies.featureToggles || [];
   }
 
-  router.get('/*', (req, res) => {
+  router.get('/*', (req, res, next) => {
     const activeFeatureToggles = getActiveFeatureToggles(req);
     res.cookie('featureToggles', activeFeatureToggles);
     const activeInvoiceId = (uiUrlPattern.match(req.url) || {}).activeInvoiceId;
@@ -103,7 +103,8 @@ export default ({ port, invoiceStore, clientStore }) => {
         );
         res.send(renderFullPage(content, store, downloadInvoice));
         // res.render('index', { title: 'Express', data: store.getState(), content });
-      });
+      })
+      .catch(next);
   });
 
   return router;

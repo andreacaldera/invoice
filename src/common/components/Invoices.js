@@ -3,21 +3,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import invoiceModule from '../modules/invoice';
-// import { ADD_INVOICE, DISPLAY_INVOICE } from '../modules/invoice/constants';
 
 const Invoices = ({ invoices }) =>
   (<div>
     <h1>Invoices</h1>
-    <ul>
+    <div className="container">
       {invoices.map((invoiceData) => (
-        <li key={invoiceData.invoiceId}>
-          Invoice {invoiceData.invoiceNumber || invoiceData.invoiceId}
-          <a href={`/invoice-preview/${invoiceData.invoiceId}`}> View </a>
-          <a download={`${invoiceData.invoiceId}-invoice.pdf`} href={`/api/download-invoice/${invoiceData.invoiceId}`}>Download </a>
-          <a target={`_download-preview-${invoiceData.invoiceId}`} href={`/invoice-preview/${invoiceData.invoiceId}?download-invoice`}>Download preview</a>
-        </li>
-    ))}
-    </ul>
+        <div className="row text-right invoice-row" key={invoiceData.invoiceId}>
+          <div className="col invoices__invoice-id-text">Invoice {invoiceData.invoiceNumber || invoiceData.invoiceId}</div>
+          <div className="col col-9 text-left">
+            <a className="btn btn-primary" href={`/invoice-preview/${invoiceData.invoiceId}`}>View</a>
+            <a className="btn btn-primary ml-2" download={`${invoiceData.invoiceId}-invoice.pdf`} href={`/api/download-invoice/${invoiceData.invoiceId}`}>Download</a>
+            <a className="btn btn-primary ml-2" target={`_download-preview-${invoiceData.invoiceId}`} href={`/invoice-preview/${invoiceData.invoiceId}?download-invoice`}>Download preview</a>
+          </div>
+        </div>
+      ))}
+    </div>
   </div>);
 
 const mapStateToProps = (state) => ({

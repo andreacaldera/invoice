@@ -5,3 +5,24 @@ body {
 .invoice-container {
   padding: 3rem 1.5rem;
 }
+
+.invoice-row {
+   line-height: 50px;
+}
+
+.invoices__invoice-id-text {
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subpanel__title {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.client-panel {
+  background-color: #F0F0F0;
+}

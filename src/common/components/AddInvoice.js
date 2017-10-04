@@ -22,7 +22,7 @@ const AddInvoice = ({ company, client, displayInvoice, addInvoice }) =>
 
 const mapStateToProps = (state) => ({
   company: invoiceModule.getCompany(state),
-  client: clientModule.getSelected(state),
+  client: clientModule.getSelectedClient(state),
 });
 
 AddInvoice.propTypes = {
