@@ -26,7 +26,6 @@ const all = (state = [], action) => {
 module.exports = combineReducers({
   all,
   company: (state = {}) => state,
-  client: (state = {}) => state,
   invoiceStyle: (state = {}) => state,
   activeInvoiceId: (state = {}) => state,
   invoiceNumber,

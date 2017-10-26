@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import autobind from 'react-autobind';
 import PropTypes from 'prop-types';
 
 import ClientForm from './ClientForm';
+import CompanyForm from './CompanyForm';
 
-export default class AddInvoiceForm extends Component {
+import clientModule from '../modules/client';
+import invoiceModule from '../modules/invoice';
+
+import { ADD_INVOICE } from '../modules/invoice/constants';
+
+class AddInvoiceForm extends Component {
   static propTypes = {
     company: PropTypes.shape().isRequired,
     client: PropTypes.shape().isRequired,
@@ -25,12 +32,11 @@ export default class AddInvoiceForm extends Component {
     billing: {},
   }
 
-  updateCompany(e, field) {
-    e.preventDefault();
-    this.setState({ company: Object.assign({}, this.state.company, { [field]: e.target.value }) });
+  updateCompany({ company }) {
+    this.setState({ company });
   }
 
-  updateClient({ client }) {
+  updateClient(client) {
     this.setState({ client });
   }
 
@@ -82,42 +88,38 @@ export default class AddInvoiceForm extends Component {
             </div>
           </div>
 
-          <h3>Company</h3>
-          <div className="form-group row">
-            <label htmlFor="companyName" className="col-sm-2 col-form-label">Name</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.company.name} onChange={(e) => this.updateCompany(e, 'name')} className="form-control" id="companyName" placeholder="Name" />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label htmlFor="companyAddressLine1" className="col-sm-2 col-form-label">Address line 1</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.company.addressLine1} onChange={(e) => this.updateCompany(e, 'addressLine1')} className="form-control" id="companyAddressLine1" placeholder="Line 1" />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label htmlFor="companyAddressLine2" className="col-sm-2 col-form-label">Address line 2</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.company.addressLine2} onChange={(e) => this.updateCompany(e, 'addressLine2')} className="form-control" id="companyAddressLine2" placeholder="Address line 2" />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label htmlFor="companyAddressLine3" className="col-sm-2 col-form-label">Address line 2</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.company.addressLine3} onChange={(e) => this.updateCompany(e, 'addressLine3')} className="form-control" id="companyAddressLine3" placeholder="Address line 3" />
-            </div>
-          </div>
+          <CompanyForm
+            company={this.props.company}
+            saveCompany={this.updateCompany}
+          />
 
           <ClientForm
-            client={this.props.client}
             saveClient={this.updateClient}
           />
 
           <div className="form-group row">
-            <input className="btn btn-primary" type="submit" value="Create invoice" onClick={this.addInvoice} />
+            <input className="btn btn-primary ml-3" type="submit" value="Create invoice" onClick={this.addInvoice} />
           </div>
         </form>
       </div>
     );
   }
 }
+
+AddInvoiceForm.propTypes = {
+  displayInvoice: PropTypes.func.isRequired,
+  addInvoice: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  company: invoiceModule.getCompany(state),
+  client: clientModule.getSelectedClient(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addInvoice(invoiceData) {
+    dispatch({ type: ADD_INVOICE, invoiceData });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddInvoiceForm);

@@ -15,7 +15,6 @@ import routes from '../../common/routes';
 import { NAMESPACE } from '../../common/modules/constants';
 
 import companyData from '../../../private/company-data.json';
-import invoiceData from '../../../private/invoice-data.json';
 
 const invoiceStyle = fs.readFileSync('./style/download-invoice-style.css', 'utf8');
 
@@ -27,13 +26,15 @@ export default ({ port, invoiceStore, clientStore }) => {
   function renderFullPage(content, store, downloadInvoice) {
     const externalJs = downloadInvoice ?
       '' :
-      `<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+      `
+      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
       `;
     const cssLibraries = downloadInvoice ?
       '' :
-      `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      `
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
       <link rel="stylesheet" type="text/css" href="http://localhost:3001/dist/invoice.css" />
       `;
 
@@ -75,16 +76,14 @@ export default ({ port, invoiceStore, clientStore }) => {
               downloadInvoice,
             },
             client: {
-              all: clients,
+              allClients: _.keyBy(clients, 'name'),
+              selectedClientName: 'Tek Systems',
             },
             invoice: {
               activeInvoiceId,
               all: invoices,
               company: companyData,
-              client: invoiceData.client,
               invoiceStyle,
-              invoiceItems: invoiceData.invoiceItems,
-              invoiceNumber: invoiceData.invoiceNumber,
             },
           },
         };

@@ -2,17 +2,23 @@ import { createSelector } from 'reselect';
 
 import { getClientSelector } from '../selectors';
 
-const getAll = createSelector(
+const getAllClients = createSelector(
   getClientSelector,
-  ({ all }) => all
+  ({ allClients }) => allClients
+);
+
+const getSelectedClientName = createSelector(
+  getClientSelector,
+  ({ selectedClientName }) => selectedClientName
 );
 
 const getSelectedClient = createSelector(
-  getAll,
-  (all) => all[0], // TODO
+  [getAllClients, getSelectedClientName],
+  (allClients, selectedClientName) => console.log(111, allClients, selectedClientName) || allClients[selectedClientName],
 );
 
 module.exports = {
-  getAll,
+  getAllClients,
+  getSelectedClientName,
   getSelectedClient,
 };
