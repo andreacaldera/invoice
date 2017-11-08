@@ -13,7 +13,7 @@ const AddInvoice = ({ displayInvoice }) =>
   </div>);
 
 AddInvoice.propTypes = {
-  displayInvoice: PropTypes.func.isRequired,
+  displayInvoice: PropTypes.func,
 };
 
 export default connect(null, null)(AddInvoice);

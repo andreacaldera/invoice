@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import autobind from 'react-autobind';
 import PropTypes from 'prop-types';
 
-import clientModule from '../modules/client';
-
 export default class ClientForm extends Component {
   static propTypes = {
-    selectedClient: PropTypes.shape().isRequired,
-    clients: PropTypes.arrayOf(PropTypes.shape().isRequired).isRequired,
-    saveClient: PropTypes.func.isRequired,
+    clients: PropTypes.shape().isRequired,
+    selectedClient: PropTypes.shape(),
+    selectClient: PropTypes.func.isRequired,
   }
 
   constructor(...args) {
@@ -31,19 +29,17 @@ export default class ClientForm extends Component {
     this.setState({ panelVisible });
   }
 
-  saveClient(e) {
+  selectClient(e) {
     e.preventDefault();
-    const { selectedClient } = this.state;
-    this.props.saveClient(selectedClient);
-    this.setState({ panelVisible: false });
+    const selectedClient = this.props.clients[e.target.value];
+    this.setState({ selectedClient });
+    this.props.selectClient(selectedClient);
   }
 
   render() {
     const clientsDropdown = (
-      <select name="select">
-        {this.props.clients.map((client) => (
-          <option value={client.name}>{client.name}</option>
-        ))}
+      <select onChange={this.selectClient}>
+        {Object.keys(this.props.clients).map((clientName) => (<option selected={clientName === this.state.selectedClient.name} key={clientName} value={clientName}>{clientName}</option>))}
       </select>
     );
     return (
@@ -80,14 +76,8 @@ export default class ClientForm extends Component {
               <input type="text" value={this.state.selectedClient.addressLine3} onChange={(e) => this.updateClient(e, 'addressLine3')} className="form-control" id="clientAddressLine3" placeholder="Address line 3" />
             </div>
           </div>
-          <input className="btn btn-primary" type="submit" value="Save" onClick={this.saveClient} />
         </div>
       </div>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  clients: clientModule.getSelectedClient(state),
-  selectedClientName: clientModule.getSelectedClientName(state),
-});

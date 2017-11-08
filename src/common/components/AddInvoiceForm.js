@@ -14,10 +14,10 @@ import { ADD_INVOICE } from '../modules/invoice/constants';
 class AddInvoiceForm extends Component {
   static propTypes = {
     company: PropTypes.shape().isRequired,
-    client: PropTypes.shape().isRequired,
+    clients: PropTypes.shape().isRequired,
+    selectedClient: PropTypes.shape(),
     dailyRate: PropTypes.number,
     numberOfDays: PropTypes.number,
-    displayInvoice: PropTypes.func.isRequired,
     addInvoice: PropTypes.func.isRequired,
   }
 
@@ -28,7 +28,7 @@ class AddInvoiceForm extends Component {
 
   state = {
     company: this.props.company,
-    client: this.props.client,
+    client: this.props.selectedClient,
     billing: {},
   }
 
@@ -36,7 +36,7 @@ class AddInvoiceForm extends Component {
     this.setState({ company });
   }
 
-  updateClient(client) {
+  selectClient(client) {
     this.setState({ client });
   }
 
@@ -52,7 +52,7 @@ class AddInvoiceForm extends Component {
 
   addInvoice(e) {
     e.preventDefault();
-    const { company, client, billing, invoiceNumber } = this.state;
+    const { company, billing, invoiceNumber, client } = this.state;
     this.props.addInvoice({ company, client, billing, invoiceNumber });
   }
 
@@ -94,7 +94,9 @@ class AddInvoiceForm extends Component {
           />
 
           <ClientForm
-            saveClient={this.updateClient}
+            clients={this.props.clients}
+            selectedClient={this.props.selectedClient}
+            selectClient={this.selectClient}
           />
 
           <div className="form-group row">
@@ -106,14 +108,10 @@ class AddInvoiceForm extends Component {
   }
 }
 
-AddInvoiceForm.propTypes = {
-  displayInvoice: PropTypes.func.isRequired,
-  addInvoice: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = (state) => ({
   company: invoiceModule.getCompany(state),
-  client: clientModule.getSelectedClient(state),
+  clients: clientModule.getAllClients(state),
+  selectedClient: clientModule.getSelectedClient(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

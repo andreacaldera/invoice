@@ -14,7 +14,7 @@ const getSelectedClientName = createSelector(
 
 const getSelectedClient = createSelector(
   [getAllClients, getSelectedClientName],
-  (allClients, selectedClientName) => console.log(111, allClients, selectedClientName) || allClients[selectedClientName],
+  (allClients, selectedClientName) => allClients[selectedClientName],
 );
 
 module.exports = {

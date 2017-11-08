@@ -77,7 +77,7 @@ export default ({ port, invoiceStore, clientStore }) => {
             },
             client: {
               allClients: _.keyBy(clients, 'name'),
-              selectedClientName: 'Tek Systems',
+              selectedClientName: 'Allegis Group',
             },
             invoice: {
               activeInvoiceId,

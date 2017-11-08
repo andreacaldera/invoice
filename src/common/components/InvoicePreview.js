@@ -25,7 +25,7 @@ const InvoicePreview = ({ invoice, invoiceStyle }) => {
       <tr className="block invoice-row" key={`invoice-row-${description}-${numberOfDays}-${dailyRate}`}>
         <td colSpan="2" className="description">{description}</td>
         <td className="days">{numberOfDays}</td>
-        <td className="rate">{dailyRate}</td>
+        <td className="rate">{formatAmount(dailyRate)}</td>
         <td className="amount">{formatAmount(amount)}</td>
         <td className="vat">{formatAmount(vat)}</td>
       </tr>
@@ -51,7 +51,7 @@ const InvoicePreview = ({ invoice, invoiceStyle }) => {
       <table className="invoice-container__table">
         <tbody>
           <tr>
-            <td rowSpan="9" colSpan="3" className="company-title">{invoice.company.name}</td>
+            <td rowSpan="10" colSpan="3" className="company-title">{invoice.company.name}</td>
             <td colSpan="3" className="pb-3 invoice-title" style={{ textAlign: 'right' }}>INVOICE</td>
           </tr>
 
@@ -74,7 +74,12 @@ const InvoicePreview = ({ invoice, invoiceStyle }) => {
             <td colSpan="3" style={{ textAlign: 'right' }}>{invoice.company.addressLine3}</td>
           </tr>
           <tr>
-            <td colSpan="3" style={{ textAlign: 'right' }}><strong>Bank account</strong></td>
+            <td colSpan="3" style={{ textAlign: 'right' }}><strong>Please remit to:</strong></td>
+          </tr>
+          <tr>
+            <td colSpan="3" style={{ textAlign: 'right' }}>
+              <span className="pdf-label">Bank name: </span>Cater Allen
+            </td>
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}>
