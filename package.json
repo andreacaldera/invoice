@@ -17,11 +17,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andreacaldera/TODO"
+    "url": "git+https://github.com/andreacaldera/invoice"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andreacaldera/TODO"
+    "url": "https://github.com/andreacaldera/invoice/issues"
   },
   "homepage": "http://acal-software.com/",
   "dependencies": {

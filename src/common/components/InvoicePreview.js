@@ -122,7 +122,7 @@ const InvoicePreview = ({ invoice, invoiceStyle }) => {
           <tr>
             <td colSpan="2" className="pdf-label">Description</td>
             <td className="pdf-label">Days</td>
-            <td className="pdf-label" d>Rate (£/day)</td>
+            <td className="pdf-label">Rate (£/day)</td>
             <td className="pdf-label">Amount</td>
             <td className="pdf-label">VAT (20%)</td>
           </tr>
