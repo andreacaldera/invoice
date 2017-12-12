@@ -20,9 +20,9 @@ const { port } = config;
 export default () =>
   Promise.resolve()
     .then(() => storesFactory())
-    .then(({ invoiceStore, clientStore }) => {
+    .then(({ invoiceStore, clientStore, companyStore }) => {
       app.use('/api', api(invoiceStore));
-      app.use(ui({ port, invoiceStore, clientStore }));
+      app.use(ui({ port, invoiceStore, clientStore, companyStore }));
 
       app.use((expressError, req, res, next) => { // eslint-disable-line no-unused-vars
         console.error(expressError); // eslint-disable-line no-console

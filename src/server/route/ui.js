@@ -5,7 +5,6 @@ import qs from 'qs';
 import StaticRouter from 'react-router-dom/StaticRouter';
 import { renderRoutes } from 'react-router-config';
 import { Provider } from 'react-redux';
-// import { syncHistoryWithStore } from 'react-router-redux';
 import fs from 'fs';
 import _ from 'lodash';
 import UrlPattern from 'url-pattern';
@@ -14,13 +13,11 @@ import configureStore from '../../common/store/configure-store';
 import routes from '../../common/routes';
 import { NAMESPACE } from '../../common/modules/constants';
 
-import companyData from '../../../private/company-data.json';
-
 const invoiceStyle = fs.readFileSync('./style/download-invoice-style.css', 'utf8');
 
 const uiUrlPattern = new UrlPattern('/:page/:activeInvoiceId*');
 
-export default ({ port, invoiceStore, clientStore }) => {
+export default ({ port, invoiceStore, clientStore, companyStore }) => {
   const router = express.Router();
 
   function renderFullPage(content, store, downloadInvoice) {
@@ -67,8 +64,8 @@ export default ({ port, invoiceStore, clientStore }) => {
     const activeInvoiceId = (uiUrlPattern.match(req.url) || {}).activeInvoiceId;
     const downloadInvoice = qs.parse(req.query)['download-invoice'] !== undefined;
 
-    return Promise.all([invoiceStore.find({}), clientStore.find({})])
-      .then(([invoices, clients]) => {
+    return Promise.all([companyStore.findOne({ name: 'Acal Software Ltd' }), invoiceStore.find({}), clientStore.find({})])
+      .then(([company, invoices, clients]) => {
         const preloadedState = {
           [NAMESPACE]: {
             meta: {
@@ -82,7 +79,7 @@ export default ({ port, invoiceStore, clientStore }) => {
             invoice: {
               activeInvoiceId,
               all: invoices,
-              company: companyData,
+              company,
               invoiceStyle,
             },
           },

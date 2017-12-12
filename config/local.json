@@ -3,6 +3,7 @@
   "mongodb": {
     "url": "mongodb://localhost/invoice",
     "invoiceCollection": "invoice",
-    "clientCollection": "client"
+    "clientCollection": "client",
+    "companyCollection": "company"
   }
 }
