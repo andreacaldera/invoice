@@ -55,7 +55,7 @@ export default ({ mongoose }) => {
     findOne,
     find,
     deleteAll: () => {
-      if (config.invoiceEnv !== 'test') {
+      if (config.invoiceConfig !== 'test') {
         throw new Error(`Delete all is only allowed for testing and not for env ${config.env}`);
       }
       return Model.remove({});

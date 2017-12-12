@@ -4,5 +4,6 @@
     "invoiceCollection": "invoice",
     "clientCollection": "client",
     "companyCollection": "company"
-  }
+  },
+  "logLevel": "warn"
 }

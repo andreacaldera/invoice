@@ -2,6 +2,7 @@ import Express from 'express';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import bodyParser from 'body-parser';
+import winston from 'winston';
 
 import storesFactory from './store';
 import api from './route/api';
@@ -11,6 +12,8 @@ import config from './config';
 const app = Express();
 
 app.use(bodyParser.json());
+
+winston.level = config.logLevel;
 
 app.use(cookieParser());
 app.use('/dist', Express.static(path.join(__dirname, '../../dist')));
@@ -25,14 +28,14 @@ export default () =>
       app.use(ui({ invoiceStore, clientStore, companyStore }));
 
       app.use((expressError, req, res, next) => { // eslint-disable-line no-unused-vars
-        console.error(expressError); // eslint-disable-line no-console
+        winston.error('Unable to serve request', expressError);
       });
 
       app.listen(port, (error) => {
         if (error) {
-          console.error(error); // eslint-disable-line no-console
+          winston.error(error);
         } else {
-          console.info(`Invoice running at http://localhost:${port}/`); // eslint-disable-line no-console
+          winston.info(`Invoice running at http://localhost:${port}/`);
         }
       });
       return {
@@ -43,6 +46,6 @@ export default () =>
       };
     })
     .catch((err) => {
-      console.error(err); // eslint-disable-line no-console
+      winston.error('Unable to run server', err);
       process.exit(1);
     });

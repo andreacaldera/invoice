@@ -1,2 +1,3 @@
-require('babel-register');
-require('./server')();
+import server from './server';
+
+server();
