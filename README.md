@@ -13,4 +13,5 @@
 ## docker
 
 ```docker build . -t local/invoice```
+
 ```docker run -p 3001:3001 local/invoice```

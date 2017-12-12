@@ -8,6 +8,8 @@ invoice.pid
 mongo-data/
 output/
 logs/
+
 private/
+config/secrets.json
 
 **/.DS_Store

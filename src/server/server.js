@@ -22,7 +22,7 @@ export default () =>
     .then(() => storesFactory())
     .then(({ invoiceStore, clientStore, companyStore }) => {
       app.use('/api', api(invoiceStore));
-      app.use(ui({ port, invoiceStore, clientStore, companyStore }));
+      app.use(ui({ invoiceStore, clientStore, companyStore }));
 
       app.use((expressError, req, res, next) => { // eslint-disable-line no-unused-vars
         console.error(expressError); // eslint-disable-line no-console

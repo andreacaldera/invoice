@@ -1,0 +1,8 @@
+{
+  "port": 8080,
+  "mongodb": {
+    "invoiceCollection": "invoice",
+    "clientCollection": "client",
+    "companyCollection": "company"
+  }
+}

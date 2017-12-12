@@ -17,7 +17,7 @@ const invoiceStyle = fs.readFileSync('./style/download-invoice-style.css', 'utf8
 
 const uiUrlPattern = new UrlPattern('/:page/:activeInvoiceId*');
 
-export default ({ port, invoiceStore, clientStore, companyStore }) => {
+export default ({ invoiceStore, clientStore, companyStore }) => {
   const router = express.Router();
 
   function renderFullPage(content, store, downloadInvoice) {
@@ -32,7 +32,7 @@ export default ({ port, invoiceStore, clientStore, companyStore }) => {
       '' :
       `
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-      <link rel="stylesheet" type="text/css" href="http://localhost:3001/dist/invoice.css" />
+      <link rel="stylesheet" type="text/css" href="/dist/invoice.css" />
       `;
 
     return `
@@ -47,7 +47,7 @@ export default ({ port, invoiceStore, clientStore, companyStore }) => {
           <div id="app">${content}</div>
           ${externalJs}
           <script>window.__initialState__ = ${JSON.stringify(store.getState()).replace(/</g, '\\x3c')}</script>
-          <script src="http://localhost:${port}/dist/invoice.js"></script>
+          <script src="/dist/invoice.js"></script>
         </body>
       </html>
       `;
