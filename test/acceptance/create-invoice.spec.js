@@ -36,10 +36,8 @@ describe('Create invoice', () => {
       addressLine1: 'company address 1',
       addressLine2: 'company address 2',
       addressLine3: 'company address 3',
-      bankAccount: {
-        number: 'company bank account number',
-        sortCode: 'company bank account sort code',
-      },
+      bankAccountNumber: 'company bank account number',
+      bankAccountSortCode: 'company bank account sort code',
       registrationNumber: 'company registration number',
     };
     const invoiceNumber = 'SOME-CLIENT-XXX';

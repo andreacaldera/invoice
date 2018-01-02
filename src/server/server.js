@@ -24,11 +24,12 @@ export default () =>
   Promise.resolve()
     .then(() => storesFactory())
     .then(({ invoiceStore, clientStore, companyStore }) => {
-      app.use('/api', api(invoiceStore));
+      app.use('/api', api({ invoiceStore, companyStore }));
       app.use(ui({ invoiceStore, clientStore, companyStore }));
 
       app.use((expressError, req, res, next) => { // eslint-disable-line no-unused-vars
         winston.error('Unable to serve request', expressError);
+        return res.sendStatus(500);
       });
 
       app.listen(port, (error) => {

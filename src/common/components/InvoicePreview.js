@@ -78,17 +78,17 @@ const InvoicePreview = ({ invoice, invoiceStyle }) => {
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}>
-              <span className="pdf-label">Bank name: </span>Cater Allen
+              <span className="pdf-label">Bank name: {invoice.company.bankName}</span>
             </td>
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}>
-              <span className="pdf-label">Sort code: </span>{invoice.company.bankAccount.sortCode}
+              <span className="pdf-label">Sort code: </span>{invoice.company.bankAccountSortCode}
             </td>
           </tr>
           <tr>
             <td colSpan="3" style={{ textAlign: 'right' }}>
-              <span className="pdf-label">Number: </span>{invoice.company.bankAccount.number}
+              <span className="pdf-label">Number: </span>{invoice.company.bankAccountNumber}
             </td>
           </tr>
 

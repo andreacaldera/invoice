@@ -22,10 +22,9 @@ const schema = {
     addressLine1: String,
     addressLine2: String,
     addressLine3: String,
-    bankAccount: {
-      number: String,
-      sortCode: String,
-    },
+    bankName: String,
+    bankAccountNumber: String,
+    bankAccountSortCode: String,
     registrationNumber: String,
   },
 };

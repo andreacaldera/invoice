@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 
 export default class CompanyForm extends Component {
   static propTypes = {
-    company: PropTypes.shape().isRequired,
+    company: PropTypes.shape(),
     saveCompany: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    company: {},
   }
 
   constructor(...args) {
@@ -18,20 +22,20 @@ export default class CompanyForm extends Component {
     panelVisible: false,
   }
 
-  updateClient(e, field) {
-    e.preventDefault();
-    this.setState({ company: Object.assign({}, this.state.company, { [field]: e.target.value }) });
-  }
-
   togglePanelVisibility() {
     const panelVisible = !this.state.panelVisible;
     this.setState({ panelVisible });
   }
 
+  updateCompany(e, field) {
+    e.preventDefault();
+    this.setState({ company: Object.assign({}, this.state.company, { [field]: e.target.value }) });
+  }
+
   saveCompany(e) {
     e.preventDefault();
     const { company } = this.state;
-    this.props.saveCompany({ company });
+    this.props.saveCompany({ company }); // TODO this should call action, http post, save company
     this.setState({ panelVisible: false });
   }
 
@@ -39,7 +43,7 @@ export default class CompanyForm extends Component {
     return (
       <div className="collapsible-panel">
         <div className="collapsible-panel__header">
-          <h3 className="mb-1 collapsible-panel__title">Company ({this.props.company.name})</h3>
+          <h3 className="mb-1 collapsible-panel__title">Company ({this.props.company.name || 'No company configured yet'})</h3>
           <input className="pull-right btn btn-primary btn-sm float-right" type="button" value={this.state.panelVisible ? 'Cancel' : 'Edit'} onClick={this.togglePanelVisibility} />
         </div>
         <div className={`collapsible-panel__inner-panel ${this.state.panelVisible ? '' : 'sr-only'}`}>
@@ -67,6 +71,7 @@ export default class CompanyForm extends Component {
               <input type="text" value={this.state.company.addressLine3} onChange={(e) => this.updateCompany(e, 'addressLine3')} className="form-control" id="companyAddressLine3" placeholder="Address line 3" />
             </div>
           </div>
+          TODO missing fields: vat number, bank account number and sort code, registration number
           <input className="btn btn-primary" type="submit" value="Save" onClick={this.saveCompany} />
         </div>
       </div>

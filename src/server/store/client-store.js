@@ -1,8 +1,6 @@
-import { v1 } from 'uuid';
 import config from '../config';
 
 const schema = {
-  clientId: { type: String, index: { unique: true } },
   name: { type: String, index: { unique: true } },
   addressLine1: String,
   addressLine2: String,
@@ -14,7 +12,7 @@ export default ({ mongoose }) => {
 
   function save(clientData) {
     const client = new Model();
-    Object.assign(client, clientData, { clientId: v1() });
+    Object.assign(client, clientData);
     return client.save()
       .then((savedClient) => savedClient.toJSON());
   }

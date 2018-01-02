@@ -64,7 +64,7 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
     const activeInvoiceId = (uiUrlPattern.match(req.url) || {}).activeInvoiceId;
     const downloadInvoice = qs.parse(req.query)['download-invoice'] !== undefined;
 
-    return Promise.all([companyStore.findOne({ name: 'Acal Software Ltd' }), invoiceStore.find({}), clientStore.find({})])
+    return Promise.all([companyStore.findOne({ name: 'Acal Software Ltd' }).catch(() => undefined), invoiceStore.find({}), clientStore.find({})])
       .then(([company, invoices, clients]) => {
         const preloadedState = {
           [NAMESPACE]: {
@@ -84,9 +84,7 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
             },
           },
         };
-        // const memoryHistory = createMemoryHistory(req.url);
         const store = configureStore(preloadedState);
-        // // const history = syncHistoryWithStore(memoryHistory, store);
 
         const context = { downloadInvoice }; // TODO what is this?
 
@@ -98,7 +96,6 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
           </Provider>
         );
         res.send(renderFullPage(content, store, downloadInvoice));
-        // res.render('index', { title: 'Express', data: store.getState(), content });
       })
       .catch(next);
   });

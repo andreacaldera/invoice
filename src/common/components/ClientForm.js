@@ -37,6 +37,12 @@ export default class ClientForm extends Component {
   }
 
   render() {
+    if (!this.state.selectedClient) {
+      return (
+        <p>Please add a client</p>
+      );
+    }
+
     const clientsDropdown = (
       <select onChange={this.selectClient}>
         {Object.keys(this.props.clients).map((clientName) => (<option selected={clientName === this.state.selectedClient.name} key={clientName} value={clientName}>{clientName}</option>))}
@@ -71,7 +77,7 @@ export default class ClientForm extends Component {
             </div>
           </div>
           <div className="form-group row">
-            <label htmlFor="clientAddressLine3" className="col-sm-2 col-form-label">Address line 2</label>
+            <label htmlFor="clientAddressLine3" className="col-sm-2 col-form-label">Address line 3</label>
             <div className="col-sm-10">
               <input type="text" value={this.state.selectedClient.addressLine3} onChange={(e) => this.updateClient(e, 'addressLine3')} className="form-control" id="clientAddressLine3" placeholder="Address line 3" />
             </div>

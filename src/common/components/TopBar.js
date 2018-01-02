@@ -27,9 +27,6 @@ const TopMenu = ({ downloadInvoice }) => (
         <li className="nav-item">
           <Link className="nav-link" to="/about">About</Link>
         </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" href="/requests">Requests</a>
-        </li>
       </ul>
     </div>
   </nav>

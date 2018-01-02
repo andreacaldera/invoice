@@ -1,33 +1,40 @@
 import config from '../config';
 
-const company = {
+const schema = {
   name: { type: String, index: { unique: true } },
   vatNumber: { type: String, index: { unique: true } },
   addressLine1: String,
   addressLine2: String,
   addressLine3: String,
-  bankAccount: {
-    number: String,
-    sortCode: String,
-  },
+  bankName: String,
+  bankAccountNumber: String,
+  bankAccountSortCode: String,
   registrationNumber: { type: String, index: { unique: true } },
 };
 
 export default ({ mongoose }) => {
-  const Model = mongoose.model(config.mongodb.companyCollection, company);
+  const Model = mongoose.model(config.mongodb.companyCollection, schema);
+
+  function save(companyData) {
+    const company = new Model();
+    Object.assign(schema, companyData);
+    return company.save()
+      .then((savedCompany) => savedCompany.toJSON());
+  }
 
   function findOne(query) {
     return Model.findOne(query)
-      .then((client) => client.toJSON());
+      .then((company) => company.toJSON());
   }
 
   function find(query) {
     return Model.find(query)
-      .then((clients) => clients.map((client) => client.toJSON()));
+      .then((companies) => companies.map((client) => client.toJSON()));
   }
 
 
   return Object.freeze({
+    save,
     findOne,
     find,
   });

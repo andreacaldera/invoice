@@ -2,8 +2,14 @@ import express from 'express';
 
 import { createFromUrl } from '../pdf';
 
-export default (invoiceStore) => {
+export default ({ invoiceStore, companyStore }) => {
   const router = express.Router();
+
+  router.post('/company', (req, res, next) =>
+    companyStore.save(req.body)
+      .then((invoice) => res.json(invoice))
+      .catch(next)
+  );
 
   router.post('/invoices/add-invoice', (req, res, next) =>
     invoiceStore.save(req.body)
