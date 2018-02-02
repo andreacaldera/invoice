@@ -1,5 +1,5 @@
 {
-  "port": 5000,
+  "port": 8080,
   "mongodb": {
     "user": "admin",
     "hosts": "cluster0-shard-00-00-c3law.mongodb.net:27017,cluster0-shard-00-01-c3law.mongodb.net:27017,cluster0-shard-00-02-c3law.mongodb.net",

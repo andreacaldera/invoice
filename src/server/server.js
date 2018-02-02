@@ -18,7 +18,7 @@ winston.level = config.logLevel;
 app.use(cookieParser());
 app.use('/dist', Express.static(path.join(__dirname, '../../dist')));
 
-const { port } = config;
+const port = process.env.PORT || config.port;
 
 export default () =>
   Promise.resolve()
