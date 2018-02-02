@@ -10,7 +10,9 @@ import companyStoreFactory from './company-store';
 export default () => {
   mongoose.Promise = bluebird;
 
-  return mongoose.connect(config.mongodb.url, { useMongoClient: true })
+  const url = `mongodb://${config.mongodb.user}:${process.env.MONGODB_PASSWORD}@${config.mongodb.hosts}/${config.mongodb.database}?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin`;
+
+  return mongoose.connect(url, { useMongoClient: true })
     .then(() => ({
       invoiceStore: invoiceStoreFactory({ mongoose }),
       clientStore: clientStoreFactory({ mongoose }),

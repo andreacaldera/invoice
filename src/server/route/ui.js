@@ -64,7 +64,7 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
     const activeInvoiceId = (uiUrlPattern.match(req.url) || {}).activeInvoiceId;
     const downloadInvoice = qs.parse(req.query)['download-invoice'] !== undefined;
 
-    return Promise.all([companyStore.findOne({ name: 'Acal Software Ltd' }).catch(() => undefined), invoiceStore.find({}), clientStore.find({})])
+    return Promise.all([companyStore.findOne({ name: 'Acal Software Ltd' }), invoiceStore.find({}), clientStore.find({})])
       .then(([company, invoices, clients]) => {
         const preloadedState = {
           [NAMESPACE]: {

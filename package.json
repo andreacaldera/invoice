@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "description": "invoice",
   "scripts": {
-    "start": "INVOICE_CONFIG=production node dist/server/index.js",
-    "dev": "INVOICE_CONFIG=local nodemon src/server/index.js --exec babel-node",
+    "start": "npm run build && INVOICE_CONFIG=production node dist/server/index.js",
+    "dev": "INVOICE_CONFIG=production nodemon src/server/index.js --exec babel-node",
+    "data-import": "node script/data-import-require.js --exec babel-node",
     "lint": "eslint .",
     "test": "INVOICE_CONFIG=test mocha --compilers js:babel-core/register test/**",
     "test-watch": "INVOICE_CONFIG=test mocha --compilers js:babel-core/register test/** -w",

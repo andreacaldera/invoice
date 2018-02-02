@@ -1,3 +1,5 @@
+import winston from 'winston';
+
 import config from '../config';
 
 const schema = {
@@ -19,7 +21,8 @@ export default ({ mongoose }) => {
 
   function findOne(query) {
     return Model.findOne(query)
-      .then((client) => client.toJSON());
+      .then((client) => client.toJSON())
+      .catch((err) => winston.error('Unable to find client', err));
   }
 
   function find(query) {

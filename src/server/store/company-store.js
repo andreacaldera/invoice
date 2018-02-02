@@ -1,3 +1,5 @@
+import winston from 'winston';
+
 import config from '../config';
 
 const schema = {
@@ -17,14 +19,15 @@ export default ({ mongoose }) => {
 
   function save(companyData) {
     const company = new Model();
-    Object.assign(schema, companyData);
+    Object.assign(company, companyData);
     return company.save()
       .then((savedCompany) => savedCompany.toJSON());
   }
 
   function findOne(query) {
     return Model.findOne(query)
-      .then((company) => company.toJSON());
+      .then((company) => company.toJSON())
+      .catch((err) => winston.error('Unable to find company', err));
   }
 
   function find(query) {
