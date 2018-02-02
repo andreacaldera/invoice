@@ -9,7 +9,7 @@ RUN apt-get install -y curl git man less
 RUN ln -sf /bin/bash /bin/sh
 
 # Install supervisord
-RUN apt-get install -y supervisor
+RUN apt-get install -y supervisor xvfb libfontconfig wkhtmltopdf
 RUN mkdir -p /var/log/supervisor
 CMD /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 

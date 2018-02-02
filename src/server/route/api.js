@@ -26,7 +26,7 @@ export default ({ invoiceStore, companyStore }) => {
   router.get('/download-invoice/:invoiceId', (req, res, next) => {
     res.header('Content-disposition', 'attachment');
     res.header('Content-type', 'application/pdf');
-    return createFromUrl(`http://localhost:3001/invoice-preview/${req.params.invoiceId}?download-invoice`)
+    return createFromUrl(`${req.protocol}://${req.hostname}/invoice-preview/${req.params.invoiceId}?download-invoice`)
       .then((pdfStream) => pdfStream.pipe(res))
       .catch(next);
   });

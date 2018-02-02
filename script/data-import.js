@@ -1,6 +1,7 @@
 import winston from 'winston';
 
 import companyData from '../private/companyData.json';
+import clientData from '../private/clientData.json';
 
 if (!process.env.INVOICE_CONFIG) {
   winston.error('Config INVOICE_CONFIG must be defined for data import');
@@ -24,13 +25,13 @@ const ensureCompanyData = (companyStore) =>
     });
 
 const ensureClientData = (clientStore) =>
-  clientStore.findOne({ name: 'TODO' })
+  clientStore.findOne({ name: 'Allegis Group' })
     .then((client) => {
       if (client) {
         winston.info('Client data already configured, skipping');
         return;
       }
-      return clientStore.save()
+      return clientStore.save(clientData)
       .then(() => winston.info('Client added successfully'));
     });
 
