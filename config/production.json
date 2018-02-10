@@ -1,12 +1,16 @@
 {
-  "port": 8080,
   "mongodb": {
     "user": "admin",
     "hosts": "cluster0-shard-00-00-c3law.mongodb.net:27017,cluster0-shard-00-01-c3law.mongodb.net:27017,cluster0-shard-00-02-c3law.mongodb.net",
     "database": "invoice",
+    "ssl": true,
+    "replicaSet": "Cluster0-shard-0",
+    "authSource": "admin",
     "invoiceCollection": "invoice",
     "clientCollection": "client",
     "companyCollection": "company"
   },
-  "logLevel": "info"
+  "port": 8080,
+  "logLevel": "info",
+  "wkhtmltopdfCommand": "xvfb-run /usr/bin/wkhtmltopdf"
 }

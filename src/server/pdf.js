@@ -1,11 +1,18 @@
-import wkhtmltopdf from 'wkhtmltopdf';
 import superagent from 'superagent';
 
-export function createFromHtml(html) {
-  return wkhtmltopdf(html);
-}
+import wkhtmltopdfFactory from './wkhtmltopdf';
 
-export function createFromUrl(url) {
-  return superagent.get(url)
-    .then(({ text }) => createFromHtml(text));
-}
+export default (config) => {
+  const wkhtmltopdf = wkhtmltopdfFactory(config);
+
+  const createFromHtml = (html) => wkhtmltopdf(html);
+
+  const createFromUrl = (url) =>
+    superagent.get(url)
+      .then(({ text }) => createFromHtml(text));
+
+  return Object.freeze({
+    createFromUrl,
+    createFromHtml,
+  });
+};

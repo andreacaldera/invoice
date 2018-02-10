@@ -1,10 +1,13 @@
 {
   "port": 3001,
   "mongodb": {
-    "url": "mongodb://localhost/invoice",
+    "hosts": "localhost:27017",
+    "database": "invoice",
+    "ssl": false,
     "invoiceCollection": "invoice",
     "clientCollection": "client",
     "companyCollection": "company"
   },
-  "logLevel": "debug"
+  "logLevel": "debug",
+  "wkhtmltopdfCommand": "wkhtmltopdf"
 }

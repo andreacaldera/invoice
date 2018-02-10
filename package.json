@@ -1,10 +1,10 @@
 {
   "name": "acal-invoice",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "invoice",
   "scripts": {
-    "start": "npm run build && INVOICE_CONFIG=production node dist/server/index.js",
-    "dev": "INVOICE_CONFIG=production nodemon src/server/index.js --exec babel-node",
+    "start": "node dist/server/index.js",
+    "dev": "nodemon src/server/index.js --exec babel-node",
     "data-import": "node script/data-import-require.js --exec babel-node",
     "lint": "eslint .",
     "test": "INVOICE_CONFIG=test mocha --compilers js:babel-core/register test/**",
@@ -63,11 +63,11 @@
     "redux-logger": "^3.0.1",
     "redux-saga": "^0.15.4",
     "reselect": "^3.0.0",
+    "slang": "^0.3.0",
     "superagent": "^3.6.0",
     "url-pattern": "^1.0.3",
     "uuid": "^3.1.0",
-    "winston": "^2.4.0",
-    "wkhtmltopdf": "^0.3.4"
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

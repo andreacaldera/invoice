@@ -9,8 +9,12 @@ import companyStoreFactory from './company-store';
 
 export default () => {
   mongoose.Promise = bluebird;
-
-  const url = `mongodb://${config.mongodb.user}:${process.env.MONGODB_PASSWORD}@${config.mongodb.hosts}/${config.mongodb.database}?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin`;
+  const { mongodb } = config;
+  const replicaSet = mongodb.replicaSet ? `&replicaSet=${mongodb.replicaSet}` : '';
+  const ssl = `ssl=${mongodb.ssl}`;
+  const authSource = mongodb.authSource ? `&authSource=${mongodb.authSource}` : '';
+  const userAndPassword = mongodb.user ? `${mongodb.user}:${process.env.MONGODB_PASSWORD}@` : '';
+  const url = `mongodb://${userAndPassword}${mongodb.hosts}/${mongodb.database}?${ssl}${replicaSet}${authSource}`;
 
   return mongoose.connect(url, { useMongoClient: true })
     .then(() => ({

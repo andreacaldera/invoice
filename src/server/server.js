@@ -17,14 +17,15 @@ winston.level = config.logLevel;
 
 app.use(cookieParser());
 app.use('/dist', Express.static(path.join(__dirname, '../../dist')));
+app.use('/', Express.static(path.join(__dirname, '../../public')));
 
-const port = process.env.PORT || config.port;
+const { port } = config;
 
 export default () =>
   Promise.resolve()
     .then(() => storesFactory())
     .then(({ invoiceStore, clientStore, companyStore }) => {
-      app.use('/api', api({ invoiceStore, companyStore }));
+      app.use('/api', api({ invoiceStore, companyStore, config }));
       app.use(ui({ invoiceStore, clientStore, companyStore }));
 
       app.use((expressError, req, res, next) => { // eslint-disable-line no-unused-vars

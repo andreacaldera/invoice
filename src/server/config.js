@@ -16,4 +16,9 @@ const secretsConfig = fs.existsSync(secretsFile) ? JSON.parse(fs.readFileSync(se
 
 const config = JSON.parse(fs.readFileSync(`./config/${invoiceConfig}.json`, 'utf8'));
 
+if (process.env.PORT) {
+  winston.debug(`Using port ${process.env.PORT}`);
+  config.port = process.env.PORT;
+}
+
 export default Object.assign({}, merge(secretsConfig, config), { invoiceConfig });
