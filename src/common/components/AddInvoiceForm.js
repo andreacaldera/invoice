@@ -47,9 +47,7 @@ class AddInvoiceForm extends Component {
   updateBilling(e, field, index) {
     e.preventDefault();
     const { billings } = this.state;
-    console.log(1, billings);
     billings[index] = Object.assign({}, billings[index], { [field]: e.target.value });
-    console.log(billings);
     this.setState({ billings });
   }
 
