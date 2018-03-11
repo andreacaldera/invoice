@@ -21,7 +21,7 @@ export default ({ mongoose }) => {
 
   function findOne(query) {
     return Model.findOne(query)
-      .then((client) => client.toJSON())
+      .then((client) => client && client.toJSON())
       .catch((err) => winston.error('Unable to find client', err));
   }
 

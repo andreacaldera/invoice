@@ -29,7 +29,11 @@ class AddInvoiceForm extends Component {
   state = {
     company: this.props.company,
     client: this.props.selectedClient,
-    billing: {},
+    billings: [{
+      description: '',
+      numberOfDays: '',
+      dailyRate: '',
+    }],
   }
 
   updateCompany({ company }) {
@@ -40,9 +44,13 @@ class AddInvoiceForm extends Component {
     this.setState({ client });
   }
 
-  updateBilling(e, field) {
+  updateBilling(e, field, index) {
     e.preventDefault();
-    this.setState({ billing: Object.assign({}, this.state.billing, { [field]: e.target.value }) });
+    const { billings } = this.state;
+    console.log(1, billings);
+    billings[index] = Object.assign({}, billings[index], { [field]: e.target.value });
+    console.log(billings);
+    this.setState({ billings });
   }
 
   updateInvoiceNumber(e) {
@@ -52,11 +60,36 @@ class AddInvoiceForm extends Component {
 
   addInvoice(e) {
     e.preventDefault();
-    const { company, billing, invoiceNumber, client } = this.state;
-    this.props.addInvoice({ company, client, billing, invoiceNumber });
+    const { company, billings, invoiceNumber, client } = this.state;
+    this.props.addInvoice({ company, client, billings, invoiceNumber });
+  }
+
+  addInvoiceItem(e) {
+    e.preventDefault();
+    this.setState({ billings: this.state.billings.concat({ description: '', numberOfDays: '', dailyRate: '' }) });
   }
 
   render() {
+    const InvoiceItems = this.state.billings.map((invoiceItem, index) => [
+      <div className="form-group row">
+        <label htmlFor="description" className="col-sm-2 col-form-label">Description</label>
+        <div className="col-sm-10">
+          <input type="text" value={invoiceItem.description} onChange={(e) => this.updateBilling(e, 'description', index)} className="form-control" id="numberOfDays" placeholder="Description" />
+        </div>
+      </div>,
+      <div className="form-group row">
+        <label htmlFor="numberOfDays" className="col-sm-2 col-form-label">Number of days</label>
+        <div className="col-sm-10">
+          <input type="text" value={invoiceItem.numberOfDays} onChange={(e) => this.updateBilling(e, 'numberOfDays', index)} className="form-control" id="numberOfDays" placeholder="Number of days" />
+        </div>
+      </div>,
+      <div className="form-group row">
+        <label htmlFor="dailyRate" className="col-sm-2 col-form-label">Daily rate</label>
+        <div className="col-sm-10">
+          <input type="text" value={invoiceItem.dailyRate} onChange={(e) => this.updateBilling(e, 'dailyRate', index)} className="form-control" id="dailyRate" placeholder="Daily rate" />
+        </div>
+      </div>,
+    ]);
     return (
       <div>
         <form>
@@ -69,24 +102,9 @@ class AddInvoiceForm extends Component {
           </div>
 
           <h3>Billing</h3>
-          <div className="form-group row">
-            <label htmlFor="description" className="col-sm-2 col-form-label">Description</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.billing.description} onChange={(e) => this.updateBilling(e, 'description')} className="form-control" id="numberOfDays" placeholder="Description" />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label htmlFor="numberOfDays" className="col-sm-2 col-form-label">Number of days</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.billing.numberOfDays} onChange={(e) => this.updateBilling(e, 'numberOfDays')} className="form-control" id="numberOfDays" placeholder="Number of days" />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label htmlFor="dailyRate" className="col-sm-2 col-form-label">Daily rate</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.billing.dailyRate} onChange={(e) => this.updateBilling(e, 'dailyRate')} className="form-control" id="dailyRate" placeholder="Daily rate" />
-            </div>
-          </div>
+          {InvoiceItems}
+
+          <button className="btn btn-secondary mb-3" onClick={this.addInvoiceItem}>Add item</button>
 
           <CompanyForm
             company={this.props.company}

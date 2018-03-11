@@ -26,7 +26,7 @@ export default ({ mongoose }) => {
 
   function findOne(query) {
     return Model.findOne(query)
-      .then((company) => company.toJSON())
+      .then((company) => company && company.toJSON())
       .catch((err) => winston.error('Unable to find company', err));
   }
 

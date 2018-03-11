@@ -41,7 +41,7 @@ export default ({ mongoose }) => {
 
   function findOne(query) {
     return Model.findOne(query)
-      .then((invoice) => invoice.toJSON());
+      .then((invoice) => invoice && invoice.toJSON());
   }
 
   function find(query) {

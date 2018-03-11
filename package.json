@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/server/index.js",
     "dev": "nodemon src/server/index.js --exec babel-node",
-    "data-import": "node script/data-import-require.js --exec babel-node",
+    "data-import": "node script/import/index.js --exec babel-node",
+    "data-export": "node script/export/index.js --exec babel-node",
     "lint": "eslint .",
     "test": "INVOICE_CONFIG=test mocha --compilers js:babel-core/register test/**",
     "test-watch": "INVOICE_CONFIG=test mocha --compilers js:babel-core/register test/** -w",
