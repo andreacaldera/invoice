@@ -67,27 +67,29 @@ class AddInvoiceForm extends Component {
     this.setState({ billings: this.state.billings.concat({ description: '', numberOfDays: '', dailyRate: '' }) });
   }
 
+  removeInvoiceItem(e, index) {
+    e.preventDefault();
+    this.setState({ billings: this.state.billings.filter((billing, i) => i !== index) });
+  }
+
   render() {
-    const InvoiceItems = this.state.billings.map((invoiceItem, index) => [
-      <div className="form-group row">
-        <label htmlFor="description" className="col-sm-2 col-form-label">Description</label>
-        <div className="col-sm-10">
+    const InvoiceItems = this.state.billings.map((invoiceItem, index) => {
+      const billingItemKey = `billing-item-${index}`;
+      return (<div className="form-group form-inline row" key={billingItemKey}>
+        <div className="col-3">
           <input type="text" value={invoiceItem.description} onChange={(e) => this.updateBilling(e, 'description', index)} className="form-control" id="numberOfDays" placeholder="Description" />
         </div>
-      </div>,
-      <div className="form-group row">
-        <label htmlFor="numberOfDays" className="col-sm-2 col-form-label">Number of days</label>
-        <div className="col-sm-10">
+        <div className="col-3">
           <input type="text" value={invoiceItem.numberOfDays} onChange={(e) => this.updateBilling(e, 'numberOfDays', index)} className="form-control" id="numberOfDays" placeholder="Number of days" />
         </div>
-      </div>,
-      <div className="form-group row">
-        <label htmlFor="dailyRate" className="col-sm-2 col-form-label">Daily rate</label>
-        <div className="col-sm-10">
+        <div className="col-3">
           <input type="text" value={invoiceItem.dailyRate} onChange={(e) => this.updateBilling(e, 'dailyRate', index)} className="form-control" id="dailyRate" placeholder="Daily rate" />
         </div>
-      </div>,
-    ]);
+        <div className="col-3">
+          <button className="btn btn-secondary" onClick={(e) => this.removeInvoiceItem(e, index)}>Remove item</button>
+        </div>
+      </div>);
+    });
     return (
       <div>
         <form>
