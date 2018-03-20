@@ -1,17 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 import invoiceModule from '../modules/invoice';
+
+const InvoiceIdText = styled.span`
+  width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 40px;
+`;
 
 const Invoices = ({ invoices }) =>
   (<div>
     <h1>Invoices</h1>
     <div className="container">
       {invoices.map((invoiceData) => (
-        <div className="row text-right invoice-row" key={invoiceData.invoiceId}>
-          <div className="col invoices__invoice-id-text">Invoice {invoiceData.invoiceNumber || invoiceData.invoiceId}</div>
-          <div className="col col-9 text-left">
+        <div className="row text-right" key={invoiceData.invoiceId}>
+          <div className="col-2"><InvoiceIdText>Invoice {invoiceData.invoiceNumber || invoiceData.invoiceId}</InvoiceIdText></div>
+          <div className="col-10 text-left">
             <a className="btn btn-primary" href={`/invoice-preview/${invoiceData.invoiceId}`}>View</a>
             <a className="btn btn-primary ml-2" download={`${invoiceData.invoiceId}-invoice.pdf`} href={`/api/download-invoice/${invoiceData.invoiceId}`}>Download</a>
             <a className="btn btn-primary ml-2" target={`_download-preview-${invoiceData.invoiceId}`} href={`/invoice-preview/${invoiceData.invoiceId}?download-invoice`}>Download preview</a>

@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import fs from 'fs';
 import _ from 'lodash';
 import UrlPattern from 'url-pattern';
+import { ServerStyleSheet } from 'styled-components';
 
 import configureStore from '../../common/store/configure-store';
 import routes from '../../common/routes';
@@ -20,19 +21,13 @@ const uiUrlPattern = new UrlPattern('/:page/:activeInvoiceId*');
 export default ({ invoiceStore, clientStore, companyStore }) => {
   const router = express.Router();
 
-  function renderFullPage(content, store, downloadInvoice) {
-    const externalJs = downloadInvoice ?
-      '' :
-      `
-      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-      `;
+  function renderFullPage(content, store, sheet, downloadInvoice) {
     const cssLibraries = downloadInvoice ?
       '' :
       `
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
       <link rel="stylesheet" type="text/css" href="/dist/invoice.css" />
+      ${sheet.getStyleTags()}
       `;
 
     return `
@@ -45,8 +40,7 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
         </head>
         <body>
           <div id="app">${content}</div>
-          ${externalJs}
-          <script>window.__initialState__ = ${JSON.stringify(store.getState()).replace(/</g, '\\x3c')}</script>
+            <script>window.__initialState__ = ${JSON.stringify(store.getState()).replace(/</g, '\\x3c')}</script>
           <script src="/dist/invoice.js"></script>
         </body>
       </html>
@@ -86,16 +80,18 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
         };
         const store = configureStore(preloadedState);
 
-        const context = { downloadInvoice }; // TODO what is this?
+        const context = { downloadInvoice };
 
-        const content = renderToString(
+        const sheet = new ServerStyleSheet();
+        const html = renderToString(sheet.collectStyles(
           <Provider store={store}>
             <StaticRouter location={req.url} context={context}>
               {renderRoutes(routes)}
             </StaticRouter>
           </Provider>
-        );
-        res.send(renderFullPage(content, store, downloadInvoice));
+        ));
+
+        res.send(renderFullPage(html, store, sheet, downloadInvoice));
       })
       .catch(next);
   });
