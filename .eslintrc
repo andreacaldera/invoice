@@ -33,6 +33,14 @@
     "react/jsx-sort-props": 0,
     "react/no-unused-prop-types": 0,
     "import/prefer-default-export": 0,
-    "react/require-default-props": 0
+    "react/require-default-props": 0,
+    "function-paren-newline": 0,
+    "jsx-a11y/label-has-for": [ 2, {
+        "components": [ "Label" ],
+        "required": {
+            "every": [ "id" ]
+          },
+          "allowChildren": false
+    }]
   }
 }

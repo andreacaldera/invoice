@@ -27,8 +27,7 @@ const exportClientData = (clientStore) =>
 
 storesFactory()
   .then(({ clientStore }) =>
-    Promise.all([exportClientData(clientStore)])
-  )
+    Promise.all([exportClientData(clientStore)]))
   .then(() => process.exit(0))
   .catch((err) => {
     winston.error('Unable to export data', err);

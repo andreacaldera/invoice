@@ -58,8 +58,12 @@ class AddInvoiceForm extends Component {
 
   addInvoice(e) {
     e.preventDefault();
-    const { company, billings, invoiceNumber, client } = this.state;
-    this.props.addInvoice({ company, client, billings, invoiceNumber });
+    const {
+      company, billings, invoiceNumber, client,
+    } = this.state;
+    this.props.addInvoice({
+      company, client, billings, invoiceNumber,
+    });
   }
 
   addInvoiceItem(e) {
@@ -75,20 +79,22 @@ class AddInvoiceForm extends Component {
   render() {
     const InvoiceItems = this.state.billings.map((invoiceItem, index) => {
       const billingItemKey = `billing-item-${index}`;
-      return (<div className="form-group form-inline row" key={billingItemKey}>
-        <div className="col-3">
-          <input type="text" value={invoiceItem.description} onChange={(e) => this.updateBilling(e, 'description', index)} className="form-control" id="numberOfDays" placeholder="Description" />
+      return (
+        <div className="form-group form-inline row" key={billingItemKey}>
+          <div className="col-3">
+            <input type="text" value={invoiceItem.description} onChange={(e) => this.updateBilling(e, 'description', index)} className="form-control" id="numberOfDays" placeholder="Description" />
+          </div>
+          <div className="col-3">
+            <input type="text" value={invoiceItem.numberOfDays} onChange={(e) => this.updateBilling(e, 'numberOfDays', index)} className="form-control" id="numberOfDays" placeholder="Number of days" />
+          </div>
+          <div className="col-3">
+            <input type="text" value={invoiceItem.dailyRate} onChange={(e) => this.updateBilling(e, 'dailyRate', index)} className="form-control" id="dailyRate" placeholder="Daily rate" />
+          </div>
+          <div className="col-3">
+            <button className="btn btn-secondary" onClick={(e) => this.removeInvoiceItem(e, index)}>Remove item</button>
+          </div>
         </div>
-        <div className="col-3">
-          <input type="text" value={invoiceItem.numberOfDays} onChange={(e) => this.updateBilling(e, 'numberOfDays', index)} className="form-control" id="numberOfDays" placeholder="Number of days" />
-        </div>
-        <div className="col-3">
-          <input type="text" value={invoiceItem.dailyRate} onChange={(e) => this.updateBilling(e, 'dailyRate', index)} className="form-control" id="dailyRate" placeholder="Daily rate" />
-        </div>
-        <div className="col-3">
-          <button className="btn btn-secondary" onClick={(e) => this.removeInvoiceItem(e, index)}>Remove item</button>
-        </div>
-      </div>);
+      );
     });
     return (
       <div>
@@ -96,9 +102,7 @@ class AddInvoiceForm extends Component {
           <h3>Invoice</h3>
           <div className="form-group row">
             <label htmlFor="invoiceNumber" className="col-sm-2 col-form-label">Invoice number</label>
-            <div className="col-sm-10">
-              <input type="text" value={this.state.invoiceNumber} onChange={(e) => this.updateInvoiceNumber(e)} className="form-control" id="numberOfDays" placeholder="Invoice number" />
-            </div>
+            <input type="text" value={this.state.invoiceNumber} onChange={(e) => this.updateInvoiceNumber(e)} className="form-control" id="invoiceNumber" placeholder="Invoice number" />
           </div>
 
           <h3>Billing</h3>

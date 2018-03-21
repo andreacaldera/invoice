@@ -55,7 +55,7 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
   router.get('/*', (req, res, next) => {
     const activeFeatureToggles = getActiveFeatureToggles(req);
     res.cookie('featureToggles', activeFeatureToggles);
-    const activeInvoiceId = (uiUrlPattern.match(req.url) || {}).activeInvoiceId;
+    const { activeInvoiceId } = uiUrlPattern.match(req.url) || {};
     const downloadInvoice = qs.parse(req.query)['download-invoice'] !== undefined;
 
     return Promise.all([companyStore.findOne({ name: 'Acal Software Ltd' }), invoiceStore.find({}), clientStore.find({})])

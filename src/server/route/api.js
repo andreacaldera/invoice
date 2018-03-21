@@ -10,20 +10,17 @@ export default ({ invoiceStore, companyStore, config }) => {
   router.post('/company', (req, res, next) =>
     companyStore.save(req.body)
       .then((invoice) => res.json(invoice))
-      .catch(next)
-  );
+      .catch(next));
 
   router.post('/invoices/add-invoice', (req, res, next) =>
     invoiceStore.save(req.body)
       .then((invoice) => res.json(invoice))
-      .catch(next)
-  );
+      .catch(next));
 
   router.get('/invoices/:invoiceId', (req, res, next) =>
     invoiceStore.get(req.params.invoiceId)
       .then((invoice) => res.json(invoice))
-      .catch(next)
-  );
+      .catch(next));
 
   router.get('/download-invoice/:invoiceId', (req, res, next) => {
     res.header('Content-disposition', 'attachment');

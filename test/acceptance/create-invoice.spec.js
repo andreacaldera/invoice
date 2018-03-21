@@ -5,16 +5,15 @@ import _ from 'lodash';
 import server from '../../src/server/server';
 import config from '../../src/server/config';
 
-let invoiceStore;
+const runningServer = {};
 
 before(() =>
   server()
-    .then(({ stores }) => {
-      invoiceStore = stores.invoiceStore;
-    })
-);
+    .then(({ stores: { invoiceStore } }) => {
+      Object.assign(runningServer, invoiceStore);
+    }));
 
-after(() => invoiceStore.deleteAll());
+after(() => runningServer.invoiceStore.deleteAll());
 
 describe('Create invoice', () => {
   it('creates an invoice', () => {
@@ -59,7 +58,7 @@ describe('Create invoice', () => {
         expect(res.body.client).to.deep.equal(client);
         expect(res.body.company).to.deep.equal(company);
 
-        return invoiceStore.findOne({ invoiceId: res.body.invoiceId });
+        return runningServer.invoiceStore.findOne({ invoiceId: res.body.invoiceId });
       })
       .then((savedInvoice) => {
         expect(savedInvoice.companyName).to.equal(companyName);

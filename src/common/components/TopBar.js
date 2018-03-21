@@ -16,16 +16,16 @@ const TopMenu = ({ downloadInvoice }) => (
     <div className="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul className="navbar-nav mr-auto">
         <li className="nav-item active">
-          <Link className="nav-link" to="/">Home</Link>
+          <Link className="nav-link" to="/" href="/">Home</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/add-invoice">Add invoice</Link>
+          <Link className="nav-link" to="/add-invoice" href="/add-invoice">Add invoice</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/invoices">Invoices</Link>
+          <Link className="nav-link" to="/invoices" href="/invoices">Invoices</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/about">About</Link>
+          <Link className="nav-link" to="/about" href="/about">About</Link>
         </li>
       </ul>
     </div>

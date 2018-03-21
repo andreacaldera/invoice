@@ -14,8 +14,8 @@ const InvoiceIdText = styled.span`
   line-height: 40px;
 `;
 
-const Invoices = ({ invoices }) =>
-  (<div>
+const Invoices = ({ invoices }) => (
+  <div>
     <h1>Invoices</h1>
     <div className="container">
       {invoices.map((invoiceData) => (
@@ -29,7 +29,8 @@ const Invoices = ({ invoices }) =>
         </div>
       ))}
     </div>
-  </div>);
+  </div>
+);
 
 const mapStateToProps = (state) => ({
   invoices: invoiceModule.getAll(state),

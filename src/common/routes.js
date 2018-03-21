@@ -6,7 +6,8 @@ import Invoices from './components/Invoices';
 import InvoicePreview from './components/InvoicePreview';
 
 const routes = [
-  { component: App,
+  {
+    component: App,
     routes: [
       { path: '/', exact: true, component: Home },
       { path: '/about', component: About },

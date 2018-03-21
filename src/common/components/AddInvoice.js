@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 
 import AddInvoiceForm from './AddInvoiceForm';
 
-const AddInvoice = ({ displayInvoice }) =>
-  (<div>
+const AddInvoice = ({ displayInvoice }) => (
+  <div>
     <h1>Add a new invoice</h1>
     <AddInvoiceForm
       displayInvoice={displayInvoice}
     />
-  </div>);
+  </div>
+);
 
 AddInvoice.propTypes = {
   displayInvoice: PropTypes.func,

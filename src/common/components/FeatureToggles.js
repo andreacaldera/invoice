@@ -8,12 +8,14 @@ import meta from '../modules/meta';
 const FeatureToggles = ({ featureToggles }) => {
   const toggleList = _.isEmpty(featureToggles) ?
     (<p>No feature toggle selected, use ?feature-toggle[]=your-feature-toggle to enable feature toggles</p>) :
-    (<div>
-      <p>Active featureToggles:</p>
-      <ul>
-        {featureToggles.map((featureToggle) => (<li key={`${featureToggle}-item`}>{featureToggle}</li>))}
-      </ul>
-    </div>);
+    (
+      <div>
+        <p>Active featureToggles:</p>
+        <ul>
+          {featureToggles.map((featureToggle) => (<li key={`${featureToggle}-item`}>{featureToggle}</li>))}
+        </ul>
+      </div>
+    );
   return (
     <div>
       {toggleList}

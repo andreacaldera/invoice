@@ -22,8 +22,7 @@ const ensureCompanyData = (companyStore) =>
         }
         return companyStore.save(company)
           .then(() => winston.info(`Company ${company.name} added successfully`));
-      })
-  ));
+      })));
 
 const ensureClientData = (clientStore) =>
   Promise.all(clientData.map((client) =>
@@ -35,13 +34,11 @@ const ensureClientData = (clientStore) =>
         }
         return clientStore.save(client)
           .then(() => winston.info(`Client ${client.name} added successfully`));
-      })
-  ));
+      })));
 
 storesFactory()
   .then(({ clientStore, companyStore }) =>
-    Promise.all([ensureCompanyData(companyStore), ensureClientData(clientStore)])
-  )
+    Promise.all([ensureCompanyData(companyStore), ensureClientData(clientStore)]))
   .then(() => process.exit(0))
   .catch((err) => {
     winston.error('Unable to import data', err);
