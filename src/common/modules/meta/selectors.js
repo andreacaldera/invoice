@@ -17,8 +17,14 @@ const getDownloadInvoice = createSelector(
   ({ downloadInvoice }) => downloadInvoice
 );
 
+const getTheme = createSelector(
+  getMetaSelector,
+  ({ theme }) => theme
+);
+
 module.exports = {
   getTestMeta,
   getFeatureToggles,
   getDownloadInvoice,
+  getTheme,
 };

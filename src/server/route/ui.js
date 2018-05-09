@@ -65,6 +65,7 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
             meta: {
               featureToggles: activeFeatureToggles,
               downloadInvoice,
+              theme: 'main',
             },
             client: {
               allClients: _.keyBy(clients, 'name'),
@@ -98,3 +99,5 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
 
   return router;
 };
+
+// https://github.com/styled-components/styled-components/issues/958
