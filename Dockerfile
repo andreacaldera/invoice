@@ -14,9 +14,10 @@ RUN mkdir -p /var/log/supervisor
 CMD /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 
 # Configure standard environment
-WORKDIR /root/app
 
 COPY ./docker/supervisor.conf /etc/supervisor/conf.d/
+
+WORKDIR /root/app
 
 COPY package.json /root/app/package.json
 RUN npm install

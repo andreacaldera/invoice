@@ -8,10 +8,10 @@ import config from '../../src/server/config';
 const runningServer = {};
 
 before(() =>
-  server()
-    .then(({ stores: { invoiceStore } }) => {
-      Object.assign(runningServer, invoiceStore);
-    }));
+  server().then(({ stores: { invoiceStore } }) => {
+    Object.assign(runningServer, invoiceStore);
+  })
+);
 
 after(() => runningServer.invoiceStore.deleteAll());
 
@@ -41,7 +41,8 @@ describe('Create invoice', () => {
     };
     const invoiceNumber = 'SOME-CLIENT-XXX';
 
-    return superagent.post(`http://localhost:${config.port}/api/invoices/add-invoice`)
+    return superagent
+      .post(`http://localhost:${config.port}/api/invoices/add-invoice`)
       .send({
         companyName,
         billings: [billing],
@@ -54,16 +55,30 @@ describe('Create invoice', () => {
         expect(res.body.invoiceId).to.be.ok;
         expect(res.body.companyName).to.equal(companyName);
         expect(res.body.invoiceNumber).to.equal(invoiceNumber);
-        expect(_.pick(res.body.billings[0], ['description', 'numberOfDays', 'dailyRate']));
+        expect(
+          _.pick(res.body.billings[0], [
+            'description',
+            'numberOfDays',
+            'dailyRate',
+          ])
+        );
         expect(res.body.client).to.deep.equal(client);
         expect(res.body.company).to.deep.equal(company);
 
-        return runningServer.invoiceStore.findOne({ invoiceId: res.body.invoiceId });
+        return runningServer.invoiceStore.findOne({
+          invoiceId: res.body.invoiceId,
+        });
       })
       .then((savedInvoice) => {
         expect(savedInvoice.companyName).to.equal(companyName);
         expect(savedInvoice.invoiceNumber).to.equal(invoiceNumber);
-        expect(_.pick(savedInvoice.billings[0], ['description', 'numberOfDays', 'dailyRate']));
+        expect(
+          _.pick(savedInvoice.billings[0], [
+            'description',
+            'numberOfDays',
+            'dailyRate',
+          ])
+        );
         expect(savedInvoice.client).to.deep.equal(client);
         expect(savedInvoice.company).to.deep.equal(company);
       });
