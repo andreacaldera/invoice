@@ -8,8 +8,7 @@ export default (config) => {
   const createFromHtml = (html) => wkhtmltopdf(html);
 
   const createFromUrl = (url) =>
-    superagent.get(url)
-      .then(({ text }) => createFromHtml(text));
+    superagent.get(url).then(({ text }) => createFromHtml(text));
 
   return Object.freeze({
     createFromUrl,

@@ -12,6 +12,7 @@ const InvoiceIdText = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 40px;
+  color: blue;
 `;
 
 const Invoices = ({ invoices }) => (
@@ -20,11 +21,34 @@ const Invoices = ({ invoices }) => (
     <div className="container">
       {invoices.map((invoiceData) => (
         <div className="row text-right" key={invoiceData.invoiceId}>
-          <div className="col-2"><InvoiceIdText>Invoice {invoiceData.invoiceNumber || invoiceData.invoiceId}</InvoiceIdText></div>
-          <div className="col-10 text-left">
-            <a className="btn btn-primary" href={`/invoice-preview/${invoiceData.invoiceId}`}>View</a>
-            <a className="btn btn-primary ml-2" download={`${invoiceData.invoiceId}-invoice.pdf`} href={`/api/download-invoice/${invoiceData.invoiceId}`}>Download</a>
-            <a className="btn btn-primary ml-2" target={`_download-preview-${invoiceData.invoiceId}`} href={`/invoice-preview/${invoiceData.invoiceId}?download-invoice`}>Download preview</a>
+          <div className="col-4">
+            <InvoiceIdText>
+              Invoice {invoiceData.invoiceNumber || invoiceData.invoiceId}
+            </InvoiceIdText>
+          </div>
+          <div className="col-8 text-left">
+            <a
+              className="btn btn-primary"
+              href={`/invoice-preview/${invoiceData.invoiceId}`}
+            >
+              View
+            </a>
+            <a
+              className="btn btn-primary ml-2"
+              download={`${invoiceData.invoiceId}-invoice.pdf`}
+              href={`/api/download-invoice/${invoiceData.invoiceId}`}
+            >
+              Download
+            </a>
+            <a
+              className="btn btn-primary ml-2"
+              target={`_download-preview-${invoiceData.invoiceId}`}
+              href={`/invoice-preview/${
+                invoiceData.invoiceId
+              }?download-invoice`}
+            >
+              Download preview
+            </a>
           </div>
         </div>
       ))}
@@ -49,4 +73,7 @@ Invoices.propTypes = {
 //   },
 // });
 
-export default connect(mapStateToProps, null)(Invoices);
+export default connect(
+  mapStateToProps,
+  null
+)(Invoices);

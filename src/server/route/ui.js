@@ -80,7 +80,7 @@ export default ({ invoiceStore, clientStore, companyStore }) => {
             },
             client: {
               allClients: _.keyBy(clients, 'name'),
-              selectedClientName: 'Equal Experts UK Limited',
+              selectedClientName: clients[0].name,
             },
             invoice: {
               activeInvoiceId,
