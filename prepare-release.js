@@ -6,9 +6,22 @@ const fs = require('fs');
 const { version } = JSON.parse(fs.readFileSync('package.json'));
 console.log('Current version:', version);
 
-execSync('npm version minor', {
+const versions = version.split('.');
+const newVersion = [
+  versions[0],
+  versions[1],
+  `${Number(versions[2]) + 1}`,
+].join('.');
+
+console.log('New version', newVersion);
+
+execSync(`git checkout -b release-${newVersion}`, {
   stdio: [process.stdin, process.stdout, process.stderr],
 });
 
-const newVersion = JSON.parse(fs.readFileSync('package.json')).version;
-console.log('Current version:', newVersion);
+// execSync('npm version minor', {
+//   stdio: [process.stdin, process.stdout, process.stderr],
+// });
+
+// const newVersion = JSON.parse(fs.readFileSync('package.json')).version;
+// console.log('Current version:', newVersion);
