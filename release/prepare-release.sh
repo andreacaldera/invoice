@@ -1,4 +1,4 @@
 #!/bin/sh
 
 npm version minor
-git push origin ${node package-version.js}
+git push origin $(node release/package-version.js)
