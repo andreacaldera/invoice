@@ -5,7 +5,7 @@
 NEW_VERSION=$(node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
 
-echo "=== RELEASE $NEW_VERSION $RELEASE_BRANCH ==="
+echo "=== PREPARING RELEASE $NEW_VERSION $RELEASE_BRANCH ==="
 
 echo "Updating Jenkinsfile"
 TARGET_BRANCH=$RELEASE_BRANCH node release/update-jenkinsfile.js
