@@ -28,6 +28,7 @@ SOME CONTENT
             }
         }
 
+LIFE ON MASTER GOES ON
 
 SOME MORE CONTENT
 
