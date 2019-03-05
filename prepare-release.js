@@ -7,15 +7,13 @@ const { version } = JSON.parse(fs.readFileSync('package.json'));
 console.log('Current version:', version);
 
 const versions = version.split('.');
-const newVersion = [
-  versions[0],
-  versions[1],
-  `${Number(versions[2]) + 1}`,
-].join('.');
+const newVersion = [versions[0], `${Number(versions[1]) + 1}`, version[1]].join(
+  '.'
+);
 
 console.log('New version', newVersion);
 
-execSync(`git checkout -b release-${newVersion}`, {
+execSync(`git checkout -b v-${newVersion}`, {
   stdio: [process.stdin, process.stdout, process.stderr],
 });
 
@@ -23,7 +21,7 @@ execSync('npm version minor', {
   stdio: [process.stdin, process.stdout, process.stderr],
 });
 
-execSync(`git push origin release-${newVersion}`, {
+execSync(`git push origin v-${newVersion}`, {
   stdio: [process.stdin, process.stdout, process.stderr],
 });
 
