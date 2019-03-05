@@ -7,9 +7,11 @@ const { version } = JSON.parse(fs.readFileSync('package.json'));
 console.log('Current version:', version);
 
 const versions = version.split('.');
-const newVersion = [versions[0], `${Number(versions[1]) + 1}`, version[1]].join(
-  '.'
-);
+const newVersion = [
+  versions[0],
+  `${Number(versions[1]) + 1}`,
+  versions[2],
+].join('.');
 
 console.log('New version', newVersion);
 
