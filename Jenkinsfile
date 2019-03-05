@@ -6,7 +6,7 @@ SOME CONTENT
 
         stage ("Release") {
             when {
-                branch "v0.24.0"
+                branch "master"
             }
             steps {
             }
@@ -15,14 +15,14 @@ SOME CONTENT
 
         stage ("Deploy to aslive") {
             when {
-                branch "v0.24.0"
+                branch "master"
             }
             steps {
             }
         }
         stage ("Acceptance Tests") {
             when {
-                branch "v0.24.0"
+                branch "master"
             }
             steps {
             }
