@@ -11,7 +11,10 @@ const routes = [
     routes: [
       { path: '/', exact: true, component: Home },
       { path: '/about', component: About },
-      { path: '/invoices', component: Invoices },
+      {
+        path: '/invoices',
+        component: Invoices,
+      },
       { path: '/add-invoice', component: AddInvoice },
       { path: '/invoice-preview', component: InvoicePreview },
     ],

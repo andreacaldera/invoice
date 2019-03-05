@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import createLogger from 'redux-logger';
 
 import { Provider } from 'react-redux';
@@ -12,14 +12,15 @@ import configureStore from '../common/store/configure-store';
 import routes from '../common/routes';
 import historyMiddleware from './history-middleware';
 
-const store = configureStore(window.__initialState__, [createLogger, historyMiddleware]);
+const store = configureStore(window.__initialState__, [
+  createLogger,
+  historyMiddleware,
+]);
 
 const AppRouter = () => (
   <Provider store={store}>
-    <Router history={history}>
-      {renderRoutes(routes)}
-    </Router>
+    <Router history={history}>{renderRoutes(routes)}</Router>
   </Provider>
 );
 
-render(<AppRouter />, document.querySelector('#app'));
+hydrate(<AppRouter />, document.querySelector('#app'));
