@@ -23,5 +23,9 @@ execSync(`git checkout -b release-${newVersion}`, {
 //   stdio: [process.stdin, process.stdout, process.stderr],
 // });
 
+execSync(`git push origin release-${newVersion}`, {
+  stdio: [process.stdin, process.stdout, process.stderr],
+});
+
 // const newVersion = JSON.parse(fs.readFileSync('package.json')).version;
 // console.log('Current version:', newVersion);
