@@ -14,7 +14,7 @@ git push
 
 echo "Preparing release branch"
 git checkout -b $RELEASE_BRANCH
-npm version NEW_VERSION -no-git-tag-version
+npm version $NEW_VERSION -no-git-tag-version
 git commit -am "pre-release steps for $NEW_VERSION: package version"
 git push origin $RELEASE_BRANCH
 
