@@ -41,7 +41,12 @@ done
 if [ -z $COMMIT ]; then
     log "Using commit $COMMIT"
     git checkout $COMMIT    
-fi 
+    if [ $? -ne 0 ]; then
+        log "Cannot find commit $COMMIT"
+        exit 1
+    fi
+fi
+
 
 
 NEW_VERSION=$(TYPE=$VERSION node release/get-new-version.js)
