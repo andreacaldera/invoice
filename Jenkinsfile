@@ -6,7 +6,7 @@ SOME CONTENT
 
         stage ("Release") {
             when {
-                branch "v0.26.0"
+                branch "master"
             }
             steps {
             }
@@ -15,14 +15,14 @@ SOME CONTENT
 
         stage ("Deploy to aslive") {
             when {
-                branch "v0.26.0"
+                branch "master"
             }
             steps {
             }
         }
         stage ("Acceptance Tests") {
             when {
-                branch "v0.26.0"
+                branch "master"
             }
             steps {
             }
@@ -32,7 +32,11 @@ LIFE ON MASTER GOES ON
 
 SOME MORE CONTENT
 
+<<<<<<< HEAD
 SOME HOTFIX
 LIFE GOES ON ON MASTER 1
+=======
+SOME HOTFIX 1
+>>>>>>> v0.26.0
 
 AND AGAIN
