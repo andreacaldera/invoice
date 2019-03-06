@@ -38,8 +38,6 @@ while getopts ":v:c:" options; do
   esac
 done
 
-
-
 if [ ! -z $COMMIT ]; then
     log "Using commit $COMMIT"
     git checkout $COMMIT    
@@ -47,12 +45,20 @@ if [ ! -z $COMMIT ]; then
         log "Cannot find commit $COMMIT"
         exit 1
     fi
+else 
+    COMMIT="HEAD"
 fi
-
-
 
 NEW_VERSION=$(TYPE=$VERSION node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
+
+log "Writing release notes"
+LAST_RELEASE=$(git log --pretty=oneline --grep="Merge tag" | head -1 | cut -d' ' -f1)
+log "Analysing all commits from $LAST_RELEASE"
+printf "$NEW_VERSION release notes\n" >> release-notes.txt
+#git rev-list $LAST_RELEASE..HEAD --pretty=%s | grep -v "^commit" | cut -d' ' -f1 | grep "^CSIXREV-" | uniq >> release-notes.txt
+git rev-list $LAST_RELEASE..HEAD --pretty=%s | grep -v "^commit" | cut -d' ' -f1 | uniq >> release-notes.txt
+printf "\n\n" >> release-notes.txt
 
 log "Preparing release $NEW_VERSION $RELEASE_BRANCH"
 
