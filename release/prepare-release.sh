@@ -2,7 +2,7 @@
 
 # check that there are no current changes
 
-NEW_VERSION=$(node release/get-new-version.js)
+NEW_VERSION=$(TYPE=minor node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
 
 echo "=== PREPARING RELEASE $NEW_VERSION $RELEASE_BRANCH ==="

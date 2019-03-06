@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const TYPES = ['major', 'minor', 'hotfix'];
 
-const TYPE = process.env;
+const { TYPE } = process.env;
 
 if (!TYPES.includes(TYPE)) {
   console.error('process.env.TYPE must be one of ', TYPES);
