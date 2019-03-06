@@ -1,6 +1,6 @@
 {
   "name": "acal-invoice",
-  "version": "0.36.0",
+  "version": "0.37.0",
   "description": "invoice",
   "scripts": {
     "start": "node dist/server/index.js",
