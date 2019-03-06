@@ -38,7 +38,9 @@ while getopts ":v:c:" options; do
   esac
 done
 
-if [ -z $COMMIT ]; then
+
+
+if [ ! -z $COMMIT ]; then
     log "Using commit $COMMIT"
     git checkout $COMMIT    
     if [ $? -ne 0 ]; then
