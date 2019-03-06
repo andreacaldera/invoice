@@ -5,6 +5,11 @@ echo "=== RELEASING $RELEASE_BRANCH ==="
 
 git checkout master && git pull
 git merge $RELEASE_BRANCH
+if [ $? -nq 0 ]; then
+  echo "Merged fails, please fix all conflicts manually before releasing"  
+  exit 1
+fi
+
 git push
 
 echo "Updating Jenkinsfile"
