@@ -52,15 +52,14 @@ fi
 NEW_VERSION=$(TYPE=$VERSION node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
 
+log "Preparing release $NEW_VERSION $RELEASE_BRANCH"
+
 log "Writing release notes"
 LAST_RELEASE=$(git log --pretty=oneline --grep="Merge tag" | head -1 | cut -d' ' -f1)
 log "Analysing all commits from $LAST_RELEASE"
 printf "$NEW_VERSION release notes\n" >> release-notes.txt
-#git rev-list $LAST_RELEASE..HEAD --pretty=%s | grep -v "^commit" | cut -d' ' -f1 | grep "^CSIXREV-" | uniq >> release-notes.txt
-git rev-list $LAST_RELEASE..HEAD --pretty=%s | grep -v "^commit" | cut -d' ' -f1 | uniq >> release-notes.txt
+git rev-list $LAST_RELEASE..HEAD --pretty=%s | grep -v "^commit" | cut -d' ' -f1 | grep "^CSIXREV-" | uniq >> release-notes.txt
 printf "\n\n" >> release-notes.txt
-
-log "Preparing release $NEW_VERSION $RELEASE_BRANCH"
 
 log "Updating Jenkinsfile"
 TARGET_BRANCH=$RELEASE_BRANCH node release/update-jenkinsfile.js
@@ -72,7 +71,6 @@ git checkout -b $RELEASE_BRANCH
 npm version $NEW_VERSION -no-git-tag-version
 git commit -am "Release $NEW_VERSION: update package version"
 git push origin $RELEASE_BRANCH
-
 log "Release branch $RELEASE_BRANCH pushed"
 
 log "Release preparation completed"
