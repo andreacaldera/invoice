@@ -12,7 +12,7 @@ VERSION="minor"
 COMMIT=""
 
 usage() { 
-  log "Usage: $0 [ -v VERSION ] [ -c COMMIT ]" 1>&2 
+  log "Usage: $0 [ -v VERSION (minor by default) ] [ -c COMMIT (head by default) ]" 1>&2 
 }
 
 exit_abnormal() {
@@ -40,8 +40,9 @@ done
 
 if [ -z $COMMIT ]; then
     log "Using commit $COMMIT"
-    git checkout $COMMIT
+    git checkout $COMMIT    
 fi 
+
 
 NEW_VERSION=$(TYPE=$VERSION node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
