@@ -2,6 +2,12 @@
 
 source $(dirname $0)/log.sh
 
+git status | grep 'nothing to commit'
+if [ $? -ne 0 ]; then
+  log "Working directory is not clean, please commit or stash your changes"
+  exit 1
+fi
+
 VERSION="minor"
 COMMIT=""
 
@@ -32,12 +38,10 @@ while getopts ":v:c:" options; do
   esac
 done
 
-
-git status | grep 'nothing to commit'
-if [ $? -ne 0 ]; then
-  log "Working directory is not clean, please commit or stash your changes"
-  exit 1
-fi
+if [ -z $COMMIT ]; then
+    log "Using commit $COMMIT"
+    git checkout $COMMIT
+fi 
 
 NEW_VERSION=$(TYPE=$VERSION node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
