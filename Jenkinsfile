@@ -7,7 +7,7 @@ SOME CONTENT
 
         stage ("Release") {
             when {
-                branch "master"
+                branch "v0.33.0"
             }
             steps {
             }
@@ -16,14 +16,14 @@ SOME CONTENT
 
         stage ("Deploy to aslive") {
             when {
-                branch "master"
+                branch "v0.33.0"
             }
             steps {
             }
         }
         stage ("Acceptance Tests") {
             when {
-                branch "master"
+                branch "v0.33.0"
             }
             steps {
             }
@@ -33,7 +33,8 @@ LIFE ON MASTER GOES ON
 
 SOME MORE CONTENT
 
-SOME CONFLICT 2
+
+SOME CONFLICT 4
 
 LIFE GOES ON ON MASTER 1
 
