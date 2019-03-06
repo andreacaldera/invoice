@@ -1,6 +1,37 @@
 #!/bin/bash
 
-source ./release/log.sh
+source $(dirname $0)/log.sh
+
+VERSION="minor"
+COMMIT=""
+
+usage() { 
+  log "Usage: $0 [ -v VERSION ] [ -c COMMIT ]" 1>&2 
+}
+
+exit_abnormal() {
+  usage
+  exit 1
+}
+
+while getopts ":v:c:" options; do              
+  case "${options}" in                         
+    v)                                         
+      VERSION=${OPTARG}                        .
+      ;;
+    c)                                         
+      COMMIT=${OPTARG}                         
+      ;;
+    :)                                         
+      echo "Error: -${OPTARG} requires an argument."
+      exit_abnormal  
+      ;;
+    *)
+      exit_abnormal
+      ;;
+  esac
+done
+
 
 git status | grep 'nothing to commit'
 if [ $? -ne 0 ]; then
@@ -8,7 +39,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-NEW_VERSION=$(TYPE=minor node release/get-new-version.js)
+NEW_VERSION=$(TYPE=$VERSION node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
 
 log "Preparing release $NEW_VERSION $RELEASE_BRANCH"
