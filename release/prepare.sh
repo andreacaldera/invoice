@@ -2,7 +2,11 @@
 
 source ./release/log.sh
 
-# check that there are no current changes
+git status | grep 'nothing to commit'
+if [ $? -ne 0 ]; then
+  log "Working directory is not clean, please commit or stash your changes"
+  exit 1
+fi
 
 NEW_VERSION=$(TYPE=minor node release/get-new-version.js)
 RELEASE_BRANCH=v$NEW_VERSION
